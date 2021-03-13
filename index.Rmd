@@ -1,0 +1,99 @@
+---
+title: 'Profiles of tolerance and respect for gender equality among youth. Comparisons
+  across countries and over time'
+author: 'Pamela Inostroza Fernández'
+date: 'May 2021'
+institution: 'KU Leuven'
+division: 'Leuven Statistics Research Centre'
+advisor: 'Femke De Keulenaer'
+altadvisor: 'Maria Magdalena Isac'
+department: 'Leuven Statistics Research Centre'
+degree: 'Master in Statistics & Data Science'
+knit: bookdown::render_book
+site: bookdown::bookdown_site
+
+params:
+  'Install needed packages for {thesisdown}': True
+  
+output:
+  thesisdown::thesis_pdf: default 
+#  thesisdown::thesis_gitbook: default         
+#  thesisdown::thesis_word: default
+#  thesisdown::thesis_epub: default
+
+abstract: '`r if(knitr:::is_latex_output()) paste(readLines(here::here("prelims", "00-abstract.Rmd")), collapse = "\n  ")`'
+acknowledgements: |
+  I want to thank a few people.
+dedication: |
+  You can have a dedication here if you wish. 
+preface: |
+  This is an example of a thesis setup to use the reed thesis document class 
+  (for LaTeX) and the R bookdown package, in general.
+
+bibliography: bib/thesis.bib
+csl: csl/apa.csl
+lot: true
+lof: true
+---
+
+```{r include_packages, include=FALSE}
+library(thesisdown)
+library(tidyverse) 
+library(knitr)
+library(kableExtra)
+```
+
+
+```{r, include=FALSE}
+# Set how wide the R output will go
+options(width = 70)
+
+knitr::opts_chunk$set(fig.width=9, fig.height=5, fig.path='Figs/', fig.pos = 'H',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+options(scipen=999)
+options(knitr.kable.NA = '')
+options(kableExtra.auto_format = F)
+
+sys.source("functions/0.functions.R", envir = knitr::knit_global())
+load("data/ICCSAll_lvR.RData")
+
+``` 
+
+
+```{r eval=!knitr::is_latex_output(), child=here::here("prelims", "00--prelim.Rmd")}
+
+```
+
+```{r eval=!knitr::is_latex_output(), child=here::here("prelims", "00-abstract.Rmd")}
+
+```
+
+```{r eval=!knitr::is_latex_output(), child=here::here("00-introduction.Rmd")}
+
+```
+
+<!-- The {.unnumbered} option here means that the introduction will be 
+"Chapter 0." You can also use {-} for no numbers on chapters.
+-->
+
+```{r eval=!knitr::is_latex_output(), child=here::here("01-Framework.Rmd")}
+
+```
+
+```{r eval=!knitr::is_latex_output(), child=here::here("02-Methods.Rmd")}
+
+```
+
+
+```{r eval=!knitr::is_latex_output(), child=here::here("03-Results.Rmd")}
+
+```
+
+
+```{r eval=!knitr::is_latex_output(), child=here::here("04-conclusion.Rmd")}
+
+```
+
+```{r eval=!knitr::is_latex_output(), child=here::here("99-references.Rmd")}
+
+```

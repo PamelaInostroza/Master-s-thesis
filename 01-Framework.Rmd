@@ -1,0 +1,193 @@
+
+# Framework 
+
+## LCA Models
+
+### Person center approach
+
+### LCA model
+
+### Number of classes  
+Wang & Wang, 2012
+
+a)	Model fit indices (comparing competing models)
+b)	Quality of latent class membership
+c)	The size of latent classes
+d)	Interpretability – theoretical grounding 
+
+
+### Measurement invariance - Multigroup Latent Class Analysis 
+Białowolski, 2016; Kankaraš, Vermunt, & Moors, 2011; Magidson & Vermunt, 2004
+
+1.	Completely heterogeneous model, assumes that the only similarity between countries is the number of classes identified and allows that response patterns (conditional probabilities) and class sizes vary among countries. Although the number of classes in all countries may be the same, direct between-country comparisons are not possible in this step because the meaning of latent classes may be substantially different. 
+2.	The partially homogeneous model addresses this issue and restricts the measurement part of the model (conditional probabilities) to be equal in all countries. For each country, the meaning of latent classes is invariant of the country and cross-country comparisons in this respect are meaningful. Yet, the size of the classes (i.e. the relative importance of each class) may still vary. Most applicable and desirable in cross-cultural studies.
+3.	The completely homogeneous model, further restricts the probabilities of class membership to be equal in both countries (i.e. the percentage of individuals assigned to different classes will be equal in both countries). This last assumption will imply that the identified groups of students with similar scoring patterns are identical in the all the countries with identical numbers of students assigned to each group. Meeting this last assumption ensures the highest level of cross-country comparability but may be difficult to achieve in cross-cultural studies.
+
+
+#### Heterogenous model
+
+ $\pi_{ijklmt|g}^{ABCDEX|G} = \pi_{t|g}^{X|G} \pi_{it|g}^{A|X,G} \pi_{jt|g}^{B|X,G} \pi_{kt|g}^{C|X,G} \pi_{lt|g}^{D|X,G} \pi_{mt|g}^{E|X,G}$  
+ 
+- A completely unrestricted multi-group LC model is equivalent to the estimation of a separate 3-class LC model for each group
+- The fit of such a model can be obtained by simply summing the L2 values (and corresponding degrees of freedom) for the corresponding models in each group 
+
+Here, $\pi_{ijklmt|g}^{ABCDEX|G}$ denotes the conditional probability that an individual who belongs to the $gth$ group will be at level $(i, j, k, l, m, t)$ with respect to variables A, B, C, D, E, and X. The conditional probability of X taking on level t for a member of the $gth$ group is denoted by $\pi_{t|g}^{X|G}$, which determines the LC ts proportion for the sth group. $\pi_{it|g}^{A|X,G}$ is the conditional probability of an individual taking level i of variable A, for a given level t of the latent variable X and for a given group membership s of the grouping variable G. Parameters $\pi_{jt|g}^{B|X,G}$, $\pi_{kt|g}^{C|X,G}$, $\pi_{lt|g}^{D|X,G}$, and $\pi_{mt|g}^{E|X,G}$ are similarly defined conditional probabilities. It should be noted that ~~Equation 14.1~~ implies that indicator variables A, B, C, D and E are independent from each other, given the value of the latent variable X. This is usually referred to as the assumption of local independence ~~(Lazarsfeld & Henry, 1968)~~. The LC and conditional response probabilities are constrained to a sum of 1: $\sum \pi_{t|g}^{X|G} =1$, $\sum \pi_{it|g}^{A|XG} = 1$, and so on.
+
+$\pi_{it|g}^{A|XG}=\frac{\exp(\lambda_i^A+\lambda_{it}^{AX}+\lambda_{ig}^{AG}+\lambda_{itg}^{AXG})}{\sum \exp(\lambda_i^A+\lambda_{it}^{AX}+\lambda_{ig}^{AG}+\lambda_{itg}^{AXG})}$
+
+#### Partial homogeneity  
+
+ $\pi_{ijklmt|g}^{ABCDEX|G} = \pi_{t|g}^{X|G} \pi_{it|g}^{A|X} \pi_{jt|g}^{B|X} \pi_{kt|g}^{C|X} \pi_{lt|g}^{D|X} \pi_{mt|g}^{E|X}$  
+ 
+- While it is tempting to interpret class 1 for both samples as representing the ‘ideal’ respondents, this is not appropriate without first restricting the measurement portion of the models (the conditional probabilities) to be equal.
+- Latent structures are partially homogenous when across- group equality constraints are imposed on the conditional probabilities.  
+
+#### Complete homogeneity  
+
+$\pi_{t|1}^{X|G} = \pi_{t|2}^{X|G}, for t = 1, 2, 3$  
+ 
+- The model of complete homogeneity imposes the further restriction that the latent class probabilities across the groups are identical.
+
++-------------+-----------+--------------+---------------------------------------------+  
+| Model       |Item\      |Class\        |   Mplus syntax                              |  
+|             |thresholds |probabilities |                                             |  
++=============+===========+==============+=============================================+   
+|Unrestricted\|  Free \   | Free         | CLASSES = g(2) c(3);\                       |  
+|    \        |      \    |     \        | model:\                                     |    
+|   \         |     \     |     \        | %overall%\                                  |  
+|   \         |     \     |     \        | c on g;\                                    |  
++-------------+-----------+--------------+---------------------------------------------+    
+| Partial\    |  Fixed \  | Fixed        | CLASSES = g(2) c(3);\                       |  
+| Homogeneity\|      \    |     \        | model:\                                     |     
+|     \       |   \       |         \    |%overall%\                                   |  
+|      \      |   \       |         \    | c ON g;\                                    |  
+|     \       |   \       |         \    |%g#1.c#1%\                                   |   
+|     \       |   \       |         \    |[V1$1] (1);\                                 |  
+|     \       |   \       |         \    |[V2$1] (2);\                                 |  
+|      \      |   \       |         \    |[V3$1] (3);\                                 |  
+|     \       |   \       |         \    |.... \                                       |  
+|     \       |   \       |         \    |%g#1.c#2%\                                   |  
+|     \       |   \       |         \    |[V1$1] (7);\                                 |  
+|     \       |   \       |         \    |[V2$1] (8);\                                 |  
+|     \       |   \       |         \    |[V3$1] (9);\                                 |  
+|     \       |   \       |         \    |.... \                                       |  
+|     \       |   \       |         \    |%g#1.c#3%\                                   |  
+|     \       |   \       |         \    |[V1$1] (13);\                                |  
+|     \       |   \       |         \    |[V2$1] (14);\                                |  
+|     \       |   \       |         \    |[V3$1] (15);\                                | 
+|     \       |   \       |         \    |.... \                                       |  
+|     \       |   \       |         \    |%g#2.c#1%\                                   |   
+|     \       |   \       |         \    |[V1$1] (1);\                                 |  
+|     \       |   \       |         \    |[V2$1] (2);\                                 |  
+|      \      |   \       |         \    |[V3$1] (3);\                                 |  
+|     \       |   \       |         \    |.... \                                       |  
+|     \       |   \       |         \    |%g#2.c#2%\                                   |  
+|     \       |   \       |         \    |[V1$1] (25);\                                 |  
+|     \       |   \       |         \    |[V2$1] (26);\                                 |  
+|     \       |   \       |         \    |[V3$1] (27);\                                 |  
+|     \       |   \       |         \    |.... \                                       |  
+|     \       |   \       |         \    |%g#2.c#3%\                                   |  
+|     \       |   \       |         \    |[V1$1] (31);\                                |  
+|     \       |   \       |         \    |[V2$1] (32);\                                |  
+|     \       |   \       |         \    |[V3$1] (33);\                                | 
++-------------+-----------+--------------+---------------------------------------------+    
+|Complete\    |  Fixed \  | Fixed        |CLASSES = g(2) c(3); \                       |  
+|Homogeneity\ |      \    |     \        | model:\                                     |    
+|     \       |   \       |         \    |%overall%\                                   |  
+|      \      |   \       |         \    | c ON g;\                                    |  
+|     \       |   \       |         \    |%g#1.c#1%\                                   |   
+|     \       |   \       |         \    |[V1$1] (1);\                                 |  
+|     \       |   \       |         \    |[V2$1] (2);\                                 |  
+|      \      |   \       |         \    |[V3$1] (3);\                                 |  
+|     \       |   \       |         \    |.... \                                       |  
+|     \       |   \       |         \    |%g#1.c#2%\                                   |  
+|     \       |   \       |         \    |[V1$1] (7);\                                 |  
+|     \       |   \       |         \    |[V2$1] (8);\                                 |  
+|     \       |   \       |         \    |[V3$1] (9);\                                 |  
+|     \       |   \       |         \    |.... \                                       |  
+|     \       |   \       |         \    |%g#1.c#3%\                                   |  
+|     \       |   \       |         \    |[V1$1] (13);\                                |  
+|     \       |   \       |         \    |[V2$1] (14);\                                |  
+|     \       |   \       |         \    |[V3$1] (15);\                                | 
+|     \       |   \       |         \    |.... \                                       |  
+|     \       |   \       |         \    |%g#2.c#1%\                                   |   
+|     \       |   \       |         \    |[V1$1] (1);\                                 |  
+|     \       |   \       |         \    |[V2$1] (2);\                                 |  
+|      \      |   \       |         \    |[V3$1] (3);\                                 |  
+|     \       |   \       |         \    |.... \                                       |  
+|     \       |   \       |         \    |%g#2.c#2%\                                   |  
+|     \       |   \       |         \    |[V1$1] (7);\                                 |  
+|     \       |   \       |         \    |[V2$1] (8);\                                 |  
+|     \       |   \       |         \    |[V3$1] (9);\                                 |  
+|     \       |   \       |         \    |.... \                                       |  
+|     \       |   \       |         \    |%g#2.c#3%\                                   |  
+|     \       |   \       |         \    |[V1$1] (13);\                                |  
+|     \       |   \       |         \    |[V2$1] (14);\                                |  
+|     \       |   \       |         \    |[V3$1] (15);\                                | 
+|     \       |   \       |         \    |.... \                                       |  
++-------------+-----------+--------------+---------------------------------------------+  
+
+## Large scales assessments - ICCS
+
+## Methodological features
+
+## Study 
+
+
+```{r, echo = FALSE, message = FALSE, results = 'asis', fig.pos='H'}
+
+ISC_lvR <- ISC_lvR %>% 
+  mutate( CNTNAME = factor(
+    case_when(
+      COUNTRY == "BFL" ~ "Belgium (Flemish)",
+      COUNTRY == "BGR" ~ "Bulgaria",
+      COUNTRY == "CHL" ~ "Chile",
+      COUNTRY == "COL" ~ "Colombia",
+      COUNTRY == "DNK" ~ "Denmark",
+      COUNTRY == "DOM" ~ "Dominican Republic",
+      COUNTRY == "EST" ~ "Estonia",
+      COUNTRY == "FIN" ~ "Finland",
+      COUNTRY == "HKG" ~ "Hong Kong",
+      COUNTRY == "ITA" ~ "Italy",
+      COUNTRY == "KOR" ~ "South Korea",
+      COUNTRY == "LTU" ~ "Lithuania",
+      COUNTRY == "LVA" ~ "Latvia",
+      COUNTRY == "MEX" ~ "Mexico",
+      COUNTRY == "MLT" ~ "Malta",
+      COUNTRY == "NLD" ~ "Netherlands",
+      COUNTRY == "NOR" ~ "Norway",
+      COUNTRY == "RUS" ~ "Russia",
+      COUNTRY == "SVN" ~ "Slovenia",
+      COUNTRY == "SWE" ~ "Sweden",
+      COUNTRY == "TWN" ~ "Taiwan")),
+    Year = factor(
+      case_when(
+        cycle == "C1" ~ 1999,
+        cycle == "C2" ~ 2009,
+        cycle == "C3" ~ 2016))
+  )
+
+Id <- VarsToUse %>%  filter(Construct == "ID Variables" & Dataset == "ISG") %>% dplyr::select(VariableName) %>% 
+  na.omit() %>% pull()
+sampleID <- c("IDJK", "IDCL", "SENWGT")
+ScalesM2 <- c("bT_GNDREQ1", "bT_GNDREQ2", "bT_GNDREQ5", "bT_GNDREQ3", "bT_GNDREQ4", "bT_GNDREQ6") #Using only scales that are in all cycles
+
+Man_cate <- VarsToUse %>%  filter(Domain %in% "Background questionnaires" & Dataset == "ISG") %>% 
+  dplyr::select(VariableName) %>% pull()
+#Filter for variables not yet calculated
+Man_cate <- c(Man_cate[!grepl("*[1-9]$", Man_cate)], Man_cate[grepl("^T_PROTES*", Man_cate)])
+
+Man_cont <- VarsToUse %>%  filter(Domain %in% "Contextual" & Dataset == "ISG") %>% dplyr::select(VariableName) %>% 
+  pull() %>% na.omit()
+```
+
+Multiple countries had participated in the ICCS study during the last three cycles (detailed participation of the selected countries can be found in Table \@ref(tab:tableA1) in the Annex). Some of the participating countries or regions can be classified by the following grouping:    
+\newline 
+a)	Nordic: Denmark, Finland, Norway, Sweden.  
+b)	Western European: Belgium (Flemish), The Netherlands.  
+c)	Central and Eastern European: Bulgaria, Estonia, Latvia, Lithuania, Croatia, Slovenia.  
+d)	Southern European: Italy, Malta.  
+e)	Latin American: Chile, Peru, Colombia, Dominican Republic, Mexico.  
+f)  Asian: South Korea, Russia, Hong Kong, Taiwan.   
+
+Each student participating in the study was received a test tapping into his civic knowledge and skills and obtained a score^[Scores were calculated through multiple imputation for ICCS 2009 and ICCS 2016, this means five plausible values are available.]. Moreover, background questionnaires were administered to capture students’ perceptions and attitudes toward civic and citizenship, including attitudes toward equal rights for women. Databases include not only the responses to individual items but also indexes for the scales that were constructed. This research will be focused in the index called in the last cycle as “Attitudes toward gender equality”. Each item and the respective construct evaluated is detailed in Table \@ref(tab:tableA2), Table \@ref(tab:tableA3) and Table \@ref(tab:tableA4) for each cycle.  
