@@ -1,0 +1,1068 @@
+% This is the Reed College LaTeX thesis template. Most of the work
+% for the document class was done by Sam Noble (SN), as well as this
+% template. Later comments etc. by Ben Salzberg (BTS). Additional
+% restructuring and APA support by Jess Youngberg (JY).
+% Your comments and suggestions are more than welcome; please email
+% them to cus@reed.edu
+%
+% See https://www.reed.edu/cis/help/LaTeX/index.html for help. There are a
+% great bunch of help pages there, with notes on
+% getting started, bibtex, etc. Go there and read it if you're not
+% already familiar with LaTeX.
+%
+% Any line that starts with a percent symbol is a comment.
+% They won't show up in the document, and are useful for notes
+% to yourself and explaining commands.
+% Commenting also removes a line from the document;
+% very handy for troubleshooting problems. -BTS
+
+% As far as I know, this follows the requirements laid out in
+% the 2002-2003 Senior Handbook. Ask a librarian to check the
+% document before binding. -SN
+
+%%
+%% Preamble
+%%
+% \documentclass{<something>} must begin each LaTeX document
+\documentclass[12pt,twoside]{reedthesis}
+% Packages are extensions to the basic LaTeX functions. Whatever you
+% want to typeset, there is probably a package out there for it.
+% Chemistry (chemtex), screenplays, you name it.
+% Check out CTAN to see: https://www.ctan.org/
+%%
+\usepackage{graphicx,latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb,amsthm}
+\usepackage{longtable,booktabs,setspace}
+\usepackage{chemarr} %% Useful for one reaction arrow, useless if you're not a chem major
+\usepackage[hyphens]{url}
+% Added by CII
+\usepackage{hyperref}
+\usepackage{lmodern}
+\usepackage{float}
+\floatplacement{figure}{H}
+% Thanks, @Xyv
+\usepackage{calc}
+% End of CII addition
+\usepackage{rotating}
+
+% Next line commented out by CII
+%%% \usepackage{natbib}
+% Comment out the natbib line above and uncomment the following two lines to use the new
+% biblatex-chicago style, for Chicago A. Also make some changes at the end where the
+% bibliography is included.
+%\usepackage{biblatex-chicago}
+%\bibliography{thesis}
+
+
+% Added by CII (Thanks, Hadley!)
+% Use ref for internal links
+\renewcommand{\hyperref}[2][???]{\autoref{#1}}
+\def\chapterautorefname{Chapter}
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{Subsection}
+% End of CII addition
+
+% Added by CII
+\usepackage{caption}
+\captionsetup{width=5in}
+% End of CII addition
+
+% \usepackage{times} % other fonts are available like times, bookman, charter, palatino
+
+% Syntax highlighting #22
+%%  \usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+%
+% To pass between YAML and LaTeX the dollar signs are added by CII
+\title{Profiles of tolerance and respect for gender equality among youth. Comparisons across countries and over time}
+\author{Pamela Inostroza Fernández}
+% The month and year that you submit your FINAL draft TO THE LIBRARY (May or December)
+\date{May 2021}
+\advisoro{Femke De Keulenaer}
+\university{KU Leuven}
+\program{Master in Statistics \& Data Science}
+%If you have two advisors for some reason, you can use the following
+% Uncommented out by CII
+\advisort{Maria Magdalena Isac}
+% End of CII addition
+
+%%% Remember to use the correct department!
+\institute{Leuven Statistics Research Centre}
+% if you're writing a thesis in an interdisciplinary major,
+% uncomment the line below and change the text as appropriate.
+% check the Senior Handbook if unsure.
+%\thedivisionof{The Established Interdisciplinary Committee for}
+% if you want the approval page to say "Approved for the Committee",
+% uncomment the next line
+%\approvedforthe{Committee}
+
+% Added by CII
+%%% Copied from knitr
+%% maxwidth is the original width if it's less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+% From {rticles}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+% for Pandoc 2.8 to 2.10.1
+\newenvironment{cslreferences}%
+  {}%
+  {\par}
+% For Pandoc 2.11+
+% As noted by @mirh [2] is needed instead of [3] for 2.12
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1 \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces\fi
+  % set entry spacing
+  \ifnum #2 > 0
+  \setlength{\parskip}{#2\baselineskip}
+  \fi
+ }%
+ {}
+\usepackage{calc} % for calculating minipage widths
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\newenvironment{FancyTable}[4]
+    {
+        % Before each new major table
+        \ra{1.3}
+        \begin{longtable}{  @{} #1 @{}}
+        % Caption
+        \caption{#2} \label{tab:#4}\\
+    \\
+        % Top Section
+        \toprule #3 \\
+        % Midsection
+        \midrule
+        \endfirsthead
+         \caption[]{#2}\\
+    \\
+        % Top Section
+        \toprule #3 \\
+        % Midsection
+        \midrule
+        \endhead
+   }
+    {
+        \bottomrule 
+        \end{longtable} 
+    }
+    
+\renewcommand{\contentsname}{Table of Contents}
+% End of CII addition
+
+\setlength{\parskip}{0pt}
+
+% Added by CII
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\Acknowledgements{
+I want to thank a few people.
+}
+
+\Dedication{
+You can have a dedication here if you wish.
+}
+
+\Preface{
+This is an example of a thesis setup to use the reed thesis document class
+(for LaTeX) and the R bookdown package, in general.
+}
+
+\Abstract{
+The preface pretty much says it all.
+
+\par
+
+Second paragraph of abstract starts here.
+}
+
+	\usepackage{booktabs}
+ \usepackage{longtable}
+ \usepackage{array}
+ \usepackage{multirow}
+ \usepackage{wrapfig}
+ \usepackage{float}
+ \usepackage{colortbl}
+ \usepackage{pdflscape}
+ \usepackage{tabu}
+ \usepackage{threeparttable}
+ \usepackage{threeparttablex}
+ \usepackage[normalem]{ulem}
+ \usepackage{makecell}
+ \usepackage{xcolor}
+% End of CII addition
+%%
+%% End Preamble
+%%
+%
+\begin{document}
+
+
+\thispagestyle{empty}
+\begin{center}
+  {\Large{\bf Profiles of tolerance and respect for gender equality among youth. Comparisons across countries and over time}} \vspace{0.5cm}
+
+   submitted \\\vspace{0.5cm}
+  to \\\vspace{0.5cm}
+  \textbf{Femke De Keulenaer} \\
+  \textbf{Maria Magdalena Isac} \\\vspace{0.5cm}
+  KU Leuven \\
+  Leuven Statistics Research Centre \\
+  Femke De Keulenaer \\
+   \vspace{1cm}
+
+  \includegraphics[width=0.35\textwidth]{KUL.pdf}
+  
+  by \\\vspace{0.5cm}
+  \textbf{Pamela Inostroza Fernández} \\
+  (r0648901) \\
+  
+  \medskip
+  \medskip
+  in partial fulfillment of the requirements \\
+  for the program of \\
+  \textbf{Master in Statistics \& Data Science} \\\vspace{0.5cm}
+  May 2021
+  
+\end{center}
+ %Everything below added by CII
+ \maketitle
+
+%---------------------------
+\frontmatter % this stuff will be roman-numbered
+\pagestyle{empty} % this removes page numbers from the frontmatter
+  \begin{acknowledgements}
+    I want to thank a few people.
+  \end{acknowledgements}
+  \begin{preface}
+    This is an example of a thesis setup to use the reed thesis document class
+    (for LaTeX) and the R bookdown package, in general.
+  \end{preface}
+  \hypersetup{linkcolor=black}
+  \setcounter{secnumdepth}{2}
+  \setcounter{tocdepth}{2}
+  \tableofcontents
+
+  \listoftables
+
+  \listoffigures
+  \begin{abstract}
+    The preface pretty much says it all.
+
+    \par
+
+    Second paragraph of abstract starts here.
+  \end{abstract}
+  \begin{dedication}
+    You can have a dedication here if you wish.
+  \end{dedication}
+\mainmatter % here the regular arabic numbering starts
+\pagestyle{fancyplain} % turns page numbering back on
+
+\hypertarget{introduction}{%
+\chapter*{Introduction}\label{introduction}}
+\addcontentsline{toc}{chapter}{Introduction}
+
+The development of civic values and attitudes of tolerance and respect for the rights of diverse social groups among youth are essential for sustainable democratic societies. These values are strongly promoted by families, educational systems and international organizations across the world. The measurements and comparison of these attitudes among youth can provide valuable information about their development in different societies and over time.\\
+\newline  
+Same international studies such as the International Civic and Citizenship Education Study (ICCS) provide extensive comparative information regarding these aspects. The ICCS study is a large-scale assessment (survey) applied in more than 25 educational systems during the last three cycles and focused on secondary education (representative samples of 8th graders, 14-year-olds in each country) addressing topics such as citizenship, diversity and social interactions at school. The study produces internationally comparative data collected via student, school and teacher questionnaires. Data from different waves of the ICCS survey is publicly available to researchers. The first time this study was applied was in 1999 to 28 countries and it was called CIVED, the second wave started using the name ICCS and was implemented in 2009 in 38 countries, the last study was performed in 2016 to 24 countries. The next cycle is scheduled for 2022 and 25 countries will participate.\\
+\newline 
+Previous research using ICCS data has been largely focused on average country comparisons of attitudinal measures such as attitudes toward equal rights for immigrants, ethnic minorities and women, norms of good citizenship behaviour and political participation. Most of these studies employed variable-centered analyses. Nevertheless, recent studies started to show the usefulness of person-centered approaches (i.e.~latent class analysis, hereafter LCA) aimed at identifying profiles of young people's attitudes. For example, using ICCS 2009 data, (Hooghe, Oser, \& Marien, 2016) compare profiles of good citizenship norms across 38 countries and distinguished distinctive subgroups of the population that share a common understanding of what constitutes good citizenship were identified (e.g.~who express either engaged or duty-based citizenship norms).\\
+\newline 
+Another study focused their research on changes over time (where the research design and data gathering methods are strictly comparable) (Hooghe \& Oser, 2015). For this, CIVED 1999 and ICCS 2009 was used. The scope of the analysis was threefold. First, distinct profiles of good citizenship norms were identified in both cycles. Second, trends over time were investigated and finally, differences between countries and/over time were analysed in detail. Nevertheless, most of these studies employing LCA with ICCS data focused on patterns within a particular type of attitude described by individual items (e.g.~citizenship norms) leaving space for investigations that aim to capture a wider set of attitudinal measures described by scores on different variables.\\
+\newline 
+To address this gap, this research will approach the topic of tolerance and respect for the rights operationalized as a multifaceted set of attitudes toward equal rights for women. This topic was addressed by previous studies aimed at comparing these attitudinal measures mostly in isolation across countries and over time. However, to date, no studies addressed the potential interdependence in these attitudinal dimensions among different subgroups of people (e.g.~highly tolerant, highly intolerant regarding all aspects, etc.). Therefore, the current study aims to fill this gap by addressing the following research questions:\\
+\newline
+1. What profiles of tolerance and respect for the rights of women are observed among adolescents in different countries?\\
+2. Are these profiles comparable across countries and over time?\\
+3. What individual and contextual factors are associated with profile membership? Do they vary depending on the context of the country or the cohort?
+
+\hypertarget{framework}{%
+\chapter{Framework}\label{framework}}
+
+\hypertarget{lca-models}{%
+\section{LCA Models}\label{lca-models}}
+
+\hypertarget{person-center-approach}{%
+\subsection{Person center approach}\label{person-center-approach}}
+
+\hypertarget{lca-model}{%
+\subsection{LCA model}\label{lca-model}}
+
+\hypertarget{number-of-classes}{%
+\subsection{Number of classes}\label{number-of-classes}}
+
+Wang \& Wang, 2012
+\begin{enumerate}
+\def\labelenumi{\alph{enumi})}
+\tightlist
+\item
+  Model fit indices (comparing competing models)
+\item
+  Quality of latent class membership
+\item
+  The size of latent classes
+\item
+  Interpretability -- theoretical grounding
+\end{enumerate}
+\hypertarget{measurement-invariance---multigroup-latent-class-analysis}{%
+\subsection{Measurement invariance - Multigroup Latent Class Analysis}\label{measurement-invariance---multigroup-latent-class-analysis}}
+
+Białowolski, 2016; Kankaraš, Vermunt, \& Moors, 2011; Magidson \& Vermunt, 2004
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Completely heterogeneous model, assumes that the only similarity between countries is the number of classes identified and allows that response patterns (conditional probabilities) and class sizes vary among countries. Although the number of classes in all countries may be the same, direct between-country comparisons are not possible in this step because the meaning of latent classes may be substantially different.
+\item
+  The partially homogeneous model addresses this issue and restricts the measurement part of the model (conditional probabilities) to be equal in all countries. For each country, the meaning of latent classes is invariant of the country and cross-country comparisons in this respect are meaningful. Yet, the size of the classes (i.e.~the relative importance of each class) may still vary. Most applicable and desirable in cross-cultural studies.
+\item
+  The completely homogeneous model, further restricts the probabilities of class membership to be equal in both countries (i.e.~the percentage of individuals assigned to different classes will be equal in both countries). This last assumption will imply that the identified groups of students with similar scoring patterns are identical in the all the countries with identical numbers of students assigned to each group. Meeting this last assumption ensures the highest level of cross-country comparability but may be difficult to achieve in cross-cultural studies.
+\end{enumerate}
+\hypertarget{heterogenous-model}{%
+\subsubsection{Heterogenous model}\label{heterogenous-model}}
+
+\(\pi_{ijklmt|g}^{ABCDEX|G} = \pi_{t|g}^{X|G} \pi_{it|g}^{A|X,G} \pi_{jt|g}^{B|X,G} \pi_{kt|g}^{C|X,G} \pi_{lt|g}^{D|X,G} \pi_{mt|g}^{E|X,G}\)
+\begin{itemize}
+\tightlist
+\item
+  A completely unrestricted multi-group LC model is equivalent to the estimation of a separate 3-class LC model for each group
+\item
+  The fit of such a model can be obtained by simply summing the L2 values (and corresponding degrees of freedom) for the corresponding models in each group
+\end{itemize}
+Here, \(\pi_{ijklmt|g}^{ABCDEX|G}\) denotes the conditional probability that an individual who belongs to the \(gth\) group will be at level \((i, j, k, l, m, t)\) with respect to variables A, B, C, D, E, and X. The conditional probability of X taking on level t for a member of the \(gth\) group is denoted by \(\pi_{t|g}^{X|G}\), which determines the LC ts proportion for the sth group. \(\pi_{it|g}^{A|X,G}\) is the conditional probability of an individual taking level i of variable A, for a given level t of the latent variable X and for a given group membership s of the grouping variable G. Parameters \(\pi_{jt|g}^{B|X,G}\), \(\pi_{kt|g}^{C|X,G}\), \(\pi_{lt|g}^{D|X,G}\), and \(\pi_{mt|g}^{E|X,G}\) are similarly defined conditional probabilities. It should be noted that \sout{Equation 14.1} implies that indicator variables A, B, C, D and E are independent from each other, given the value of the latent variable X. This is usually referred to as the assumption of local independence \sout{(Lazarsfeld \& Henry, 1968)}. The LC and conditional response probabilities are constrained to a sum of 1: \(\sum \pi_{t|g}^{X|G} =1\), \(\sum \pi_{it|g}^{A|XG} = 1\), and so on.
+
+\(\pi_{it|g}^{A|XG}=\frac{\exp(\lambda_i^A+\lambda_{it}^{AX}+\lambda_{ig}^{AG}+\lambda_{itg}^{AXG})}{\sum \exp(\lambda_i^A+\lambda_{it}^{AX}+\lambda_{ig}^{AG}+\lambda_{itg}^{AXG})}\)
+
+\hypertarget{partial-homogeneity}{%
+\subsubsection{Partial homogeneity}\label{partial-homogeneity}}
+
+\(\pi_{ijklmt|g}^{ABCDEX|G} = \pi_{t|g}^{X|G} \pi_{it|g}^{A|X} \pi_{jt|g}^{B|X} \pi_{kt|g}^{C|X} \pi_{lt|g}^{D|X} \pi_{mt|g}^{E|X}\)
+\begin{itemize}
+\tightlist
+\item
+  While it is tempting to interpret class 1 for both samples as representing the `ideal' respondents, this is not appropriate without first restricting the measurement portion of the models (the conditional probabilities) to be equal.
+\item
+  Latent structures are partially homogenous when across- group equality constraints are imposed on the conditional probabilities.
+\end{itemize}
+\hypertarget{complete-homogeneity}{%
+\subsubsection{Complete homogeneity}\label{complete-homogeneity}}
+
+\(\pi_{t|1}^{X|G} = \pi_{t|2}^{X|G}, for t = 1, 2, 3\)
+\begin{itemize}
+\tightlist
+\item
+  The model of complete homogeneity imposes the further restriction that the latent class probabilities across the groups are identical.
+\end{itemize}
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+\begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.16}}\raggedright
+Model\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.14}}\raggedright
+Item\\
+thresholds\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.17}}\raggedright
+Class\\
+probabilities\strut
+\end{minipage} & \begin{minipage}[b]{(\columnwidth - 3\tabcolsep) * \real{0.53}}\raggedright
+Mplus syntax\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.16}}\raggedright
+Unrestricted\\
+~\\
+~\\
+~\\
+\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.14}}\raggedright
+Free\\
+~\\
+~\\
+~\\
+\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.17}}\raggedright
+Free\\
+~\\
+~\\
+\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.53}}\raggedright
+CLASSES = g(2) c(3);\\
+model:\\
+\%overall\%\\
+c on g;\\
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.16}}\raggedright
+Partial\\
+Homogeneity\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.14}}\raggedright
+Fixed\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.17}}\raggedright
+Fixed\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.53}}\raggedright
+CLASSES = g(2) c(3);\\
+model:\\
+\%overall\%\\
+c ON g;\\
+\%g\#1.c\#1\%\\
+{[}V1\$1{]} (1);\\
+{[}V2\$1{]} (2);\\
+{[}V3\$1{]} (3);\\
+\ldots.\\
+\%g\#1.c\#2\%\\
+{[}V1\$1{]} (7);\\
+{[}V2\$1{]} (8);\\
+{[}V3\$1{]} (9);\\
+\ldots.\\
+\%g\#1.c\#3\%\\
+{[}V1\$1{]} (13);\\
+{[}V2\$1{]} (14);\\
+{[}V3\$1{]} (15);\\
+\ldots.\\
+\%g\#2.c\#1\%\\
+{[}V1\$1{]} (1);\\
+{[}V2\$1{]} (2);\\
+{[}V3\$1{]} (3);\\
+\ldots.\\
+\%g\#2.c\#2\%\\
+{[}V1\$1{]} (25);\\
+{[}V2\$1{]} (26);\\
+{[}V3\$1{]} (27);\\
+\ldots.\\
+\%g\#2.c\#3\%\\
+{[}V1\$1{]} (31);\\
+{[}V2\$1{]} (32);\\
+{[}V3\$1{]} (33);\\
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.16}}\raggedright
+Complete\\
+Homogeneity\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.14}}\raggedright
+Fixed\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.17}}\raggedright
+Fixed\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+\strut
+\end{minipage} & \begin{minipage}[t]{(\columnwidth - 3\tabcolsep) * \real{0.53}}\raggedright
+CLASSES = g(2) c(3);\\
+model:\\
+\%overall\%\\
+c ON g;\\
+\%g\#1.c\#1\%\\
+{[}V1\$1{]} (1);\\
+{[}V2\$1{]} (2);\\
+{[}V3\$1{]} (3);\\
+\ldots.\\
+\%g\#1.c\#2\%\\
+{[}V1\$1{]} (7);\\
+{[}V2\$1{]} (8);\\
+{[}V3\$1{]} (9);\\
+\ldots.\\
+\%g\#1.c\#3\%\\
+{[}V1\$1{]} (13);\\
+{[}V2\$1{]} (14);\\
+{[}V3\$1{]} (15);\\
+\ldots.\\
+\%g\#2.c\#1\%\\
+{[}V1\$1{]} (1);\\
+{[}V2\$1{]} (2);\\
+{[}V3\$1{]} (3);\\
+\ldots.\\
+\%g\#2.c\#2\%\\
+{[}V1\$1{]} (7);\\
+{[}V2\$1{]} (8);\\
+{[}V3\$1{]} (9);\\
+\ldots.\\
+\%g\#2.c\#3\%\\
+{[}V1\$1{]} (13);\\
+{[}V2\$1{]} (14);\\
+{[}V3\$1{]} (15);\\
+\ldots.\\
+\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+\hypertarget{large-scales-assessments---iccs}{%
+\section{Large scales assessments - ICCS}\label{large-scales-assessments---iccs}}
+
+\hypertarget{methodological-features}{%
+\section{Methodological features}\label{methodological-features}}
+
+\hypertarget{study}{%
+\section{Study}\label{study}}
+
+Multiple countries had participated in the ICCS study during the last three cycles (detailed participation of the selected countries can be found in Table \ref{tab:tableA1} in the Annex). Some of the participating countries or regions can be classified by the following grouping:\\
+\newline 
+a) Nordic: Denmark, Finland, Norway, Sweden.\\
+b) Western European: Belgium (Flemish), The Netherlands.\\
+c) Central and Eastern European: Bulgaria, Estonia, Latvia, Lithuania, Croatia, Slovenia.\\
+d) Southern European: Italy, Malta.\\
+e) Latin American: Chile, Peru, Colombia, Dominican Republic, Mexico.\\
+f) Asian: South Korea, Russia, Hong Kong, Taiwan.
+
+Each student participating in the study was received a test tapping into his civic knowledge and skills and obtained a score\footnote{Scores were calculated through multiple imputation for ICCS 2009 and ICCS 2016, this means five plausible values are available.}. Moreover, background questionnaires were administered to capture students' perceptions and attitudes toward civic and citizenship, including attitudes toward equal rights for women. Databases include not only the responses to individual items but also indexes for the scales that were constructed. This research will be focused in the index called in the last cycle as ``Attitudes toward gender equality.'' Each item and the respective construct evaluated is detailed in Table \ref{tab:tableA2}, Table \ref{tab:tableA3} and Table \ref{tab:tableA4} for each cycle.
+
+\hypertarget{methods}{%
+\chapter{Methods}\label{methods}}
+
+All cycles of ICCS (CIVED) have been validated through variable-centred analysis, this means that latent constructs and the invariance across countries have been consistently validated thoroughly using CFA. On the contrary, not many research has been done using person-centred approaches, as Latent Profile Analysis (LPA) and Latent Class analysis (LCA).\\
+\newline 
+The latent class model assumes the existence of a latent categorical variable such that the observed response variables are conditionally independent, given that variable. LCA treat a contingency table as a finite mixture of unobserved tables generated under a conditional independence structure of a latent variable (Agresti, 2013). In other words, LCA can directly assess the theory that distinctive groups of people share specific attitudes. Depending on the response variable in the model the analysis is called Latent Profile Analysis if is continuous (Normal) and Latent Class Analysis if the response variable is categorical (Multinomial).\\
+\newline 
+In LCA, studying measurement invariance is necessary to determine whether the number and nature of the latent profiles are the same across the different observed groups (Olivera-Aguilar \& Rikoon, 2018). For this, multiple group LCA models are computed, and the relative fit of the unconstrained and semi-constrained models are compared using the LRT, AIC, BIC, and aBIC measures. Also is needed to review any kind of response bias, the most common refers to ``a systematic tendency to respond to a range of questionnaire items on some basis other than the specific item content'' for example e.g.~extreme or agree/disagree (Kankaraš, Vermunt, \& Moors, 2011).\\
+\newline 
+In order to assess the cross-national and cross-cohort comparability using CFA, new scales should be created that fit across all countries and cohorts analysed, rather than using the ones already created by the consortium (Barber \& Ross, 2020).\\
+\newline 
+Descriptive and main report was performed in R software using poLCA package (Robertson and Kaptein 2016). Most complex analysis was implemented in MPLUS. All syntax used is available in
+
+\hypertarget{sample}{%
+\section{Sample}\label{sample}}
+
+\hypertarget{variables}{%
+\section{Variables}\label{variables}}
+
+\hypertarget{analytical-strategy}{%
+\section{Analytical strategy}\label{analytical-strategy}}
+
+\clearpage
+
+\hypertarget{results}{%
+\chapter{Results}\label{results}}
+
+\hypertarget{by-cycle}{%
+\section{By cycle}\label{by-cycle}}
+
+\hypertarget{by-country}{%
+\section{By country}\label{by-country}}
+
+\hypertarget{multigroup-across-countries}{%
+\section{Multigroup across countries}\label{multigroup-across-countries}}
+
+\hypertarget{multigroup-across-countries-and-cycles}{%
+\section{Multigroup across countries and cycles}\label{multigroup-across-countries-and-cycles}}
+
+\hypertarget{comparison-of-lc-across-countries-and-over-time}{%
+\section{Comparison of LC across countries and over time}\label{comparison-of-lc-across-countries-and-over-time}}
+
+\hypertarget{gender-differences-gender-class-membership}{%
+\section{Gender differences, gender class membership}\label{gender-differences-gender-class-membership}}
+
+\hypertarget{cycles-differences}{%
+\section{Cycles differences}\label{cycles-differences}}
+
+\hypertarget{conclusion}{%
+\chapter*{Conclusion}\label{conclusion}}
+\addcontentsline{toc}{chapter}{Conclusion}
+
+If we don't want Conclusion to have a chapter number next to it, we can add the \texttt{\{-\}} attribute.
+
+\textbf{More info}
+
+And here's some other random info: the first paragraph after a chapter title or section head \emph{shouldn't be} indented, because indents are to tell the reader that you're starting a new paragraph. Since that's obvious after a chapter or section title, proper typesetting doesn't add an indent there.
+
+\appendix
+
+\hypertarget{complementary-tables}{%
+\chapter{Complementary tables}\label{complementary-tables}}
+
+\begingroup\fontsize{11}{13}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{10em}rrr}
+\caption{\label{tab:tableA1}Countries sample sizes included in the analysis}\\
+\toprule
+  & 1999 & 2009 & 2016\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:tableA1}Countries sample sizes included in the analysis \textit{(continued)}}\\
+\toprule
+  & 1999 & 2009 & 2016\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+Belgium (Flemish) & 0 & 2968 & 2931\\
+Bulgaria & 2884 & 3257 & 2966\\
+Chile & 5688 & 5192 & 5081\\
+Colombia & 4926 & 6204 & 5609\\
+Denmark & 3208 & 4508 & 6254\\
+\addlinespace
+Dominican Republic & 0 & 4589 & 3937\\
+Estonia & 3434 & 2743 & 2857\\
+Finland & 2782 & 3307 & 3173\\
+Hong Kong & 4997 & 2902 & 2653\\
+Italy & 3808 & 3366 & 3450\\
+\addlinespace
+Latvia & 2572 & 2761 & 3224\\
+Lithuania & 3494 & 3902 & 3631\\
+Malta & 0 & 2143 & 3764\\
+Mexico & 0 & 6576 & 5526\\
+Netherlands & 0 & 1964 & 2812\\
+\addlinespace
+Norway & 3321 & 3013 & 6271\\
+Russia & 2129 & 4295 & 7289\\
+Slovenia & 3068 & 3070 & 2844\\
+South Korea & 0 & 5254 & 2601\\
+Sweden & 3073 & 3464 & 3264\\
+\addlinespace
+Taiwan & 0 & 5167 & 3953\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{11}{13}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{8em}>{\raggedright\arraybackslash}p{25em}>{\raggedright\arraybackslash}p{10em}}
+\caption{\label{tab:tableA2}Items attitudes towards gender equality. Cived 1999}\\
+\toprule
+\textbf{CIVED 1999} & \textbf{Description question} & \textbf{Resp categories}\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:tableA2}Items attitudes towards gender equality. Cived 1999 \textit{(continued)}}\\
+\toprule
+\textbf{CIVED 1999} & \textbf{Description question} & \textbf{Resp categories}\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+\textbf{WOMRTMLE} & \textbf{Attitudes toward Women’s Political and Economic Rights} & \textbf{}\\
+\cmidrule{1-3}\pagebreak[0]
+BS4G1 & Women should run for public office [a seat in the legislature] and take part in the government just as men do. & \\
+\cmidrule{1-2}\nopagebreak
+BS4G4 & Women should have the same rights as men in every way. & \\
+\cmidrule{1-2}\nopagebreak
+BS4G6 & Women should stay out of politics & \\
+\cmidrule{1-2}\nopagebreak
+BS4G9 & When jobs are scarce, men [should] have more right to a job than women. & \\
+\cmidrule{1-2}\nopagebreak
+BS4G11 & Men and women should get equal pay when they are in the same jobs [occupations]. & \\
+\cmidrule{1-2}\nopagebreak
+BS4G13 & Men are better qualified to be political leaders than women. & \multirow{-6}{10em}{\raggedright\arraybackslash 1-Strongly disagree\newline 2-Disagree\newline 3-Agree\newline 4-Strongly agree}\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{11}{13}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{8em}>{\raggedright\arraybackslash}p{25em}>{\raggedright\arraybackslash}p{10em}}
+\caption{\label{tab:tableA3}Items attitudes towards gender equality. ICCS 2009}\\
+\toprule
+\textbf{ICCS 2009} & \textbf{Description question} & \textbf{Resp categories}\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:tableA3}Items attitudes towards gender equality. ICCS 2009 \textit{(continued)}}\\
+\toprule
+\textbf{ICCS 2009} & \textbf{Description question} & \textbf{Resp categories}\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+\textbf{GENEQL} & \textbf{Students’ attitudes toward gender equality} & \textbf{}\\
+\cmidrule{1-3}\pagebreak[0]
+IS2P24A & Men and women should have equal opportunities to take part in government & \\
+\cmidrule{1-2}\nopagebreak
+IS2P24B & Men and women should have the same rights in every way & \\
+\cmidrule{1-2}\nopagebreak
+IS2P24C & Women should stay out of politics & \\
+\cmidrule{1-2}\nopagebreak
+IS2P24D & When there are not many jobs available, men should have more right to a job than women & \\
+\cmidrule{1-2}\nopagebreak
+IS2P24E & Men and women should get equal pay when they are doing the same jobs & \\
+\cmidrule{1-2}\nopagebreak
+IS2P24F & Men are better qualified to be political leaders than women & \multirow{-6}{10em}{\raggedright\arraybackslash 1-Strongly disagree\newline 2-Disagree\newline 3-Agree\newline 4-Strongly agree}\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{11}{13}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{8em}>{\raggedright\arraybackslash}p{25em}>{\raggedright\arraybackslash}p{10em}}
+\caption{\label{tab:tableA4}Items attitudes towards gender equality. ICCS 2016}\\
+\toprule
+\textbf{ICCS 2016} & \textbf{Description question} & \textbf{Resp categories}\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:tableA4}Items attitudes towards gender equality. ICCS 2016 \textit{(continued)}}\\
+\toprule
+\textbf{ICCS 2016} & \textbf{Description question} & \textbf{Resp categories}\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+\textbf{S\_GENEQL} & \textbf{Attitudes toward gender equality} & \textbf{}\\
+\cmidrule{1-3}\pagebreak[0]
+IS3G24A & Roles women and men/Men and women should have equal opportunities to take part in government & \\
+\cmidrule{1-2}\nopagebreak
+IS3G24B & Roles women and men/Men and women should have the same rights in every way & \\
+\cmidrule{1-2}\nopagebreak
+IS3G24C & Roles women and men/Women should stay out of politics & \\
+\cmidrule{1-2}\nopagebreak
+IS3G24D & Roles women and men/Not many jobs available, men should have more right to a job than women & \\
+\cmidrule{1-2}\nopagebreak
+IS3G24E & Roles women and men/Men and women should get equal pay when they are doing the same jobs & \\
+\cmidrule{1-2}\nopagebreak
+IS3G24F & Roles women and men/Men are better qualified to be political leaders than women & \\
+\cmidrule{1-2}\nopagebreak
+IS3G24G & Roles women and men/Women’s first priority should be raising children & \multirow{-7}{10em}{\raggedright\arraybackslash 1-Strongly disagree\newline 2-Disagree\newline 3-Agree\newline 4-Strongly agree}\\*
+\end{longtable}
+\endgroup{}
+
+\hypertarget{syntax}{%
+\chapter{Syntax}\label{syntax}}
+
+\textbf{Packages used}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(thesisdown)}
+\FunctionTok{library}\NormalTok{(tidyverse) }
+\FunctionTok{library}\NormalTok{(knitr)}
+\FunctionTok{library}\NormalTok{(kableExtra)}
+\end{Highlighting}
+\end{Shaded}
+\backmatter
+
+\hypertarget{references}{%
+\chapter*{References}\label{references}}
+\addcontentsline{toc}{chapter}{References}
+
+\markboth{References}{References}
+
+\noindent
+
+\setlength{\parindent}{-0.20in}
+\setlength{\leftskip}{0.20in}
+\setlength{\parskip}{8pt}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\hypertarget{ref-agresti_categorical_2013}{}%
+Agresti, A. (2013). \emph{Categorical data analysis} (3rd ed). Hoboken, {NJ}: Wiley.
+
+\leavevmode\hypertarget{ref-barber_profiles_2020}{}%
+Barber, C., \& Ross, J. (2020). Profiles of adolescents' civic attitudes in sixteen countries: Examining cross-cohort changes from 1999 to 2009. \emph{Research in Comparative and International Education}, \emph{15}(2), 79--96. http://doi.org/\href{https://doi.org/10.1177/1745499920910583}{10.1177/1745499920910583}
+
+\leavevmode\hypertarget{ref-bialowolski_influence_2016}{}%
+Białowolski, P. (2016). The influence of negative response style on survey-based household inflation expectations. \emph{Quality \& Quantity}, \emph{50}(2), 509--528. http://doi.org/\href{https://doi.org/10.1007/s11135-015-0161-9}{10.1007/s11135-015-0161-9}
+
+\leavevmode\hypertarget{ref-bolzendahl_feminist_2004}{}%
+Bolzendahl, C. I., \& Myers, D. J. (2004). Feminist attitudes and support for gender equality: Opinion change in women and men, 1974-1998. \emph{Social Forces}, \emph{83}(2), 759--789. Retrieved from \url{http://www.jstor.org/stable/3598347}
+
+\leavevmode\hypertarget{ref-davidov_cross-cultural_2011}{}%
+Davidov, E., Schmidt, P., \& Billiet, J. (Eds.). (2011). \emph{Cross-cultural analysis: Methods and applications}. New York: Psychology Press, Taylor \& Francis Group.
+
+\leavevmode\hypertarget{ref-dotti_sani_best_2017}{}%
+Dotti Sani, G. M., \& Quaranta, M. (2017). The best is yet to come? Attitudes toward gender roles among adolescents in 36 countries. \emph{Sex Roles}, \emph{77}(1), 30--45. http://doi.org/\href{https://doi.org/10.1007/s11199-016-0698-7}{10.1007/s11199-016-0698-7}
+
+\leavevmode\hypertarget{ref-hagenaars_applied_2002}{}%
+Hagenaars, J. A., \& McCutcheon, A. L. (Eds.). (2002). \emph{Applied latent class analysis} (1st ed.). Cambridge University Press. http://doi.org/\href{https://doi.org/10.1017/CBO9780511499531}{10.1017/CBO9780511499531}
+
+\leavevmode\hypertarget{ref-hallquist_mplusautomation_2018}{}%
+Hallquist, M. N., \& Wiley, J. F. (2018). {MplusAutomation}: An r package for facilitating large-scale latent variable analyses in m \emph{plus}. \emph{Structural Equation Modeling: A Multidisciplinary Journal}, \emph{25}(4), 621--638. http://doi.org/\href{https://doi.org/10.1080/10705511.2017.1402334}{10.1080/10705511.2017.1402334}
+
+\leavevmode\hypertarget{ref-hancock_advances_2019}{}%
+Hancock, G. R., Harring, J., \& Macready, G. B. (Eds.). (2019). \emph{Advances in latent class analysis: A festschrift in honor of c. Mitchell dayton}. Charlotte, {NC}: Information Age Publishing, Inc.
+
+\leavevmode\hypertarget{ref-hooghe_rise_2015}{}%
+Hooghe, M., \& Oser, J. (2015). The rise of engaged citizenship: The evolution of citizenship norms among adolescents in 21 countries between 1999 and 2009. \emph{International Journal of Comparative Sociology}, \emph{56}(1), 29--52. http://doi.org/\href{https://doi.org/10.1177/0020715215578488}{10.1177/0020715215578488}
+
+\leavevmode\hypertarget{ref-hooghe_comparative_2016}{}%
+Hooghe, M., Oser, J., \& Marien, S. (2016). A comparative analysis of {`good citizenship'}: A latent class analysis of adolescents' citizenship norms in 38 countries. \emph{International Political Science Review}, \emph{37}(1), 115--129. http://doi.org/\href{https://doi.org/10.1177/0192512114541562}{10.1177/0192512114541562}
+
+\leavevmode\hypertarget{ref-noauthor_invariance_2019}{}%
+\emph{Invariance analyses in large-scale studies}. (2019). (OECD Education Working Papers No. 201). Retrieved from \url{https://www.oecd-ilibrary.org/education/invariance-analyses-in-large-scale-studies_254738dd-en}
+
+\leavevmode\hypertarget{ref-isac_indicators_2019}{}%
+Isac, M. M., Palmerio, L., \& Werf, M. P. C. (Greetje). van der. (2019). Indicators of (in)tolerance toward immigrants among european youth: An assessment of measurement invariance in {ICCS} 2016. \emph{Large-Scale Assessments in Education}, \emph{7}(1), 6. http://doi.org/\href{https://doi.org/10.1186/s40536-019-0074-5}{10.1186/s40536-019-0074-5}
+
+\leavevmode\hypertarget{ref-kankaras_measurement_2011}{}%
+Kankaraš, M., Vermunt, J. K., \& Moors, G. (2011). Measurement equivalence of ordinal items: A comparison of factor analytic, item response theory, and latent class approaches. \emph{Sociological Methods \& Research}, \emph{40}(2), 279--310. http://doi.org/\href{https://doi.org/10.1177/0049124111405301}{10.1177/0049124111405301}
+
+\leavevmode\hypertarget{ref-kaplan_sage_2004}{}%
+Kaplan, D., \& Publications, S. (Eds.). (2004). \emph{The sage handbook of quantitative methodology for the social sciences}. Thousand Oaks, Calif: Sage.
+
+\leavevmode\hypertarget{ref-kasumovic_insights_2015}{}%
+Kasumovic, M. M., \& Kuznekoff, J. H. (2015). Insights into sexism: Male status and performance moderates female-directed hostile and amicable behaviour. \emph{{PLOS} {ONE}}, \emph{10}(7), e0131613. http://doi.org/\href{https://doi.org/10.1371/journal.pone.0131613}{10.1371/journal.pone.0131613}
+
+\leavevmode\hypertarget{ref-miranda_measurement_2018}{}%
+Miranda, D., \& Castillo, J. C. (2018). Measurement model and invariance testing of scales measuring egalitarian values in {ICCS} 2009. In A. Sandoval-Hernández, M. M. Isac, \& D. Miranda (Eds.), \emph{Teaching tolerance in a globalized world} (Vol. 4, pp. 19--31). Cham: Springer International Publishing. http://doi.org/\href{https://doi.org/10.1007/978-3-319-78692-6_3}{10.1007/978-3-319-78692-6\_3}
+
+\leavevmode\hypertarget{ref-mukhopadhyay_complex_2016}{}%
+Mukhopadhyay, P. (2016). \emph{Complex surveys: Analysis of categorical data} (1st ed. 2016). Singapore: Springer Singapore : Imprint: Springer. http://doi.org/\href{https://doi.org/10.1007/978-981-10-0871-9}{10.1007/978-981-10-0871-9}
+
+\leavevmode\hypertarget{ref-nylund-gibson_ten_2018}{}%
+Nylund-Gibson, K., \& Choi, A. Y. (2018). Ten frequently asked questions about latent class analysis. \emph{Translational Issues in Psychological Science}, \emph{4}(4), 440--461. http://doi.org/\href{https://doi.org/10.1037/tps0000176}{10.1037/tps0000176}
+
+\leavevmode\hypertarget{ref-olivera-aguilar_assessing_2018}{}%
+Olivera-Aguilar, M., \& Rikoon, S. H. (2018). Assessing measurement invariance in multiple-group latent profile analysis. \emph{Structural Equation Modeling: A Multidisciplinary Journal}, \emph{25}(3), 439--452. http://doi.org/\href{https://doi.org/10.1080/10705511.2017.1408015}{10.1080/10705511.2017.1408015}
+
+\leavevmode\hypertarget{ref-robertson_modern_2016}{}%
+Robertson, J., \& Kaptein, M. (Eds.). (2016). \emph{Modern statistical methods for {HCI}}. Cham {ZG}: Springer.
+
+\leavevmode\hypertarget{ref-rutkowski_handbook_2014}{}%
+Rutkowski, L., Davier, M. von, \& Rutkowski, D. (2014). \emph{Handbook of international large-scale assessment background, technical issues, and methods of data analysis}. Boca Raton: {CRC} Press.
+
+\leavevmode\hypertarget{ref-michalos_latent_2014}{}%
+Vermunt, J. K. (2014). Latent class model. In A. C. Michalos (Ed.), \emph{Encyclopedia of quality of life and well-being research} (pp. 3509--3515). Dordrecht: Springer Netherlands. http://doi.org/\href{https://doi.org/10.1007/978-94-007-0753-5_1604}{10.1007/978-94-007-0753-5\_1604}
+
+\leavevmode\hypertarget{ref-wang_structural_2020}{}%
+Wang, J., \& Wang, X. (2020). \emph{Structural equation modeling: Applications using mplus} (2nd ed.). Hoboken, {NJ}: Wiley.
+
+\end{CSLReferences}
+
+% Index?
+
+\end{document}

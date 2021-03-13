@@ -71,28 +71,27 @@
 % \usepackage{times} % other fonts are available like times, bookman, charter, palatino
 
 % Syntax highlighting #22
-$if(highlighting-macros)$
-  $highlighting-macros$
-$endif$
+%$if(highlighting-macros)$
+%  $highlighting-macros$
+%$endif$
 
 % To pass between YAML and LaTeX the dollar signs are added by CII
 \title{$title$}
 \author{$author$}
 % The month and year that you submit your FINAL draft TO THE LIBRARY (May or December)
 \date{$date$}
-\division{$division$}
-\advisor{$advisor$}
-\institution{$institution$}
-\degree{$degree$}
+\advisoro{$advisoro$}
+\university{$university$}
+\program{$program$}
 %If you have two advisors for some reason, you can use the following
 % Uncommented out by CII
-$if(altadvisor)$
-\altadvisor{$altadvisor$}
+$if(advisort)$
+\advisort{$advisort$}
 $endif$
 % End of CII addition
 
 %%% Remember to use the correct department!
-\department{$department$}
+\institute{$institute$}
 % if you're writing a thesis in an interdisciplinary major,
 % uncomment the line below and change the text as appropriate.
 % check the Senior Handbook if unsure.
@@ -145,7 +144,32 @@ $if(csl-refs)$
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 $endif$
-
+\newenvironment{FancyTable}[4]
+    {
+        % Before each new major table
+        \ra{1.3}
+        \begin{longtable}{  @{} #1 @{}}
+        % Caption
+        \caption{#2} \label{tab:#4}\\
+    \\
+        % Top Section
+        \toprule #3 \\
+        % Midsection
+        \midrule
+        \endfirsthead
+         \caption[]{#2}\\
+    \\
+        % Top Section
+        \toprule #3 \\
+        % Midsection
+        \midrule
+        \endhead
+   }
+    {
+        \bottomrule 
+        \end{longtable} 
+    }
+    
 \renewcommand{\contentsname}{Table of Contents}
 % End of CII addition
 
@@ -187,11 +211,41 @@ $endfor$
 
 \begin{document}
 
-% Everything below added by CII
+
+\thispagestyle{empty}
+\begin{center}
+  {\Large{\bf $title$}} \vspace{0.5cm}
+
+  $type$ submitted \\\vspace{0.5cm}
+  to \\\vspace{0.5cm}
+  \textbf{$advisoro$} \\
+  \textbf{$advisort$} \\\vspace{0.5cm}
+  $university$ \\
+  $institute$ \\
+  $chair$ \\
+  $if(chair2)$ $chair2$ \\ $endif$ \vspace{1cm}
+
+  \includegraphics[width=0.35\textwidth]{KUL.pdf}
+  
+  by \\\vspace{0.5cm}
+  \textbf{$author$} \\
+  ($matriculation_number$) \\
+  
+  \medskip
+  \medskip
+  in partial fulfillment of the requirements \\
+  for the program of \\
+  \textbf{$program$} \\\vspace{0.5cm}
+  $date$
+  
+\end{center}
+
+ %Everything below added by CII
 $if(title)$
-  \maketitle
+ \maketitle
 $endif$
 
+%---------------------------
 \frontmatter % this stuff will be roman-numbered
 \pagestyle{empty} % this removes page numbers from the frontmatter
 
