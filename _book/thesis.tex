@@ -46,6 +46,17 @@
 % End of CII addition
 \usepackage{rotating}
 
+\usepackage[dvipsnames]{xcolor}
+\definecolor{Mygreen}{HTML}{1B9E77}
+\definecolor{Myred}{HTML}{D95F02}
+\definecolor{Myblue}{HTML}{7570B3}
+\definecolor{Mypink}{HTML}{E7298A}
+\definecolor{Mygreen2}{HTML}{66A61E}
+\definecolor{Myyellow}{HTML}{E6AB02}
+\definecolor{Mybrown}{HTML}{A6761D}
+\definecolor{Mygrey}{HTML}{666666}
+
+
 % Next line commented out by CII
 %%% \usepackage{natbib}
 % Comment out the natbib line above and uncomment the following two lines to use the new
@@ -62,7 +73,8 @@
 \def\sectionautorefname{Section}
 \def\subsectionautorefname{Subsection}
 % End of CII addition
-
+\newcommand{\blandscape}{\begin{landscape}}
+\newcommand{\elandscape}{\end{landscape}}
 % Added by CII
 \usepackage{caption}
 \captionsetup{width=5in}
@@ -113,7 +125,7 @@
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 %
 % To pass between YAML and LaTeX the dollar signs are added by CII
-\title{Profiles of tolerance and respect for gender equality among youth. Comparisons across countries and over time}
+\title{Profiles of tolerance and respect for gender equality among youth. Comparisons across countries}
 \author{Pamela Inostroza Fernández}
 % The month and year that you submit your FINAL draft TO THE LIBRARY (May or December)
 \date{May 2021}
@@ -257,7 +269,7 @@ Second paragraph of abstract starts here.
 
 \thispagestyle{empty}
 \begin{center}
-  {\Large{\bf Profiles of tolerance and respect for gender equality among youth. Comparisons across countries and over time}} \vspace{0.5cm}
+  {\Large{\bf Profiles of tolerance and respect for gender equality among youth. Comparisons across countries}} \vspace{0.5cm}
 
    submitted \\\vspace{0.5cm}
   to \\\vspace{0.5cm}
@@ -782,27 +794,1228 @@ Descriptive and main report was performed in R software using poLCA package (Rob
 
 \hypertarget{results}{%
 \chapter{Results}\label{results}}
+\begin{itemize}
+\tightlist
+\item
+  European countries: Belgium (Flanders), Netherlands
+\item
+  South American countries: Chile, Colombia
+\end{itemize}
+\hypertarget{by-region}{%
+\section{By region}\label{by-region}}
 
-\hypertarget{by-cycle}{%
-\section{By cycle}\label{by-cycle}}
+Latent class analysis with 1 to 4-class model were performed in order to evaluate the model fit of each one of them. The results are summarized in \ref{tab:modelfitlca}.\\
+\newline 
+The model with a single class has the largest AIC (28.445/13.672), BIC (28.474/13.699), and ABIC (28.461/13.686) values for Latin-American and European countries respectively, indicating that this model fits data worse than all other models in both regions. In addition, the P-values of the VLMR test, and LMR in the 2-class model are all \textless{} 0.0001; this means that both tests reject the single-class model in favor of a model with at least two latent classes. In other words, there exists heterogeneity in the target population in regard to attitudes towards gender equality.\\
+\newline 
+In the 4-class model for both regions, the LMR LR and VLMR are not statistically significant (P \textgreater{} 0.05) and the had the lowest AIC values. That is, the two tests are in favor of more then 3 classes.
+\newline 
+In contrast, BIC values are all smaller in the 3-class model than those in the 4-class model; thus we consider that the models with more than 3 classes are not preferred.
+The entropy starts to decrease after including more than 3 classes in the Europe model, this is different for the Latin-American model where the entropy increase with 4 classes, this would suggest that a model with less than 4 classes is preferred.
+
+Together with the percentage of reduction in the log likelihood value, that indicate that by adding two classes to the model the log-likelihood is reduced in a 8.7\% in the South America model and 6.9\% in Europe model, and this value is only increased in 2.2\% and 1.0\% respectively, if the model is a 3-class model and finally this value is reduced close to 0 if more than 3 classes are included.
+\newline 
+Now, the preferred model must be either the 3-class or the 4-class model considering the residuals of each model in \ref{fig:resid}, where all values are around -1.96 and 1.96 .
+
+Theoretically we tend to determine that the 3-class LCA model is the preferred model in both regions as the fourth class tend to split a small amount of the third class into a new one. We will show later that the classes identified by the 3-class model are interpretable and more representatives for the countries that are being considered in this study. And in particularly that 2-classes can be compared across regions.
+
+\blandscape  
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtabu} to \linewidth {>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}}
+\caption{\label{tab:modelfitlca}Model fit statistics European models}\\
+\toprule
+N Latent
+ Classes & Param & Log-Likelihood & AIC & BIC & aBIC & Entropy & LL
+ Reduction & VLMR
+ 2*LL Dif & VLMR
+ PValue & LMR
+ Value & LMR
+ PValue\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:modelfitlca}Model fit statistics European models \textit{(continued)}}\\
+\toprule
+N Latent
+ Classes & Param & Log-Likelihood & AIC & BIC & aBIC & Entropy & LL
+ Reduction & VLMR
+ 2*LL Dif & VLMR
+ PValue & LMR
+ Value & LMR
+ PValue\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Europe}}\\
+\hspace{1em}1 & 4 & \em{-6832} & 13672 & 13699 & 13686 &  &  &  &  &  & \\
+\hspace{1em}2 & 9 & -6358 & 12735 & 12794 & 12766 & 70.7\% & \em{6.9\%} & 947 & 0 & 926 & 0\\
+\textbf{\hspace{1em}3} & \textbf{14} & \textbf{-6293} & \textbf{12613} & \textbf{\em{12706}} & \textbf{\em{12662}} & \textbf{\em{88.3\%}} & \textbf{1.0\%} & \textbf{131} & \textbf{0.016} & \textbf{128} & \textbf{0.017}\\
+\hspace{1em}4 & 19 & -6283 & \em{12604} & 12730 & 12670 & 85.9\% & 0.2\% & \em{19} & \em{0.247} & \em{19} & \em{0.251}\\*
+\end{longtabu}
+\endgroup{}
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtabu} to \linewidth {>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}}
+\caption{\label{tab:modelfitlca}Model fit statistics South American models}\\
+\toprule
+N Latent
+ Classes & Param & Log-Likelihood & AIC & BIC & aBIC & Entropy & LL
+ Reduction & VLMR
+ 2*LL Dif & VLMR
+ PValue & LMR
+ Value & LMR
+ PValue\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:modelfitlca}Model fit statistics South American models \textit{(continued)}}\\
+\toprule
+N Latent
+ Classes & Param & Log-Likelihood & AIC & BIC & aBIC & Entropy & LL
+ Reduction & VLMR
+ 2*LL Dif & VLMR
+ PValue & LMR
+ Value & LMR
+ PValue\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Latin-America}}\\
+\hspace{1em}1 & 4 & \em{-14219} & 28445 & 28474 & 28461 &  &  &  &  &  & \\
+\hspace{1em}2 & 9 & -12984 & 25987 & 26052 & 26023 & 72.0\% & \em{8.7\%} & 2468 & 0 & 2416 & 0\\
+\textbf{\hspace{1em}3} & \textbf{14} & \textbf{-12693} & \textbf{25414} & \textbf{\em{25516}} & \textbf{\em{25471}} & \textbf{79.8\%} & \textbf{2.2\%} & \textbf{583} & \textbf{0} & \textbf{570} & \textbf{0}\\
+\hspace{1em}4 & 19 & -12687 & \em{25412} & 25550 & 25490 & \em{85.3\%} & 0.0\% & \em{12} & \em{0.394} & \em{11} & \em{0.398}\\*
+\end{longtabu}
+\endgroup{}
+\elandscape
+\begin{figure}
+\centering
+\includegraphics{Figs/resid-1.pdf}
+\caption{\label{fig:resid}Bivariate model fit standardized residuals}
+\end{figure}
+2-classes models
+
+Two clear classes can be identified in this first model, in the \textbf{Fully egalitarian} group the estimated probabilities to agree to the four items \emph{Men and women should have equalopportunities to take part in government},\emph{Men and women should have thesame rights in every way},\emph{Not many jobs available, men should have more right to a job than women} and \emph{Men are better qualified to be political leaders than women} are higher than 0.9. In the second class called \textbf{Competition-driven sexism} the estimated probabilities to agree to the first 2 items are higher than 0.8 in the European model and higher than 0.9 in the South American model. For the last two items, the estimated probabilities to agree are not higher than 0.4 in both models.
+
+The final class proportions for the latent classes based on the estimated 2-class model are different in both regions, 82.9\% and 62.5\% of the individuals are classified in the first class in the European and South American model respectively, meanwhile the remaining 17.1\% and 37.5\% respectively are classified in the second class. In the table @ref(tab:lca2\_eu) it is possible to observe the results of the model in probability scale of agree to each respective item for the latent classes for the European model and in table @ref(tab:lca2\_la) for the South American model. In figure \ref{fig:sizelca2}, the probabilities of each response category, Disagree and Agree for 2-class model are drawn.
+
+Items that reference to a negative attitude toward women such as \emph{Not many jobs available, men should have more right to a job than women} and \emph{Men are better qualified to be political leaders than women} are the ones that the estimated probability to agree to this items are lower than the other items in the second class. Remember that these items were inversely coded in order to evaluate the attitude in favor of woman.
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{20em}>{\raggedright\arraybackslash}p{7em}>{\raggedleft\arraybackslash}p{7em}}
+\caption{\label{tab:unnamed-chunk-15}Probabilities to agree each item 2-class European model \label{tab:lca2_eu}}\\
+\toprule
+param & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-15}Probabilities to agree each item 2-class European model  \textit{(continued)}}\\
+\toprule
+param & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textbf{\textcolor{Myblue}{0.996}} & \textbf{\textcolor{Myblue}{0.891}}\\
+\cmidrule{1-3}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textbf{\textcolor{Myblue}{0.979}} & \textbf{\textcolor{Myblue}{0.821}}\\
+\cmidrule{1-3}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textbf{\textcolor{Myblue}{0.954}} & \textbf{\textcolor{Myred}{0.325}}\\
+\cmidrule{1-3}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textbf{\textcolor{Myblue}{0.914}} & \textbf{\textcolor{Myred}{0.352}}\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{20em}>{\raggedright\arraybackslash}p{7em}>{\raggedleft\arraybackslash}p{7em}}
+\caption{\label{tab:unnamed-chunk-17}Probabilities to agree each item 2-class South American model \label{tab:lca2_la}}\\
+\toprule
+param & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-17}Probabilities to agree each item 2-class South American model  \textit{(continued)}}\\
+\toprule
+param & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textbf{\textcolor{Myblue}{0.99}} & \textbf{\textcolor{Myblue}{0.958}}\\
+\cmidrule{1-3}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textbf{\textcolor{Myblue}{0.97}} & \textbf{\textcolor{Myblue}{0.929}}\\
+\cmidrule{1-3}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textbf{\textcolor{Myblue}{1}} & \textbf{\textcolor{Myred}{0.375}}\\
+\cmidrule{1-3}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textbf{\textcolor{Myblue}{1}} & \textbf{\textcolor{Myred}{0.393}}\\*
+\end{longtable}
+\endgroup{}
+\begin{figure}
+\centering
+\includegraphics{Figs/sizelca2-1.pdf}
+\caption{\label{fig:sizelca2}Response category probabilities for 2-classes model}
+\end{figure}
+\newpage
+
+3-classes models
+
+When 3 classes are incorporated to the model, tables @ref(tab:lca3\_la) and @ref(tab:lca3\_eu), the first class \textbf{Fully egalitarian} class remains stable in terms of estimated probabilities for agree to each item. The class estimated sizes increase in both regions, from 82.9\% to 89.5\% in the European model, and from 62.5\% to 67\%, as can be seen in \ref{fig:sizelca3}. The second class previously called as \textbf{Competition-driven sexism} class is now clearly divided into new different classes that differ between regions.
+For the European model a 7.4\% of the sample is classified into the Competition driven sexism class, compared to the South American model that had a 31.5\% of the remaining sample. The estimated probabilities for this class are similar for the first 2 items between regions, but for the sexist items the estimations of agreeing are much lower in the European model, close to 0 (0.1 and 0.0 for item 4 and 6), meanwhile in the South American model these estimations are around 0.3.
+The third class is clearly different between regions, in the European model, this class was called as \textbf{Not egalitarian in every way}, that indicate that 0.5 probability to agree to most of the items but 0.1 to the item \textbf{Men and women should have the same rights in every way}. This class classified the remaining 3\% of the sample.
+On the other hand, for the South American model, the third class called \textbf{Anti competition-driven sexism} shows the opposite behavior as the second class, now the sexism items has the highest probabilities to agree, around 0.8. This class contain 1.5\% of the sample.
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{20em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}}
+\caption{\label{tab:unnamed-chunk-19}Probabilities to agree each item 3-class European model \label{tab:lca3_eu}}\\
+\toprule
+param & Fully egalitarian & Competition- driven sexism & Not every way egalitarian\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-19}Probabilities to agree each item 3-class European model  \textit{(continued)}}\\
+\toprule
+param & Fully egalitarian & Competition- driven sexism & Not every way egalitarian\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textbf{\textcolor{Myblue}{0.994}} & \textbf{\textcolor{Myblue}{0.933}} & \textbf{\textcolor{Mygreen}{0.535}}\\
+\cmidrule{1-4}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textbf{\textcolor{Myblue}{0.98}} & \textbf{\textcolor{Myblue}{0.921}} & \textbf{\textcolor{Myred}{0}}\\
+\cmidrule{1-4}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textbf{\textcolor{Myblue}{0.93}} & \textbf{\textcolor{Myred}{0.172}} & \textbf{\textcolor{Myred}{0.487}}\\
+\cmidrule{1-4}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textbf{\textcolor{Myblue}{0.899}} & \textbf{\textcolor{Myred}{0.136}} & \textbf{\textcolor{Mygreen}{0.578}}\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{20em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}}
+\caption{\label{tab:unnamed-chunk-21}Probabilities to agree each item 3-class South American model \label{tab:lca3_la}}\\
+\toprule
+param & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-21}Probabilities to agree each item 3-class South American model  \textit{(continued)}}\\
+\toprule
+param & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textbf{\textcolor{Myblue}{1}} & \textbf{\textcolor{Myblue}{0.979}} & \textbf{\textcolor{Myred}{0}}\\
+\cmidrule{1-4}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textbf{\textcolor{Myblue}{0.976}} & \textbf{\textcolor{Myblue}{0.947}} & \textbf{\textcolor{Myred}{0.186}}\\
+\cmidrule{1-4}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textbf{\textcolor{Myblue}{0.981}} & \textbf{\textcolor{Myred}{0.307}} & \textbf{\textcolor{Mygreen}{0.78}}\\
+\cmidrule{1-4}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textbf{\textcolor{Myblue}{0.971}} & \textbf{\textcolor{Myred}{0.347}} & \textbf{\textcolor{Myblue}{0.807}}\\*
+\end{longtable}
+\endgroup{}
+
+\includegraphics{Figs/sizelca3-1.pdf}
+\newpage  
+
+4-classes models\\
+As the optimal model according to the model fit statistics, we can identify again the first class \textbf{Fully egalitarian} in figure \ref{fig:sizelca4}, for the European model with 81.3\% of the sample and 76\% for the South American model sample.
+
+The second class identified in both models is the \textbf{Competition driven sexism} class with 15\% of the sample in the European model but with higher probabilities to agree (around 0.3) to the sexist items compared to the South American model, table @ref(tab:lca4\_eu), where the estimated probabilities to agree to these items is 0.1, with a sample size of 17.4\%.
+
+Third class identified previously in the 3-class European model is now identify in the South American model, where a group of individuals that tend to agree with most of the items but \textbf{Men and women should have the same rights in every way}, called \textbf{Not egalitarian in every way}, with a 2.4\% and 2.9\% of the sample in the European and South American model respectively.
+
+Last class identified is different in both models. In the European this class called \textbf{Not egalitarian} classifies individuals that are more likely to disagree with most of the items, with a 1.2\% of the sample. On the other hand, the South American model identifies a class called \textbf{Not involved} where most of the individuals are not likely to choose either agreement or disagreement with the items, @ref(tab:lca4\_la), even though a slight inclination to disagree with sexist related items, this class includes the 3.7\% of the South American sample.
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{20em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}}
+\caption{\label{tab:unnamed-chunk-23}Probabilities to agree each item 4-class European model \label{tab:lca4_eu}}\\
+\toprule
+param & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Strong competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-23}Probabilities to agree each item 4-class European model  \textit{(continued)}}\\
+\toprule
+param & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Strong competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textbf{\textcolor{Myblue}{0.997}} & \textbf{\textcolor{Myblue}{0.976}} & \textbf{\textcolor{Mygreen}{0.788}} & \textbf{\textcolor{Mygreen}{0.543}}\\
+\cmidrule{1-5}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textbf{\textcolor{Myblue}{0.997}} & \textbf{\textcolor{Myblue}{0.972}} & \textbf{\textcolor{Myred}{0.333}} & \textbf{\textcolor{Myred}{0.383}}\\
+\cmidrule{1-5}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textbf{\textcolor{Myblue}{0.922}} & \textbf{\textcolor{Myred}{0.374}} & \textbf{\textcolor{Mygreen}{0.744}} & \textbf{\textcolor{Myred}{0.004}}\\
+\cmidrule{1-5}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textbf{\textcolor{Myblue}{0.926}} & \textbf{\textcolor{Myred}{0.011}} & \textbf{\textcolor{Myblue}{0.819}} & \textbf{\textcolor{Myred}{0.006}}\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{20em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}}
+\caption{\label{tab:unnamed-chunk-25}Probabilities to agree each item 4-class South American model \label{tab:lca4_la}}\\
+\toprule
+param & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-25}Probabilities to agree each item 4-class South American model  \textit{(continued)}}\\
+\toprule
+param & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textbf{\textcolor{Myblue}{0.999}} & \textbf{\textcolor{Myblue}{1}} & \textbf{\textcolor{Mygreen}{0.706}} & \textbf{\textcolor{Mygreen}{0.622}}\\
+\cmidrule{1-5}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textbf{\textcolor{Myblue}{0.996}} & \textbf{\textcolor{Myblue}{0.967}} & \textbf{\textcolor{Mygreen}{0.656}} & \textbf{\textcolor{Myred}{0.082}}\\
+\cmidrule{1-5}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textbf{\textcolor{Myblue}{0.895}} & \textbf{\textcolor{Myred}{0.156}} & \textbf{\textcolor{Myred}{0.379}} & \textbf{\textcolor{Myblue}{0.942}}\\
+\cmidrule{1-5}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textbf{\textcolor{Myblue}{0.928}} & \textbf{\textcolor{Myred}{0.007}} & \textbf{\textcolor{Myred}{0.456}} & \textbf{\textcolor{Myblue}{0.937}}\\*
+\end{longtable}
+\endgroup{}
+\begin{figure}
+\centering
+\includegraphics{Figs/sizelca4-1.pdf}
+\caption{\label{fig:sizelca4}Response category probabilities for 4-classes model}
+\end{figure}
+\newpage
 
 \hypertarget{by-country}{%
 \section{By country}\label{by-country}}
 
+\blandscape 
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtabu} to \linewidth {>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{3em}>{\raggedright\arraybackslash}p{3em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{3em}>{\raggedright\arraybackslash}p{4em}}
+\caption{\label{tab:modelfitbycntryc3}Model fit statistics by country}\\
+\toprule
+N Latent
+ Classes & Param & Log-Likelihood & AIC & BIC & aBIC & Entropy & LL
+ Reduction & VLMR
+ 2*LL Dif & VLMR
+ PValue & LMR
+ Value & LMR
+ PValue\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:modelfitbycntryc3}Model fit statistics by country \textit{(continued)}}\\
+\toprule
+N Latent
+ Classes & Param & Log-Likelihood & AIC & BIC & aBIC & Entropy & LL
+ Reduction & VLMR
+ 2*LL Dif & VLMR
+ PValue & LMR
+ Value & LMR
+ PValue\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Europe}}\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Belgium (Flanders)}}\\
+\hspace{1em}\hspace{1em}1 & 4 & \em{-2970} & 5948 & 5972 & 5959 &  &  &  &  &  & \\
+\textbf{\hspace{1em}\hspace{1em}2} & \textbf{9} & \textbf{-2756} & \textbf{5529} & \textbf{\em{5583}} & \textbf{5554} & \textbf{81.9\%} & \textbf{\em{7.2\%}} & \textbf{429} & \textbf{0} & \textbf{418} & \textbf{0}\\
+\hspace{1em}\hspace{1em}3 & 14 & -2738 & \em{5504} & 5588 & \em{5544} & 87.3\% & 0.6\% & \em{35} & \em{0.134} & \em{34} & \em{0.139}\\
+\hspace{1em}\hspace{1em}4 & 19 & -2736 & 5510 & 5623 & 5563 & \em{87.8\%} & 0.1\% & \em{5} & \em{0.456} & \em{5} & \em{0.458}\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Nederlands}}\\
+\hspace{1em}\hspace{1em}1 & 4 & \em{-3779} & 7566 & 7590 & 7577 &  &  &  &  &  & \\
+\textbf{\hspace{1em}\hspace{1em}2} & \textbf{9} & \textbf{-3534} & \textbf{7087} & \textbf{7140} & \textbf{7111} & \textbf{63.7\%} & \textbf{\em{6.5\%}} & \textbf{490} & \textbf{0} & \textbf{478} & \textbf{0}\\
+\hspace{1em}\hspace{1em}3 & 14 & -3484 & 6996 & \em{7079} & \em{7034} & \em{87.1\%} & 1.4\% & \em{101} & \em{0.063} & \em{98} & \em{0.067}\\
+\hspace{1em}\hspace{1em}4 & 19 & -3477 & \em{6993} & 7105 & 7045 & 75.7\% & 0.2\% & \em{13} & \em{0.3} & \em{13} & \em{0.303}\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{South America}}\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Chile}}\\
+\hspace{1em}\hspace{1em}1 & 4 & \em{-6797} & 13603 & 13629 & 13616 &  &  &  &  &  & \\
+\hspace{1em}\hspace{1em}2 & 9 & -6055 & 12129 & 12187 & 12159 & 79.1\% & 10.9\% & 1484 & 0 & 1450 & 0\\
+\textbf{\hspace{1em}\hspace{1em}3} & \textbf{14} & \textbf{-5815} & \textbf{11657} & \textbf{\em{11748}} & \textbf{\em{11704}} & \textbf{85.8\%} & \textbf{\em{4.0\%}} & \textbf{482} & \textbf{0} & \textbf{471} & \textbf{0}\\
+\hspace{1em}\hspace{1em}4 & 19 & -5803 & \em{11644} & 11768 & 11708 & \em{97.2\%} & 0.2\% & \em{23} & \em{0.153} & \em{22} & \em{0.157}\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{Colombia}}\\
+\hspace{1em}\hspace{1em}1 & 4 & \em{-7403} & 14815 & 14841 & 14828 &  &  &  &  &  & \\
+\hspace{1em}\hspace{1em}2 & 9 & -6891 & 13800 & 13860 & 13831 & 61.2\% & \em{6.9\%} & 1024 & 0 & 1001 & 0\\
+\textbf{\hspace{1em}\hspace{1em}3} & \textbf{14} & \textbf{-6829} & \textbf{\em{13685}} & \textbf{\em{13778}} & \textbf{\em{13733}} & \textbf{\em{81.7\%}} & \textbf{0.9\%} & \textbf{125} & \textbf{0.012} & \textbf{122} & \textbf{0.013}\\
+\hspace{1em}\hspace{1em}4 & 19 & -6828 & 13694 & 13820 & 13759 & 71.9\% & 0.0\% & \em{1} & \em{0.582} & \em{1} & \em{0.582}\\*
+\end{longtabu}
+\endgroup{}
+\elandscape
+
+\newpage
+
+2-classes
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{19em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:unnamed-chunk-30}Probabilities to agree each item 2-class model by country}\\
+\toprule
+Country & Item & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-30}Probabilities to agree each item 2-class model by country \textit{(continued)}}\\
+\toprule
+Country & Item & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+\addlinespace[0.3em]
+\multicolumn{4}{l}{\textbf{Europe}}\\
+\hspace{1em} & GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.998} & \textcolor{Myblue}{0.938}\\
+\cmidrule{2-4}\nopagebreak
+\hspace{1em} & GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.979} & \textcolor{Myblue}{0.819}\\
+\cmidrule{2-4}\nopagebreak
+\hspace{1em} & GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.965} & \textcolor{Myred}{0.188}\\
+\cmidrule{2-4}\nopagebreak
+\hspace{1em}\multirow[t]{-4}{4em}{\raggedright\arraybackslash Belgium (Flemish)} & GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.907} & \textcolor{Myred}{0.343}\\
+\cmidrule{1-4}\pagebreak[0]
+\hspace{1em} & GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.993} & \textcolor{Myblue}{0.861}\\
+\cmidrule{2-4}\nopagebreak
+\hspace{1em} & GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.978} & \textcolor{Myblue}{0.819}\\
+\cmidrule{2-4}\nopagebreak
+\hspace{1em} & GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.941} & \textcolor{Myred}{0.373}\\
+\cmidrule{2-4}\nopagebreak
+\hspace{1em}\multirow[t]{-4}{4em}{\raggedright\arraybackslash Netherlands} & GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.916} & \textcolor{Myred}{0.358}\\
+\cmidrule{1-4}\pagebreak[0]
+\addlinespace[0.3em]
+\multicolumn{4}{l}{\textbf{South America}}\\
+\hspace{1em} & GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.979} & \textcolor{Myblue}{0.966}\\
+\cmidrule{2-4}\nopagebreak
+\hspace{1em} & GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.966} & \textcolor{Myblue}{0.958}\\
+\cmidrule{2-4}\nopagebreak
+\hspace{1em} & GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{1} & \textcolor{Myred}{0.318}\\
+\cmidrule{2-4}\nopagebreak
+\hspace{1em}\multirow[t]{-4}{4em}{\raggedright\arraybackslash Chile} & GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{1} & \textcolor{Myred}{0.331}\\
+\cmidrule{1-4}\pagebreak[0]
+\hspace{1em} & GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.997} & \textcolor{Myblue}{0.951}\\
+\cmidrule{2-4}\nopagebreak
+\hspace{1em} & GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.971} & \textcolor{Myblue}{0.898}\\
+\cmidrule{2-4}\nopagebreak
+\hspace{1em} & GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.987} & \textcolor{Myred}{0.348}\\
+\cmidrule{2-4}\nopagebreak
+\hspace{1em}\multirow[t]{-4}{4em}{\raggedright\arraybackslash Colombia} & GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.956} & \textcolor{Myred}{0.433}\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{10em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}}
+\caption{\label{tab:SizeByCntry2}Estimated class sizes 2-classes model by country}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Europe} & \multicolumn{2}{c}{South America} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
+Country & Fully egalitarian & Competition- driven sexism & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:SizeByCntry2}Estimated class sizes 2-classes model by country \textit{(continued)}}\\
+\toprule
+Country & Fully egalitarian & Competition- driven sexism & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+Belgium (Flemish) & 0.886 & 0.114 &  & \\
+Netherlands & 0.779 & 0.221 &  & \\
+Chile &  &  & 0.651 & 0.349\\
+Colombia &  &  & 0.660 & 0.340\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{19em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:unnamed-chunk-34}Probabilities to agree each item 3-class European model by country}\\
+\toprule
+Country & Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-34}Probabilities to agree each item 3-class European model by country \textit{(continued)}}\\
+\toprule
+Country & Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+ & GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.998} & \textcolor{Myblue}{0.982} & \textcolor{Mygreen}{0.734}\\
+\cmidrule{2-5}\nopagebreak
+ & GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.979} & \textcolor{Myblue}{0.988} & \textcolor{Myred}{0.013}\\
+\cmidrule{2-5}\nopagebreak
+ & GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.955} & \textcolor{Myred}{0.263} & \textcolor{Myred}{0.218}\\
+\cmidrule{2-5}\nopagebreak
+\multirow[t]{-4}{4em}{\raggedright\arraybackslash Belgium (Flemish)} & GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.915} & \textcolor{Myred}{0.237} & \textcolor{Myred}{0.43}\\
+\cmidrule{1-5}\pagebreak[0]
+ & GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.99} & \textcolor{Myblue}{0.9} & \textcolor{Myred}{0.465}\\
+\cmidrule{2-5}\nopagebreak
+ & GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.979} & \textcolor{Myblue}{0.914} & \textcolor{Myred}{0}\\
+\cmidrule{2-5}\nopagebreak
+ & GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.909} & \textcolor{Myred}{0.168} & \textcolor{Mygreen}{0.595}\\
+\cmidrule{2-5}\nopagebreak
+\multirow[t]{-4}{4em}{\raggedright\arraybackslash Netherlands} & GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.889} & \textcolor{Myred}{0.101} & \textcolor{Mygreen}{0.614}\\*
+\end{longtable}
+\endgroup{}
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{19em}>{\raggedright\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:unnamed-chunk-34}Probabilities to agree each item 3-class South American model by country}\\
+\toprule
+Country & Item & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-34}Probabilities to agree each item 3-class South American model by country \textit{(continued)}}\\
+\toprule
+Country & Item & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+ & GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.983} & \textcolor{Myred}{0.245}\\
+\cmidrule{2-5}\nopagebreak
+ & GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.99} & \textcolor{Myblue}{0.978} & \textcolor{Myred}{0.129}\\
+\cmidrule{2-5}\nopagebreak
+ & GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{1} & \textcolor{Myred}{0.309} & \textcolor{Myblue}{0.854}\\
+\cmidrule{2-5}\nopagebreak
+\multirow[t]{-4}{4em}{\raggedright\arraybackslash Chile} & GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{1} & \textcolor{Myred}{0.327} & \textcolor{Myblue}{0.807}\\
+\cmidrule{1-5}\pagebreak[0]
+ & GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.974} & \textcolor{Myred}{0}\\
+\cmidrule{2-5}\nopagebreak
+ & GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.967} & \textcolor{Myblue}{0.905} & \textcolor{Myred}{0.388}\\
+\cmidrule{2-5}\nopagebreak
+ & GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.943} & \textcolor{Myred}{0.157} & \textcolor{Mygreen}{0.682}\\
+\cmidrule{2-5}\nopagebreak
+\multirow[t]{-4}{4em}{\raggedright\arraybackslash Colombia} & GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.906} & \textcolor{Myred}{0.326} & \textcolor{Mygreen}{0.714}\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{10em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}}
+\caption{\label{tab:SizeByCntry3}Estimated class sizes 3-classes Europe model by country}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{Europe} \\
+\cmidrule(l{3pt}r{3pt}){2-4}
+Country & Fully egalitarian & Competition- driven sexism & Not every way egalitarian\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:SizeByCntry3}Estimated class sizes 3-classes Europe model by country \textit{(continued)}}\\
+\toprule
+Country & Fully egalitarian & Competition- driven sexism & Not every way egalitarian\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+Belgium (Flemish) & 0.888 & 0.092 & 0.02\\
+Netherlands & 0.858 & 0.112 & 0.03\\*
+\end{longtable}
+\endgroup{}
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{10em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}}
+\caption{\label{tab:SizeByCntry3}Estimated class sizes 3-classes South American model by country}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{South America} \\
+\cmidrule(l{3pt}r{3pt}){2-4}
+Country & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:SizeByCntry3}Estimated class sizes 3-classes South American model by country \textit{(continued)}}\\
+\toprule
+Country & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+Colombia & 0.771 & 0.216 & 0.013\\
+Chile & 0.634 & 0.339 & 0.026\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{19em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:unnamed-chunk-38}Probabilities to agree each item 4-class Europe model by country}\\
+\toprule
+Country & Item & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-38}Probabilities to agree each item 4-class Europe model by country \textit{(continued)}}\\
+\toprule
+Country & Item & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+ & GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.999} & \textcolor{Myblue}{0.984} & \textcolor{Myred}{0.152} & \textcolor{Myblue}{0.94}\\
+\cmidrule{2-6}\nopagebreak
+ & GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.884} & \textcolor{Myred}{0.041} & \textcolor{Myred}{0.459}\\
+\cmidrule{2-6}\nopagebreak
+ & GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.942} & \textcolor{Myred}{0.338} & \textcolor{Myred}{0.007} & \textcolor{Mygreen}{0.757}\\
+\cmidrule{2-6}\nopagebreak
+\multirow[t]{-4}{4em}{\raggedright\arraybackslash Belgium (Flemish)} & GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.922} & \textcolor{Myred}{0.001} & \textcolor{Myred}{0.232} & \textcolor{Myblue}{0.989}\\
+\cmidrule{1-6}\pagebreak[0]
+ & GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.991} & \textcolor{Myblue}{0.973} & \textcolor{Myred}{0.463} & \textcolor{Mygreen}{0.692}\\
+\cmidrule{2-6}\nopagebreak
+ & GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.999} & \textcolor{Myblue}{0.963} & \textcolor{Mygreen}{0.493} & \textcolor{Myred}{0.002}\\
+\cmidrule{2-6}\nopagebreak
+ & GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.958} & \textcolor{Myred}{0.473} & \textcolor{Myred}{0.088} & \textcolor{Myblue}{0.807}\\
+\cmidrule{2-6}\nopagebreak
+\multirow[t]{-4}{4em}{\raggedright\arraybackslash Netherlands} & GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.952} & \textcolor{Myred}{0.398} & \textcolor{Myred}{0} & \textcolor{Myblue}{0.847}\\*
+\end{longtable}
+\endgroup{}
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{19em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:unnamed-chunk-38}Probabilities to agree each item 4-class South American model by country}\\
+\toprule
+Country & Item & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-38}Probabilities to agree each item 4-class South American model by country \textit{(continued)}}\\
+\toprule
+Country & Item & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+ & GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.999} & \textcolor{Myblue}{1} & \textcolor{Myred}{0.346} & \textcolor{Myred}{0.476}\\
+\cmidrule{2-6}\nopagebreak
+ & GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.977} & \textcolor{Mygreen}{0.604} & \textcolor{Myred}{0}\\
+\cmidrule{2-6}\nopagebreak
+ & GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.9} & \textcolor{Myred}{0.308} & \textcolor{Myred}{0.416} & \textcolor{Myblue}{1}\\
+\cmidrule{2-6}\nopagebreak
+\multirow[t]{-4}{4em}{\raggedright\arraybackslash Chile} & GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{1} & \textcolor{Myred}{0} & \textcolor{Mygreen}{0.512} & \textcolor{Myblue}{0.931}\\
+\cmidrule{1-6}\pagebreak[0]
+ & GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.978} & \textcolor{Mygreen}{0.724} & \textcolor{Myblue}{0.936}\\
+\cmidrule{2-6}\nopagebreak
+ & GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.98} & \textcolor{Myblue}{1} & \textcolor{Myred}{0.333} & \textcolor{Mygreen}{0.574}\\
+\cmidrule{2-6}\nopagebreak
+ & GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.947} & \textcolor{Myred}{0.346} & \textcolor{Mygreen}{0.692} & \textcolor{Myred}{0.025}\\
+\cmidrule{2-6}\nopagebreak
+\multirow[t]{-4}{4em}{\raggedright\arraybackslash Colombia} & GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.949} & \textcolor{Myred}{0.348} & \textcolor{Mygreen}{0.768} & \textcolor{Myred}{0.15}\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{10em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}}
+\caption{\label{tab:SizeByCntry4}Estimated class sizes 4-classes Europe model by country}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{4}{c}{Europe} \\
+\cmidrule(l{3pt}r{3pt}){2-5}
+Country & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Strong competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:SizeByCntry4}Estimated class sizes 4-classes Europe model by country \textit{(continued)}}\\
+\toprule
+Country & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Strong competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+Belgium (Flemish) & 0.863 & 0.086 & 0.004 & 0.046\\
+Netherlands & 0.699 & 0.243 & 0.021 & 0.037\\*
+\end{longtable}
+\endgroup{}
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{10em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}>{\raggedleft\arraybackslash}p{6em}}
+\caption{\label{tab:SizeByCntry4}Estimated class sizes 4-classes South American model by country}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{4}{c}{South American} \\
+\cmidrule(l{3pt}r{3pt}){2-5}
+Country & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:SizeByCntry4}Estimated class sizes 4-classes South American model by country \textit{(continued)}}\\
+\toprule
+Country & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+Chile & 0.734 & 0.223 & 0.019 & 0.024\\
+Colombia & 0.697 & 0.232 & 0.041 & 0.030\\*
+\end{longtable}
+\endgroup{}
+\begin{figure}
+\centering
+\includegraphics{Figs/ProbByCntry2-1.pdf}
+\caption{\label{fig:ProbByCntry2}Response category probabilities for 2-classes model by country}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics{Figs/ProbByCntry3-1.pdf}
+\caption{\label{fig:ProbByCntry3}Response category probabilities for 3-classes model by country}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics{Figs/ProbByCntry4-1.pdf}
+\caption{\label{fig:ProbByCntry4}Response category probabilities for 4-classes model by country}
+\end{figure}
+\newpage
+
 \hypertarget{multigroup-across-countries}{%
 \section{Multigroup across countries}\label{multigroup-across-countries}}
 
-\hypertarget{multigroup-across-countries-and-cycles}{%
-\section{Multigroup across countries and cycles}\label{multigroup-across-countries-and-cycles}}
+\blandscape
 
-\hypertarget{comparison-of-lc-across-countries-and-over-time}{%
-\section{Comparison of LC across countries and over time}\label{comparison-of-lc-across-countries-and-over-time}}
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtabu} to \linewidth {>{\raggedright\arraybackslash}p{14em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedright\arraybackslash}p{5em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:modelfitMGCnt}European country multigroup model fit statistics}\\
+\toprule
+Type & Ngroups & Param & Log-Likelihood & AIC & BIC & aBIC & Entropy & LL
+ Reduction & $\Delta$ LL & $\Delta$ DF & pvalue $\Delta$\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:modelfitMGCnt}European country multigroup model fit statistics \textit{(continued)}}\\
+\toprule
+Type & Ngroups & Param & Log-Likelihood & AIC & BIC & aBIC & Entropy & LL
+ Reduction & $\Delta$ LL & $\Delta$ DF & pvalue $\Delta$\\
+\midrule
+\endhead
 
-\hypertarget{gender-differences-gender-class-membership}{%
-\section{Gender differences, gender class membership}\label{gender-differences-gender-class-membership}}
+\endfoot
+\bottomrule
+\endlastfoot
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{2-classes}}\\
+\hspace{1em}Complete heterogeneity & 2 & 19 & -10258 & \em{20555} & 20681 & 20621 & \em{86.4\%} &  &  &  & \\
+\textbf{\hspace{1em}Partial homogeneity} & \textbf{2} & \textbf{11} & \textbf{-10275} & \textbf{20571} & \textbf{\em{20644}} & \textbf{\em{20609}} & \textbf{83.8\%} & \textbf{0.2\%} & \textbf{-16} & \textbf{8} & \textbf{0.042}\\
+\hspace{1em}Complete homogeneity & 2 & 10 & \em{-10308} & 20636 & 20702 & 20670 & 85.4\% & \em{0.3\%} & -33 & 1 & 0.000\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{3-classes}}\\
+\hspace{1em}Complete heterogeneity & 2 & 29 & -10190 & \em{20438} & 20631 & 20538 & 93.9\% &  &  &  & \\
+\textbf{\hspace{1em}Partial homogeneity} & \textbf{2} & \textbf{17} & \textbf{-10205} & \textbf{20443} & \textbf{\em{20556}} & \textbf{\em{20502}} & \textbf{87.1\%} & \textbf{0.1\%} & \textbf{-15} & \textbf{12} & \textbf{0.241}\\
+\hspace{1em}Complete homogeneity & 2 & 15 & \em{-10242} & 20514 & 20614 & 20566 & \em{94.5\%} & \em{0.4\%} & -38 & 2 & 0.000\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{4-classes}}\\
+\hspace{1em}Complete heterogeneity & 2 & 39 & -10181 & 20440 & 20699 & 20575 & 88.6\% &  &  &  & \\
+\textbf{\hspace{1em}Partial homogeneity} & \textbf{2} & \textbf{23} & \textbf{-10185} & \textbf{\em{20416}} & \textbf{\em{20569}} & \textbf{\em{20496}} & \textbf{88.4\%} & \textbf{0.0\%} & \textbf{-4} & \textbf{16} & \textbf{0.999}\\
+\hspace{1em}Complete homogeneity & 2 & 20 & \em{-10232} & 20505 & 20638 & 20574 & \em{92.1\%} & \em{0.5\%} & -47 & 3 & 0.000\\*
+\end{longtabu}
+\endgroup{}
 
-\hypertarget{cycles-differences}{%
-\section{Cycles differences}\label{cycles-differences}}
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtabu} to \linewidth {>{\raggedright\arraybackslash}p{14em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedright\arraybackslash}p{5em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:modelfitMGCnt}South America country multigroup model fit statistics}\\
+\toprule
+Type & Ngroups & Param & Log-Likelihood & AIC & BIC & aBIC & Entropy & LL
+ Reduction & $\Delta$ LL & $\Delta$ DF & pvalue $\Delta$\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:modelfitMGCnt}South America country multigroup model fit statistics \textit{(continued)}}\\
+\toprule
+Type & Ngroups & Param & Log-Likelihood & AIC & BIC & aBIC & Entropy & LL
+ Reduction & $\Delta$ LL & $\Delta$ DF & pvalue $\Delta$\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{2-classes}}\\
+\hspace{1em}Complete heterogeneity & 2 & 19 & -20209 & \em{40456} & \em{40594} & \em{40534} & 85.1\% &  &  &  & \\
+\textbf{\hspace{1em}Partial homogeneity} & \textbf{2} & \textbf{11} & \textbf{-20256} & \textbf{40535} & \textbf{40615} & \textbf{40580} & \textbf{\em{86.0\%}} & \textbf{\em{0.2\%}} & \textbf{-47} & \textbf{8} & \textbf{0.000}\\
+\hspace{1em}Complete homogeneity & 2 & 10 & \em{-20257} & 40534 & 40606 & 40575 & \em{86.0\%} & 0.0\% & 0 & 1 & 1.000\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{3-classes}}\\
+\hspace{1em}Complete heterogeneity & 2 & 29 & -19897 & \em{39851} & \em{40062} & \em{39969} & \em{90.0\%} &  &  &  & \\
+\textbf{\hspace{1em}Partial homogeneity} & \textbf{2} & \textbf{17} & \textbf{-19957} & \textbf{39947} & \textbf{40071} & \textbf{40017} & \textbf{89.5\%} & \textbf{\em{0.3\%}} & \textbf{-60} & \textbf{12} & \textbf{0.000}\\
+\hspace{1em}Complete homogeneity & 2 & 15 & \em{-19966} & 39961 & 40070 & 40022 & 87.6\% & 0.0\% & -9 & 2 & 0.011\\
+\addlinespace[0.3em]
+\multicolumn{12}{l}{\textbf{4-classes}}\\
+\hspace{1em}Complete heterogeneity & 2 & 39 & -19884 & \em{39846} & 40129 & 40005 & \em{89.8\%} &  &  &  & \\
+\textbf{\hspace{1em}Partial homogeneity} & \textbf{2} & \textbf{23} & \textbf{-19908} & \textbf{39863} & \textbf{\em{40030}} & \textbf{\em{39957}} & \textbf{87.9\%} & \textbf{0.1\%} & \textbf{-25} & \textbf{16} & \textbf{0.070}\\
+\hspace{1em}Complete homogeneity & 2 & 20 & \em{-19960} & 39959 & 40105 & 40041 & 88.1\% & \em{0.3\%} & -51 & 3 & 0.000\\*
+\end{longtabu}
+\endgroup{}
+\elandscape
+
+\newpage
+
+Complete heterogeneity
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{14em}>{\raggedright\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}}
+\caption{\label{tab:unnamed-chunk-40}Probabilities to Agree each item 2-class Europe country complete heterogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Belgium (Flanders)} & \multicolumn{2}{c}{Netherlands} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
+Item & Fully egalitarian & Competition- driven sexism & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-40}Probabilities to Agree each item 2-class Europe country complete heterogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.998} & \textcolor{Myblue}{0.938} & \textcolor{Myblue}{0.993} & \textcolor{Myblue}{0.861}\\
+\cmidrule{1-5}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.979} & \textcolor{Myblue}{0.819} & \textcolor{Myblue}{0.978} & \textcolor{Myblue}{0.819}\\
+\cmidrule{1-5}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.965} & \textcolor{Myred}{0.188} & \textcolor{Myblue}{0.941} & \textcolor{Myred}{0.373}\\
+\cmidrule{1-5}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.907} & \textcolor{Myred}{0.343} & \textcolor{Myblue}{0.916} & \textcolor{Myred}{0.358}\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{14em}>{\raggedright\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}}
+\caption{\label{tab:unnamed-chunk-40}Probabilities to Agree each item 2-class, South America country complete heterogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Chile} & \multicolumn{2}{c}{Colombia} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
+Item & Fully egalitarian & Competition- driven sexism & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-40}Probabilities to Agree each item 2-class, South America country complete heterogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.979} & \textcolor{Myblue}{0.966} & \textcolor{Myblue}{0.997} & \textcolor{Myblue}{0.951}\\
+\cmidrule{1-5}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.966} & \textcolor{Myblue}{0.958} & \textcolor{Myblue}{0.971} & \textcolor{Myblue}{0.898}\\
+\cmidrule{1-5}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{1} & \textcolor{Myred}{0.318} & \textcolor{Myblue}{0.987} & \textcolor{Myred}{0.348}\\
+\cmidrule{1-5}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{1} & \textcolor{Myred}{0.331} & \textcolor{Myblue}{0.956} & \textcolor{Myred}{0.433}\\*
+\end{longtable}
+\endgroup{}
+
+\includegraphics{Figs/unnamed-chunk-41-1.pdf}
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{12em}>{\raggedright\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}}
+\caption{\label{tab:unnamed-chunk-43}Probabilities to Agree each item 3-class Europe country complete heterogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{Belgium (Flanders)} & \multicolumn{3}{c}{Netherlands} \\
+\cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
+Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-43}Probabilities to Agree each item 3-class Europe country complete heterogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.998} & \textcolor{Myblue}{0.988} & \textcolor{Myred}{0.729} & \textcolor{Myblue}{0.991} & \textcolor{Myblue}{0.904} & \textcolor{Myred}{0.5}\\
+\cmidrule{1-7}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.979} & \textcolor{Myblue}{0.985} & \textcolor{Myred}{0.136} & \textcolor{Myblue}{0.98} & \textcolor{Myblue}{0.917} & \textcolor{Myred}{0.169}\\
+\cmidrule{1-7}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.938} & \textcolor{Myred}{0.29} & \textcolor{Myred}{0.218} & \textcolor{Myblue}{0.901} & \textcolor{Myred}{0.109} & \textcolor{Myred}{0.592}\\
+\cmidrule{1-7}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.917} & \textcolor{Myred}{0} & \textcolor{Myred}{0.43} & \textcolor{Myblue}{0.884} & \textcolor{Myred}{0.013} & \textcolor{Myred}{0.612}\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{12em}>{\raggedright\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}>{\raggedleft\arraybackslash}p{5em}}
+\caption{\label{tab:unnamed-chunk-43}Probabilities to Agree each item 3-class South America country complete heterogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{Chile} & \multicolumn{3}{c}{Colombia} \\
+\cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
+Item & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-43}Probabilities to Agree each item 3-class South America country complete heterogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.983} & \textcolor{Myred}{0.245} & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.974} & \textcolor{Myred}{0}\\
+\cmidrule{1-7}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.99} & \textcolor{Myblue}{0.978} & \textcolor{Myred}{0.129} & \textcolor{Myblue}{0.967} & \textcolor{Myblue}{0.905} & \textcolor{Myred}{0.388}\\
+\cmidrule{1-7}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{1} & \textcolor{Myred}{0.309} & \textcolor{Myblue}{0.854} & \textcolor{Myblue}{0.943} & \textcolor{Myred}{0.157} & \textcolor{Myred}{0.682}\\
+\cmidrule{1-7}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{1} & \textcolor{Myred}{0.327} & \textcolor{Myblue}{0.807} & \textcolor{Myblue}{0.906} & \textcolor{Myred}{0.326} & \textcolor{Myred}{0.714}\\*
+\end{longtable}
+\endgroup{}
+
+\includegraphics{Figs/unnamed-chunk-44-1.pdf}
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{12em}>{\raggedright\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedright\arraybackslash}p{3em}}
+\caption{\label{tab:unnamed-chunk-46}Probabilities to Agree each item 4-class Europe country complete heterogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{4}{c}{Belgium (Flanders)} & \multicolumn{4}{c}{Netherlands} \\
+\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
+Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Strong competition- driven sexism & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-46}Probabilities to Agree each item 4-class Europe country complete heterogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Strong competition- driven sexism & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.998} & \textcolor{Myblue}{0.994} & \textcolor{Myred}{0.644} & \textcolor{Myblue}{0.939} & \textcolor{Myblue}{0.997} & \textcolor{Myblue}{0.989} & \textcolor{Myred}{0.118} & \textcolor{Myred}{0.702}\\
+\cmidrule{1-9}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.969} & \textcolor{Myred}{0.181} & \textcolor{Myred}{0.149} & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.911} & \textcolor{Myred}{0.532} & \textcolor{Myred}{0.392}\\
+\cmidrule{1-9}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.948} & \textcolor{Myred}{0.594} & \textcolor{Myred}{0} & \textcolor{Myblue}{0.82} & \textcolor{Myblue}{0.921} & \textcolor{Myred}{0.395} & \textcolor{Myred}{0.199} & \textcolor{Myblue}{0.805}\\
+\cmidrule{1-9}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.983} & \textcolor{Myred}{0.152} & \textcolor{Myred}{0.25} & \textcolor{Myblue}{0.939} & \textcolor{Myblue}{0.93} & \textcolor{Myred}{0.183} & \textcolor{Myred}{0.001} & \textcolor{Myblue}{0.933}\\*
+\end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{12em}>{\raggedright\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedright\arraybackslash}p{3em}}
+\caption{\label{tab:unnamed-chunk-46}Probabilities to Agree each item 4-class South America country complete heterogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{4}{c}{Chile} & \multicolumn{4}{c}{Colombia} \\
+\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
+Item & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-46}Probabilities to Agree each item 4-class South America country complete heterogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{1} & \textcolor{Myblue}{1} & \textcolor{Myred}{0.342} & \textcolor{Myred}{0.476} & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.982} & \textcolor{Myred}{0.262} & \textcolor{Myblue}{0.931}\\
+\cmidrule{1-9}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.977} & \textcolor{Myred}{0.607} & \textcolor{Myred}{0.048} & \textcolor{Myblue}{0.969} & \textcolor{Myblue}{0.998} & \textcolor{Myred}{0.346} & \textcolor{Myred}{0.655}\\
+\cmidrule{1-9}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.9} & \textcolor{Myred}{0.308} & \textcolor{Myred}{0.407} & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.936} & \textcolor{Myred}{0.351} & \textcolor{Myred}{0.721} & \textcolor{Myred}{0.191}\\
+\cmidrule{1-9}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{1} & \textcolor{Myred}{0} & \textcolor{Myred}{0.517} & \textcolor{Myblue}{0.928} & \textcolor{Myblue}{0.95} & \textcolor{Myred}{0.3} & \textcolor{Myred}{0.791} & \textcolor{Myred}{0.32}\\*
+\end{longtable}
+\endgroup{}
+
+\includegraphics{Figs/unnamed-chunk-47-1.pdf}
+
+\newpage
+
+Partial homogeneity
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{14em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:unnamed-chunk-49}Probabilities to agree each item 2-class, country partial homogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Europe} & \multicolumn{2}{c}{South America} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
+Item & Fully egalitarian & Competition- driven sexism & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-49}Probabilities to agree each item 2-class, country partial homogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.998} & \textcolor{Myblue}{0.895} & \textcolor{Myblue}{0.99} & \textcolor{Myblue}{0.958}\\
+\cmidrule{1-5}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.981} & \textcolor{Myblue}{0.832} & \textcolor{Myblue}{0.97} & \textcolor{Myblue}{0.929}\\
+\cmidrule{1-5}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.964} & \textcolor{Myred}{0.365} & \textcolor{Myblue}{1} & \textcolor{Myred}{0.375}\\
+\cmidrule{1-5}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.92} & \textcolor{Myred}{0.4} & \textcolor{Myblue}{1} & \textcolor{Myred}{0.392}\\*
+\end{longtable}
+\endgroup{}
+
+\includegraphics{Figs/unnamed-chunk-50-1.pdf}
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{14em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:unnamed-chunk-52}Probabilities to agree each item by Class, country partial homogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{Europe} & \multicolumn{3}{c}{South America} \\
+\cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
+Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-52}Probabilities to agree each item by Class, country partial homogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.997} & \textcolor{Myblue}{1} & \textcolor{Myred}{0} & \textcolor{Myblue}{0.998} & \textcolor{Myblue}{0.977} & \textcolor{Myred}{0}\\
+\cmidrule{1-7}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.979} & \textcolor{Myblue}{0.904} & \textcolor{Myred}{0.445} & \textcolor{Myblue}{0.977} & \textcolor{Myblue}{0.949} & \textcolor{Myred}{0}\\
+\cmidrule{1-7}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.995} & \textcolor{Myred}{0.37} & \textcolor{Myred}{0.465} & \textcolor{Myblue}{1} & \textcolor{Myred}{0.363} & \textcolor{Myred}{0.788}\\
+\cmidrule{1-7}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.927} & \textcolor{Myred}{0.474} & \textcolor{Myred}{0.467} & \textcolor{Myblue}{0.999} & \textcolor{Myred}{0.383} & \textcolor{Myblue}{0.81}\\*
+\end{longtable}
+\endgroup{}
+
+\includegraphics{Figs/unnamed-chunk-53-1.pdf}
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{14em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:unnamed-chunk-55}Probabilities to agree each item by Class, country partial homogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{4}{c}{Europe} & \multicolumn{4}{c}{South America} \\
+\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
+Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Strong competition- driven sexism & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-55}Probabilities to agree each item by Class, country partial homogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Strong competition- driven sexism & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{1} & \textcolor{Myred}{0.307} & \textcolor{Myblue}{0.999} & \textcolor{Myred}{0.061} & \textcolor{Myred}{0} & \textcolor{Myblue}{0.972} & \textcolor{Myblue}{0.986} & \textcolor{Myblue}{1}\\
+\cmidrule{1-9}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.907} & \textcolor{Myred}{0.487} & \textcolor{Myblue}{0.981} & \textcolor{Myred}{0.462} & \textcolor{Myred}{0.17} & \textcolor{Myblue}{0.917} & \textcolor{Myblue}{0.983} & \textcolor{Myblue}{0.978}\\
+\cmidrule{1-9}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myred}{0.341} & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.995} & \textcolor{Myred}{0} & \textcolor{Myred}{0.788} & \textcolor{Myred}{0.344} & \textcolor{Myred}{0.198} & \textcolor{Myblue}{1}\\
+\cmidrule{1-9}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myred}{0.475} & \textcolor{Myred}{0.768} & \textcolor{Myblue}{0.922} & \textcolor{Myred}{0.232} & \textcolor{Myblue}{0.805} & \textcolor{Myred}{0.442} & \textcolor{Myred}{0.314} & \textcolor{Myblue}{0.958}\\*
+\end{longtable}
+\endgroup{}
+
+\includegraphics{Figs/unnamed-chunk-56-1.pdf}
+
+\newpage
+
+Complete homogeneity
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{14em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:unnamed-chunk-58}Probabilities to agree each item 2-class, country complete homogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Europe} & \multicolumn{2}{c}{South America} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
+Item & Fully egalitarian & Competition- driven sexism & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-58}Probabilities to agree each item 2-class, country complete homogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Fully egalitarian & Competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.996} & \textcolor{Myblue}{0.891} & \textcolor{Myblue}{0.99} & \textcolor{Myblue}{0.958}\\
+\cmidrule{1-5}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.979} & \textcolor{Myblue}{0.821} & \textcolor{Myblue}{0.97} & \textcolor{Myblue}{0.929}\\
+\cmidrule{1-5}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.954} & \textcolor{Myred}{0.325} & \textcolor{Myblue}{1} & \textcolor{Myred}{0.375}\\
+\cmidrule{1-5}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.914} & \textcolor{Myred}{0.352} & \textcolor{Myblue}{1} & \textcolor{Myred}{0.393}\\*
+\end{longtable}
+\endgroup{}
+
+\includegraphics{Figs/unnamed-chunk-59-1.pdf}
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{12em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedright\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}}
+\caption{\label{tab:unnamed-chunk-61}Probabilities to agree each item 3-class, country complete homogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{Europe} & \multicolumn{3}{c}{South America} \\
+\cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
+Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-61}Probabilities to agree each item 3-class, country complete homogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Fully egalitarian & Competition- driven sexism & Anti competition- driven sexism\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.995} & \textcolor{Myblue}{0.938} & \textcolor{Myred}{0.572} & \textcolor{Myblue}{1} & \textcolor{Myblue}{0.979} & \textcolor{Myred}{0}\\
+\cmidrule{1-7}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.98} & \textcolor{Myblue}{0.927} & \textcolor{Myred}{0.173} & \textcolor{Myblue}{0.976} & \textcolor{Myblue}{0.947} & \textcolor{Myred}{0.186}\\
+\cmidrule{1-7}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.92} & \textcolor{Myred}{0.107} & \textcolor{Myred}{0.485} & \textcolor{Myblue}{0.981} & \textcolor{Myred}{0.307} & \textcolor{Myred}{0.78}\\
+\cmidrule{1-7}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.894} & \textcolor{Myred}{0} & \textcolor{Myred}{0.575} & \textcolor{Myblue}{0.971} & \textcolor{Myred}{0.347} & \textcolor{Myblue}{0.807}\\*
+\end{longtable}
+\endgroup{}
+
+\includegraphics{Figs/unnamed-chunk-62-1.pdf}
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{10em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedright\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}}
+\caption{\label{tab:unnamed-chunk-64}Probabilities to agree each item 4-class, country complete homogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{4}{c}{Europe} & \multicolumn{4}{c}{South America} \\
+\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
+Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Strong competition- driven sexism & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-64}Probabilities to agree each item 4-class, country complete homogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Not every way egalitarian & Strong competition- driven sexism & Fully egalitarian & Competition- driven sexism & Not involved & Not every way egalitarian\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.994} & \textcolor{Myblue}{0.948} & \textcolor{Myred}{0.372} & \textcolor{Myred}{0.758} & \textcolor{Myred}{0.464} & \textcolor{Myblue}{1} & \textcolor{Myred}{0} & \textcolor{Myblue}{1}\\
+\cmidrule{1-9}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.994} & \textcolor{Myblue}{0.932} & \textcolor{Myred}{0.164} & \textcolor{Myred}{0.007} & \textcolor{Myred}{0.656} & \textcolor{Myblue}{0.953} & \textcolor{Myred}{0.116} & \textcolor{Myblue}{0.976}\\
+\cmidrule{1-9}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.934} & \textcolor{Myred}{0.252} & \textcolor{Myred}{0.003} & \textcolor{Myred}{0.746} & \textcolor{Myred}{0.379} & \textcolor{Myred}{0.288} & \textcolor{Myblue}{0.943} & \textcolor{Myblue}{0.938}\\
+\cmidrule{1-9}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.908} & \textcolor{Myred}{0.17} & \textcolor{Myred}{0} & \textcolor{Myblue}{0.825} & \textcolor{Myred}{0.458} & \textcolor{Myred}{0.23} & \textcolor{Myblue}{0.938} & \textcolor{Myblue}{0.965}\\*
+\end{longtable}
+\endgroup{}
+
+\includegraphics{Figs/unnamed-chunk-65-1.pdf}
+
+\newpage
+
+\hypertarget{comparison-of-lc-across-region}{%
+\section{Comparison of LC across region}\label{comparison-of-lc-across-region}}
+
+\blandscape  
+\begingroup\fontsize{9}{11}\selectfont
+\begin{longtabu} to \linewidth {>{\raggedright\arraybackslash}p{12em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedright\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{3em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:unnamed-chunk-66}Region multigroup model fit statistics}\\
+\toprule
+Type & N Latent Classes & Ngroups & Param & Log-Likelihood & AIC & BIC & aBIC & Entropy & LL
+ Reduction & $\Delta$ LL & $\Delta$ DF & pvalue $\Delta$\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-66}Region multigroup model fit statistics \textit{(continued)}}\\
+\toprule
+Type & N Latent Classes & Ngroups & Param & Log-Likelihood & AIC & BIC & aBIC & Entropy & LL
+ Reduction & $\Delta$ LL & $\Delta$ DF & pvalue $\Delta$\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+1-Complete heterogeneity & 3 & 2 & 29 & -29950 & \em{59957} & 60180 & 60088 & 90.3\% &  &  &  & \\
+\textbf{2-Partial homogeneity - 2 classes equal} & \textbf{3} & \textbf{2} & \textbf{21} & \textbf{-29964} & \textbf{59970} & \textbf{\em{60131}} & \textbf{\em{60065}} & \textbf{\em{92.8\%}} & \textbf{0.0\%} & \textbf{14} & \textbf{8} & \textbf{0.082}\\
+3-Partial homogeneity & 3 & 2 & 17 & -29987 & 60008 & 60138 & 60084 & 92.5\% & 0.1\% & 37 & 12 & 0.000\\
+4-Complete homogeneity & 3 & 2 & 15 & \em{-30093} & 60216 & 60331 & 60283 & 88.9\% & \em{0.4\%} & 106 & 2 & 0.000\\*
+\end{longtabu}
+\endgroup{}
+\elandscape
+
+\begingroup\fontsize{10}{12}\selectfont
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{14em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}>{\raggedleft\arraybackslash}p{4em}}
+\caption{\label{tab:unnamed-chunk-68}Probabilities to agree each item by Class, region partial homogeneity multigroup analysis}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{Europe} & \multicolumn{3}{c}{South America} \\
+\cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
+Item & Fully egalitarian & Competition- driven sexism & Other & Fully egalitarian & Competition- driven sexism & Other\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:unnamed-chunk-68}Probabilities to agree each item by Class, region partial homogeneity multigroup analysis \textit{(continued)}}\\
+\toprule
+Item & Fully egalitarian & Competition- driven sexism & Other & Fully egalitarian & Competition- driven sexism & Other\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+GND1 - Men and women should have equal opportunities to take part in government & \textcolor{Myblue}{0.997} & \textcolor{Myblue}{0.975} & \textcolor{Myred}{0.575} & \textcolor{Myblue}{0.997} & \textcolor{Myblue}{0.975} & \textcolor{Myred}{0.385}\\
+\cmidrule{1-7}\pagebreak[0]
+GND2 - Men and women should have the same rights in every way & \textcolor{Myblue}{0.98} & \textcolor{Myblue}{0.948} & \textcolor{Myred}{0.337} & \textcolor{Myblue}{0.98} & \textcolor{Myblue}{0.948} & \textcolor{Myred}{0.195}\\
+\cmidrule{1-7}\pagebreak[0]
+GND4 - Not many jobs available, men should have more right to a job than women(r) & \textcolor{Myblue}{0.947} & \textcolor{Myred}{0.005} & \textcolor{Myred}{0.488} & \textcolor{Myblue}{0.947} & \textcolor{Myred}{0.005} & \textcolor{Myred}{0.786}\\
+\cmidrule{1-7}\pagebreak[0]
+GND6 - Men are better qualified to be political leaders than women(r) & \textcolor{Myblue}{0.891} & \textcolor{Myred}{0.261} & \textcolor{Myred}{0.503} & \textcolor{Myblue}{0.891} & \textcolor{Myred}{0.261} & \textcolor{Myred}{0.736}\\*
+\end{longtable}
+\endgroup{}
+
+\includegraphics{Figs/unnamed-chunk-69-1.pdf}
+
+\hypertarget{confirmatory-latent-class-model}{%
+\section{Confirmatory Latent Class Model}\label{confirmatory-latent-class-model}}
+
+The probabilities based on the Partial homogeneity multigroup model with 2 first classes to be equal across regions will be used to obtain the class membership to the 3-class model.
+\begin{verbatim}
+      1     2     3   Sum
+\end{verbatim}
+1 383 5138 177 5698
+2 2317 8002 173 10492
+Sum 2700 13140 350 16190
+
+\hypertarget{factors-related-to-competition--driven-sexism-class}{%
+\section{Factors related to Competition- driven sexism class}\label{factors-related-to-competition--driven-sexism-class}}
+
+\includegraphics{Figs/unnamed-chunk-74-1.pdf}
+
+S\_GENEQL
+
+\includegraphics{Figs/unnamed-chunk-75-1.pdf}
+
+\includegraphics{Figs/unnamed-chunk-76-1.pdf}
+
+\includegraphics{Figs/unnamed-chunk-78-1.pdf}
+
+\includegraphics{Figs/unnamed-chunk-78-2.pdf}
+
+\includegraphics{Figs/unnamed-chunk-78-3.pdf}
+
+\includegraphics{Figs/unnamed-chunk-78-4.pdf}
 
 \hypertarget{conclusion}{%
 \chapter*{Conclusion}\label{conclusion}}
@@ -820,110 +2033,25 @@ And here's some other random info: the first paragraph after a chapter title or 
 \chapter{Complementary tables}\label{complementary-tables}}
 
 \begingroup\fontsize{11}{13}\selectfont
-\begin{longtable}[l]{>{\raggedright\arraybackslash}p{10em}rrr}
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{10em}r}
 \caption{\label{tab:tableA1}Countries sample sizes included in the analysis}\\
 \toprule
-  & 1999 & 2009 & 2016\\
+  & 2016\\
 \midrule
 \endfirsthead
 \caption[]{\label{tab:tableA1}Countries sample sizes included in the analysis \textit{(continued)}}\\
 \toprule
-  & 1999 & 2009 & 2016\\
+  & 2016\\
 \midrule
 \endhead
 
 \endfoot
 \bottomrule
 \endlastfoot
-Belgium (Flemish) & 0 & 2968 & 2931\\
-Bulgaria & 2884 & 3257 & 2966\\
-Chile & 5688 & 5192 & 5081\\
-Colombia & 4926 & 6204 & 5609\\
-Denmark & 3208 & 4508 & 6254\\
-\addlinespace
-Dominican Republic & 0 & 4589 & 3937\\
-Estonia & 3434 & 2743 & 2857\\
-Finland & 2782 & 3307 & 3173\\
-Hong Kong & 4997 & 2902 & 2653\\
-Italy & 3808 & 3366 & 3450\\
-\addlinespace
-Latvia & 2572 & 2761 & 3224\\
-Lithuania & 3494 & 3902 & 3631\\
-Malta & 0 & 2143 & 3764\\
-Mexico & 0 & 6576 & 5526\\
-Netherlands & 0 & 1964 & 2812\\
-\addlinespace
-Norway & 3321 & 3013 & 6271\\
-Russia & 2129 & 4295 & 7289\\
-Slovenia & 3068 & 3070 & 2844\\
-South Korea & 0 & 5254 & 2601\\
-Sweden & 3073 & 3464 & 3264\\
-\addlinespace
-Taiwan & 0 & 5167 & 3953\\*
-\end{longtable}
-\endgroup{}
-
-\begingroup\fontsize{11}{13}\selectfont
-\begin{longtable}[l]{>{\raggedright\arraybackslash}p{8em}>{\raggedright\arraybackslash}p{25em}>{\raggedright\arraybackslash}p{10em}}
-\caption{\label{tab:tableA2}Items attitudes towards gender equality. Cived 1999}\\
-\toprule
-\textbf{CIVED 1999} & \textbf{Description question} & \textbf{Resp categories}\\
-\midrule
-\endfirsthead
-\caption[]{\label{tab:tableA2}Items attitudes towards gender equality. Cived 1999 \textit{(continued)}}\\
-\toprule
-\textbf{CIVED 1999} & \textbf{Description question} & \textbf{Resp categories}\\
-\midrule
-\endhead
-
-\endfoot
-\bottomrule
-\endlastfoot
-\textbf{WOMRTMLE} & \textbf{Attitudes toward Women’s Political and Economic Rights} & \textbf{}\\
-\cmidrule{1-3}\pagebreak[0]
-BS4G1 & Women should run for public office [a seat in the legislature] and take part in the government just as men do. & \\
-\cmidrule{1-2}\nopagebreak
-BS4G4 & Women should have the same rights as men in every way. & \\
-\cmidrule{1-2}\nopagebreak
-BS4G6 & Women should stay out of politics & \\
-\cmidrule{1-2}\nopagebreak
-BS4G9 & When jobs are scarce, men [should] have more right to a job than women. & \\
-\cmidrule{1-2}\nopagebreak
-BS4G11 & Men and women should get equal pay when they are in the same jobs [occupations]. & \\
-\cmidrule{1-2}\nopagebreak
-BS4G13 & Men are better qualified to be political leaders than women. & \multirow{-6}{10em}{\raggedright\arraybackslash 1-Strongly disagree\newline 2-Disagree\newline 3-Agree\newline 4-Strongly agree}\\*
-\end{longtable}
-\endgroup{}
-
-\begingroup\fontsize{11}{13}\selectfont
-\begin{longtable}[l]{>{\raggedright\arraybackslash}p{8em}>{\raggedright\arraybackslash}p{25em}>{\raggedright\arraybackslash}p{10em}}
-\caption{\label{tab:tableA3}Items attitudes towards gender equality. ICCS 2009}\\
-\toprule
-\textbf{ICCS 2009} & \textbf{Description question} & \textbf{Resp categories}\\
-\midrule
-\endfirsthead
-\caption[]{\label{tab:tableA3}Items attitudes towards gender equality. ICCS 2009 \textit{(continued)}}\\
-\toprule
-\textbf{ICCS 2009} & \textbf{Description question} & \textbf{Resp categories}\\
-\midrule
-\endhead
-
-\endfoot
-\bottomrule
-\endlastfoot
-\textbf{GENEQL} & \textbf{Students’ attitudes toward gender equality} & \textbf{}\\
-\cmidrule{1-3}\pagebreak[0]
-IS2P24A & Men and women should have equal opportunities to take part in government & \\
-\cmidrule{1-2}\nopagebreak
-IS2P24B & Men and women should have the same rights in every way & \\
-\cmidrule{1-2}\nopagebreak
-IS2P24C & Women should stay out of politics & \\
-\cmidrule{1-2}\nopagebreak
-IS2P24D & When there are not many jobs available, men should have more right to a job than women & \\
-\cmidrule{1-2}\nopagebreak
-IS2P24E & Men and women should get equal pay when they are doing the same jobs & \\
-\cmidrule{1-2}\nopagebreak
-IS2P24F & Men are better qualified to be political leaders than women & \multirow{-6}{10em}{\raggedright\arraybackslash 1-Strongly disagree\newline 2-Disagree\newline 3-Agree\newline 4-Strongly agree}\\*
+Belgium (Flemish) & 2931\\
+Chile & 5081\\
+Colombia & 5609\\
+Netherlands & 2812\\*
 \end{longtable}
 \endgroup{}
 
@@ -968,6 +2096,7 @@ IS3G24G & Roles women and men/Women’s first priority should be raising childre
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(thesisdown)}
+\FunctionTok{library}\NormalTok{(plyr)}
 \FunctionTok{library}\NormalTok{(tidyverse) }
 \FunctionTok{library}\NormalTok{(knitr)}
 \FunctionTok{library}\NormalTok{(kableExtra)}
@@ -1011,7 +2140,7 @@ Dotti Sani, G. M., \& Quaranta, M. (2017). The best is yet to come? Attitudes to
 Hagenaars, J. A., \& McCutcheon, A. L. (Eds.). (2002). \emph{Applied latent class analysis} (1st ed.). Cambridge University Press. http://doi.org/\href{https://doi.org/10.1017/CBO9780511499531}{10.1017/CBO9780511499531}
 
 \leavevmode\hypertarget{ref-hallquist_mplusautomation_2018}{}%
-Hallquist, M. N., \& Wiley, J. F. (2018). {MplusAutomation}: An r package for facilitating large-scale latent variable analyses in m \emph{plus}. \emph{Structural Equation Modeling: A Multidisciplinary Journal}, \emph{25}(4), 621--638. http://doi.org/\href{https://doi.org/10.1080/10705511.2017.1402334}{10.1080/10705511.2017.1402334}
+Hallquist, M. N., \& Wiley, J. F. (2018). {MplusAutomation}: An r package for facilitating large-scale latent variable analyses in mplus. \emph{Structural Equation Modeling: A Multidisciplinary Journal}, \emph{25}(4), 621--638. http://doi.org/\href{https://doi.org/10.1080/10705511.2017.1402334}{10.1080/10705511.2017.1402334}
 
 \leavevmode\hypertarget{ref-hancock_advances_2019}{}%
 Hancock, G. R., Harring, J., \& Macready, G. B. (Eds.). (2019). \emph{Advances in latent class analysis: A festschrift in honor of c. Mitchell dayton}. Charlotte, {NC}: Information Age Publishing, Inc.

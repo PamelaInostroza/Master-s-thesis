@@ -1,6 +1,6 @@
 ---
 title: 'Profiles of tolerance and respect for gender equality among youth. Comparisons
-  across countries and over time'
+  across countries'
 author: 'Pamela Inostroza Fernández'
 matriculation_number: 'r0648901'
 date: 'May 2021'
@@ -12,17 +12,15 @@ chair: 'Femke De Keulenaer'
 program: 'Master in Statistics & Data Science'
 knit: bookdown::render_book
 site: bookdown::bookdown_site
-
 params:
-  'Install needed packages for {thesisdown}': True
   
+  'Install needed packages for {thesisdown}': True
 output:
   thesisdown::thesis_pdf:
   keep_tex: yes 
 #  thesisdown::thesis_gitbook: default         
 #  thesisdown::thesis_word: default
 #  thesisdown::thesis_epub: default
-
 abstract: '`r if(knitr:::is_latex_output()) paste(readLines(here::here("prelims", "00-abstract.Rmd")), collapse = "\n  ")`'
 acknowledgements: |
   I want to thank a few people.
@@ -31,15 +29,17 @@ dedication: |
 preface: |
   This is an example of a thesis setup to use the reed thesis document class 
   (for LaTeX) and the R bookdown package, in general.
-
 bibliography: bib/thesis.bib
 csl: csl/apa.csl
 lot: true
 lof: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r include_packages, include=FALSE}
 library(thesisdown)
+library(plyr)
 library(tidyverse) 
 library(knitr)
 library(kableExtra)
@@ -50,17 +50,34 @@ library(kableExtra)
 # Set how wide the R output will go
 options(width = 70)
 
-knitr::opts_chunk$set(fig.width=9, fig.height=5, fig.path='Figs/', fig.pos = 'H',
+knitr::opts_chunk$set(fig.path='Figs/', fig.width=5, fig.height=4, results='asis',
                       echo=FALSE, warning=FALSE, message=FALSE)
 options(scipen=999)
 options(knitr.kable.NA = '')
 options(kableExtra.auto_format = F)
 
 sys.source("functions/0.functions.R", envir = knitr::knit_global())
-load("data/ICCSAll_lvR.RData")
 
 ``` 
 
+```{r eval=FALSE, child=here::here("prelims", "00--Data Preparation.Rmd")}
+
+```
+
+```{r, echo = FALSE, message = FALSE, results = 'asis', fig.pos='H'}
+load("data/data_model.Rdata")
+
+Id <- c("COUNTRY",  "IDCNTRY", "IDSCHOOL", "IDCLASS", "IDSTUD", "GROUP", "CYCLE")
+sample <- c("id_i", "id_j", "id_r", "id_s", "id_k", "wt", "ws")
+Scores <- c("PV1CIV", "PV2CIV", "PV3CIV", "PV4CIV", "PV5CIV")
+Scales <- c("GND1", "GND2", "GND3", "GND4", "GND5", "GND6", "GND7")
+Schl_cate <- c("IC3G20", "IC3G21A", "IC3G21B", "C_COMP", "C_GENROL_CAT", "C_SCSIZE_CAT", "C_URBAN")
+Stud_cate <- c("IS3G03","IS3G03BA", "IS3G03BC", "IS3G10A", "IS3G10B", "IS3G10C", "IS3G11", 
+               "IS3G14A","IS3G14B", "IS3G14C", "IS3G14D", "IS3G14E", "IS3G14F", "IS3G14G", "IS3G14H", 
+               "IS3G23G", "IS3G33", "IS3G33N", "S_AGE", "S_GENDER", "S_HOMLIT", 
+               "S_MINT", "S_FINT", "S_SINT", "S_ISCED", "S_IMMIG", "S_FISCED", "S_MISCED", 
+               "S_RELIG", "S_GENEQL", "S_NISB")
+```
 
 ```{r eval=!knitr::is_latex_output(), child=here::here("prelims", "00--prelim.Rmd")}
 

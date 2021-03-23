@@ -1,0 +1,161 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Data preparation  
+
+```{r include_packages, include=FALSE}
+#devtools::install_github("dacarras/r4sda")
+
+library(RALSA) 0 #ralsaGUI()
+library(r4sda)
+
+```
+
+
+```{r}
+# -----------------------------------------------
+# selection of variables and countries to use from ICCS 2016
+# -----------------------------------------------
+#lsa.merge.data("data/RALSA", file.types = list(icg = NULL, isg = NULL), 
+#               ISO = c("bfl", "nld", "chl", "col"), 
+#               "data/RALSA/Merged/iccs_merged.RData")
+
+load("data/RALSA/Merged/iccs_merged.RData")
+
+table(iccs_merged$COUNTRY,iccs_merged$IDCNTRY, useNA = "ifany")
+Id <- c("COUNTRY",  "IDCNTRY", "IDSCHOOL", "IDCLASS", "IDSTUD", "GROUP", "CYCLE", "YEAR")
+sampleID <- c("TOTWGTS", "WGTFAC1", "WGTADJ1S", "WGTFAC2S", "WGTADJ2S", "WGTADJ3S", "JKREPS", "JKZONES")
+Scores <- c("PV1CIV", "PV2CIV", "PV3CIV", "PV4CIV", "PV5CIV")
+Scales <- c("IS3G24A", "IS3G24B", "IS3G24C", "IS3G24D", "IS3G24E", "IS3G24F", "IS3G24G")
+Schl_cate <- c("IC3G20", "IC3G21A", "IC3G21B", "C_COMP", "C_GENROL_CAT", "C_SCSIZE_CAT", "C_URBAN")
+Stud_cate <- c("IS3G03","IS3G03BA", "IS3G03BC", "IS3G10A", "IS3G10B", "IS3G10C", "IS3G11", 
+               "IS3G14A","IS3G14B", "IS3G14C", "IS3G14D", "IS3G14E", "IS3G14F", "IS3G14G", "IS3G14H", 
+               "IS3G23G", "IS3G33", "IS3G33N", "S_AGE", "S_GENDER", "S_HOMLIT", 
+               "S_MINT", "S_FINT", "S_SINT", "S_ISCED", "S_IMMIG", "S_FISCED", "S_MISCED",
+               "S_RELIG","S_GENEQL", "S_NISB")
+
+iccs <- iccs_merged %>%
+  mutate(COUNTRY = case_when(
+    IDCNTRY == "Belgium (Flemish)" ~ "BFL",
+    IDCNTRY == "Netherlands" ~ "NLD",
+    IDCNTRY == "Chile" ~ "CHL",
+    IDCNTRY == "Colombia" ~ "COL",
+    TRUE ~ as.character(COUNTRY)),
+    GROUP = ifelse(COUNTRY %in% c("BFL", "NLD"), "Europe", 
+                   ifelse(COUNTRY %in% c("CHL", "COL"), "South America", NA)),
+    CYCLE = "C3", YEAR = "2016") %>% 
+  dplyr::select(all_of(Id), all_of(sampleID), 
+                all_of(Schl_cate), 
+                all_of(Stud_cate), 
+                all_of(Scores), 
+                all_of(Scales)) 
+#table(iccs$COUNTRY,iccs$IDCNTRY, useNA = "ifany")
+
+```
+
+```{r}
+# -----------------------------------------------
+# generic survey design variables
+# -----------------------------------------------
+
+detach(package:plyr)
+data_model <- iccs %>%
+              # remove labels
+              #r4sda::remove_labels() %>%
+              # clustering
+              dplyr::mutate(id_i = seq(1:nrow(.))) %>%
+              dplyr::mutate(id_j = as.numeric(as.factor(paste0(COUNTRY, JKZONES, IDSCHOOL)))) %>%
+              dplyr::mutate(id_s = as.numeric(as.factor(paste0(COUNTRY, JKZONES)))) %>%
+              dplyr::mutate(id_r = as.numeric(as.factor(paste0(COUNTRY, JKZONES, JKREPS)))) %>%
+              dplyr::mutate(id_k = as.numeric(as.factor(paste0(COUNTRY)))) %>%
+              # survey weights
+              dplyr::mutate(wt = TOTWGTS) %>%
+              # students weights
+              dplyr::mutate(wi = WGTFAC2S*WGTADJ2S*WGTADJ3S) %>%
+              # school weights
+              dplyr::mutate(wj = WGTFAC1*WGTADJ1S) %>%
+              # create senate weights
+              r4sda::senate_weights(., wt = 'wt', id_k = 'id_k', scale = 1000) %>%
+              # create scaled weights
+              r4sda::lsa_weights(., 
+                id_i = 'id_i', 
+                id_j = 'id_j', 
+                id_k = 'id_k', 
+                wt = 'wt', 
+                wi = 'wi', 
+                wj = 'wj') %>%
+              dplyr::glimpse()
+
+
+# -----------------------------------------------
+# check clustering assumptions
+# -----------------------------------------------
+
+# strata are unique across countries
+data_model %>%
+r4sda::check_cluster_id(cluster_1 = 'id_s', cluster_2 = 'id_k')
+
+# schools are unique across countries
+data_model %>%
+r4sda::check_cluster_id(cluster_1 = 'id_j', cluster_2 = 'id_k')
+
+# schools are unique across strata
+data_model %>%
+r4sda::check_cluster_id(cluster_1 = 'id_j', cluster_2 = 'id_s')
+
+# psu are unique across countries
+data_model %>%
+r4sda::check_cluster_id(cluster_1 = 'id_r', cluster_2 = 'id_k')
+
+# psu are unique across strata
+data_model %>%
+r4sda::check_cluster_id(cluster_1 = 'id_r', cluster_2 = 'id_s')
+
+```
+
+```{r}
+
+# -----------------------------------------------
+# recode functions
+# -----------------------------------------------
+# Recode into 2 categories
+table(data_model$IS3G24A, useNA = "ifany")
+labels = c(str_remove(attr(data_model$IS3G24A, "variable.label"), 
+           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"),
+           str_remove(attr(data_model$IS3G24B, "variable.label"), 
+           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"),
+           str_remove(attr(data_model$IS3G24E, "variable.label"), 
+           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"))
+
+lsa.recode.vars(data.object = data_model, 
+                src.variables = c("IS3G24A", "IS3G24B", "IS3G24E"),
+                new.variables = c("GND1", "GND2", "GND5"),
+                variable.labels = labels,
+                old.new = "1=1;2=1;3=2;4=2;5=NA;6=NA",
+                new.labels = c("Agree", "Disagree"))
+table(data_model$GND1, useNA = "ifany")
+#Inverse coded variables
+labelsr = c(paste0(str_remove(attr(data_model$IS3G24C, "variable.label"), 
+           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"),"(r)"),
+           paste0(str_remove(attr(data_model$IS3G24D, "variable.label"), 
+           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"),"(r)"),
+           paste0(str_remove(attr(data_model$IS3G24F, "variable.label"), 
+           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"),"(r)"),
+           paste0(str_remove(attr(data_model$IS3G24G, "variable.label"), 
+           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"),"(r)"))
+
+lsa.recode.vars(data.object = data_model, 
+                src.variables = c("IS3G24C", "IS3G24D", "IS3G24F", "IS3G24G"),
+                new.variables = c("GND3", "GND4", "GND6", "GND7"),
+                variable.labels = labelsr,
+                old.new = "1=2;2=2;3=1;4=1;5=NA;6=NA",
+                new.labels = c("Agree", "Disagree"))
+
+dplyr::glimpse(data_model)
+
+save(data_model, file = "data/data_model.Rdata")
+```
+

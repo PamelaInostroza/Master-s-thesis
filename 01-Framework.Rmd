@@ -133,54 +133,6 @@ $\pi_{t|1}^{X|G} = \pi_{t|2}^{X|G}, for t = 1, 2, 3$
 
 ## Study 
 
-
-```{r, echo = FALSE, message = FALSE, results = 'asis', fig.pos='H'}
-
-ISC_lvR <- ISC_lvR %>% 
-  mutate( CNTNAME = factor(
-    case_when(
-      COUNTRY == "BFL" ~ "Belgium (Flemish)",
-      COUNTRY == "BGR" ~ "Bulgaria",
-      COUNTRY == "CHL" ~ "Chile",
-      COUNTRY == "COL" ~ "Colombia",
-      COUNTRY == "DNK" ~ "Denmark",
-      COUNTRY == "DOM" ~ "Dominican Republic",
-      COUNTRY == "EST" ~ "Estonia",
-      COUNTRY == "FIN" ~ "Finland",
-      COUNTRY == "HKG" ~ "Hong Kong",
-      COUNTRY == "ITA" ~ "Italy",
-      COUNTRY == "KOR" ~ "South Korea",
-      COUNTRY == "LTU" ~ "Lithuania",
-      COUNTRY == "LVA" ~ "Latvia",
-      COUNTRY == "MEX" ~ "Mexico",
-      COUNTRY == "MLT" ~ "Malta",
-      COUNTRY == "NLD" ~ "Netherlands",
-      COUNTRY == "NOR" ~ "Norway",
-      COUNTRY == "RUS" ~ "Russia",
-      COUNTRY == "SVN" ~ "Slovenia",
-      COUNTRY == "SWE" ~ "Sweden",
-      COUNTRY == "TWN" ~ "Taiwan")),
-    Year = factor(
-      case_when(
-        cycle == "C1" ~ 1999,
-        cycle == "C2" ~ 2009,
-        cycle == "C3" ~ 2016))
-  )
-
-Id <- VarsToUse %>%  filter(Construct == "ID Variables" & Dataset == "ISG") %>% dplyr::select(VariableName) %>% 
-  na.omit() %>% pull()
-sampleID <- c("IDJK", "IDCL", "SENWGT")
-ScalesM2 <- c("bT_GNDREQ1", "bT_GNDREQ2", "bT_GNDREQ5", "bT_GNDREQ3", "bT_GNDREQ4", "bT_GNDREQ6") #Using only scales that are in all cycles
-
-Man_cate <- VarsToUse %>%  filter(Domain %in% "Background questionnaires" & Dataset == "ISG") %>% 
-  dplyr::select(VariableName) %>% pull()
-#Filter for variables not yet calculated
-Man_cate <- c(Man_cate[!grepl("*[1-9]$", Man_cate)], Man_cate[grepl("^T_PROTES*", Man_cate)])
-
-Man_cont <- VarsToUse %>%  filter(Domain %in% "Contextual" & Dataset == "ISG") %>% dplyr::select(VariableName) %>% 
-  pull() %>% na.omit()
-```
-
 Multiple countries had participated in the ICCS study during the last three cycles (detailed participation of the selected countries can be found in Table \@ref(tab:tableA1) in the Annex). Some of the participating countries or regions can be classified by the following grouping:    
 \newline 
 a)	Nordic: Denmark, Finland, Norway, Sweden.  

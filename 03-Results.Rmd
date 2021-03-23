@@ -1,16 +1,2756 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 
 # Results
 
-## By cycle
+- European countries: Belgium (Flanders), Netherlands
+- South American countries:  Chile, Colombia  
+
+
+```{r}
+library(MplusAutomation)
+library(gridExtra)
+
+ISC_lvRlca <- data_model %>% 
+  dplyr::select(all_of(Id), all_of(sample), 
+                all_of(Scales) 
+                #all_of(Schl_cate), 
+                #all_of(Stud_cate), 
+                #all_of(Scores)
+                ) 
+
+load("data/MplusModels_EU.RData")
+
+load("data/MplusModels_LA.RData")
+
+load("data/MplusModels_RegionMG.RData")
+
+classes2EU <- c("Fully egalitarian",
+                "Competition- driven sexism")
+classes2LA <- c("Fully egalitarian",
+                "Competition- driven sexism")
+
+classes3EU <- c("Fully egalitarian",
+                "Competition- driven sexism",
+                "Not every way egalitarian")
+classes3LA <- c("Fully egalitarian",
+                "Competition- driven sexism",
+                "Anti competition- driven sexism")
+classes3R <- c("Fully egalitarian",
+                "Competition- driven sexism",
+                "Other")
+classes4EU <- c("Fully egalitarian",
+                "Competition- driven sexism",
+                "Not every way egalitarian",
+                "Strong competition- driven sexism")
+classes4LA <- c("Fully egalitarian",
+                "Competition- driven sexism",
+                "Not involved",
+                "Not every way egalitarian")
+
+```
+
+## By region
+
+Latent class analysis with 1 to 4-class model were performed in order to evaluate the model fit of each one of them. The results are summarized in \@ref(tab:modelfitlca).  
+\newline 
+The model with a single class has the largest AIC (28.445/13.672), BIC (28.474/13.699), and ABIC (28.461/13.686) values for Latin-American and European countries respectively, indicating that this model fits data worse than all other models in both regions. In addition, the P-values of the VLMR test, and LMR in the 2-class model are all < 0.0001; this means that both tests reject the single-class model in favor of a model with at least two latent classes. In other words, there exists heterogeneity in the target population in regard to attitudes towards gender equality.  
+\newline 
+In the 4-class model for both regions, the LMR LR and VLMR are not statistically significant (P > 0.05) and the had the lowest AIC values. That is, the two tests are in favor of more then 3 classes. 
+\newline 
+In contrast, BIC values are all smaller in the 3-class model than those in the 4-class model; thus we consider that the models with more than 3 classes are not preferred. 
+The entropy starts to decrease after including more than 3 classes in the Europe model, this is different for the Latin-American model where the entropy increase with 4 classes, this would suggest that a model with less than 4 classes is preferred. 
+
+Together with the percentage of reduction in the log likelihood value, that indicate that by adding two classes to the model the log-likelihood is reduced in a 8.7% in the South America model and 6.9% in Europe model, and this value is only increased in 2.2% and 1.0% respectively, if the model is a 3-class model and finally this value is reduced close to 0 if more than 3 classes are included.
+\newline 
+Now, the preferred model must be either the 3-class or the 4-class model considering the residuals of each model in \@ref(fig:resid), where all values are around -1.96 and 1.96 . 
+
+Theoretically we tend to determine that the 3-class LCA model is the preferred model in both regions as the fourth class tend to split a small amount of the third class into a new one. We will show later that the classes identified by the 3-class model are interpretable and more representatives for the countries that are being considered in this study. And in particularly that 2-classes can be compared across regions. 
+
+\blandscape  
+```{r modelfitlca, echo=FALSE}
+#--Model fit
+
+Modelfit("lca_EU", title = "Model fit statistics European models") %>% 
+pack_rows("Europe",1,4) %>% 
+    row_spec(c(3), bold = TRUE) %>% 
+    print()
+cat('\n')
+cat('\n')
+
+Modelfit("lca_LA", title = "Model fit statistics South American models") %>% 
+  pack_rows("Latin-America",1,4) %>% 
+    row_spec(c(3), bold = TRUE) %>% 
+    print()
+cat('\n')
+cat('\n')
+
+
+```
+\elandscape
+
+```{r resid, fig.width=6, fig.height=4, fig.cap="Bivariate model fit standardized residuals", fig.pos='H'}
+#Bivariate residuals
+#Bivariate residuals
+residuals_EU <-  data.frame(cl1 = lca_EU$EU_lca_C3cl1.out$tech10$bivar_model_fit_info$z,
+                            cl2 = lca_EU$EU_lca_C3cl2.out$tech10$bivar_model_fit_info$z,
+                            cl3 = lca_EU$EU_lca_C3cl3.out$tech10$bivar_model_fit_info$z,
+                            cl4 = lca_EU$EU_lca_C3cl4.out$tech10$bivar_model_fit_info$z)
+residuals_EU <- residuals_EU %>% mutate(x = 1:nrow(residuals_EU)) %>% 
+  reshape2::melt(id.vars = c("x"))
+
+p1 <- residuals_EU %>% ggplot() + 
+  geom_point(aes(x = x, y = value, color = variable)) +
+  geom_hline(yintercept=c(-1.96,1.96), linetype = "dashed", size = 0.3, color = "gray") +
+  scale_fill_grey() + theme_bw() +
+  facet_wrap(variable~.) +
+  ggtitle("EU model") +
+  labs(x = "Parameters", y="Standardized residuals", color = "Number of classes")  +
+  theme(legend.position = "none",
+        strip.text.y = element_text(size = 8),
+        legend.spacing.y = unit(-0.2, 'cm'),
+        title = element_text(size = 9),
+        axis.title = element_text(size = 8), 
+        axis.text.x = element_blank(), 
+        axis.text.y = element_text(size = 8)) +
+  scale_color_brewer(type = "qual", palette = "Dark2")
+residuals_LA <-  data.frame(cl1 = lca_LA$LA_lca_C3cl1.out$tech10$bivar_model_fit_info$z,
+                            cl2 = lca_LA$LA_lca_C3cl2.out$tech10$bivar_model_fit_info$z,
+                            cl3 = lca_LA$LA_lca_C3cl3.out$tech10$bivar_model_fit_info$z,
+                            cl4 = lca_LA$LA_lca_C3cl4.out$tech10$bivar_model_fit_info$z)
+residuals_LA <- residuals_LA %>% mutate(x = 1:nrow(residuals_LA)) %>% 
+  reshape2::melt(id.vars = c("x"))
+
+p2 <- residuals_LA %>% ggplot() + 
+  geom_point(aes(x = x, y = value, color = variable)) +
+  geom_hline(yintercept=c(-1.96,1.96), linetype = "dashed", size = 0.3, color = "gray") +
+  scale_fill_grey() + theme_bw() +
+  facet_wrap(variable~.) +
+  ggtitle("South America model") +
+  labs(x = "Parameters", y="Standardized residuals", color = "Number of classes")  +
+  theme(legend.position = "none", legend.box="vertical",
+        strip.text.y = element_text(size = 8),
+        legend.spacing.y = unit(-0.2, 'cm'),
+        title = element_text(size = 9),
+        axis.title = element_text(size = 8), 
+        axis.text.x = element_blank(), 
+        axis.text.y = element_text(size = 8)) +
+  scale_color_brewer(type = "qual", palette = "Dark2")
+
+grid.arrange(p1,p2, ncol = 2)
+```
+
+2-classes models  
+
+Two clear classes can be identified in this first model, in the **Fully egalitarian** group the estimated probabilities to agree to the four items *Men and women should have equalopportunities to take part in government*,*Men and women should have thesame rights in every way*,*Not many jobs available, men should have more right to a job than women* and *Men are better qualified to be political leaders than women* are higher than 0.9. In the second class called **Competition-driven sexism** the estimated probabilities to agree to the first 2 items are higher than 0.8 in the European model and higher than 0.9 in the South American model. For the last two items, the estimated probabilities to agree are not higher than 0.4 in both models. 
+
+The final class proportions for the latent classes based on the estimated 2-class model are different in both regions, 82.9% and 62.5% of the individuals are classified in the first class in the European and South American model respectively, meanwhile the remaining 17.1% and 37.5% respectively are classified in the second class.  In the table \@ref(tab:lca2_eu) it is possible to observe the results of the model in probability scale of agree to each respective item for the latent classes for the European model and in table \@ref(tab:lca2_la) for the South American model. In figure \@ref(fig:sizelca2), the probabilities of each response category, Disagree and Agree for 2-class model are drawn. 
+
+Items that reference to a negative attitude toward women such as *Not many jobs available, men should have more right to a job than women* and *Men are better qualified to be political leaders than women* are the ones that the estimated probability to agree to this items are lower than the other items in the second class. Remember that these items were inversely coded in order to evaluate the attitude in favor of woman.  
+
+```{r, echo=FALSE}
+#----EU
+lca_EU_C3cl2 <- lca_EU$EU_lca_C3cl2.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) 
+
+lca_EU_C3cl2$Class <- factor(lca_EU_C3cl2$Class, 
+                             levels = c("1", "2"), 
+                             labels = classes2EU)
+
+lc2_EU <- rbind(cbind(Cycle = "Europe", lca_EU_C3cl2))
+
+sizelca2_EU <- lca_EU$EU_lca_C3cl2.out$class_counts$modelEstimated %>% dplyr::select(-count) %>% 
+  rename_with(~ c("Europe", "Class")[which(c("proportion", "class") == .x)], .cols = c("proportion", "class")) %>% 
+  mutate(Class = factor(case_when(
+    Class == 1 ~ 1, 
+    Class == 2 ~ 2), levels = 1:2, labels = classes2EU))
+
+sizelca2_EU <- sizelca2_EU %>% 
+  reshape2::melt(id.vars = c("Class"), variable.name = "Cycle") %>% 
+  dplyr::arrange(Cycle) %>% 
+  dplyr::group_by(Cycle) %>%
+  dplyr::mutate(countT= sum(value, na.rm = TRUE)) %>%
+  dplyr::group_by(Class) %>%
+  dplyr::mutate(per=value/countT) %>% 
+  dplyr::select(Cycle, Class, per) 
+```
+
+```{r, echo=FALSE}
+
+lci2_EU <- VarClass(lc2_EU)
+lci2_EU %>% group_by(Cycle, Class, param) %>% 
+  filter(category == 1) %>% 
+  select(Cycle, param, Class, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value >= 0.8, "Myblue", 
+                                                 ifelse(value < 0.8 & value > 0.49, "Mygreen","Myred")))) %>% 
+  reshape2::dcast(param  + Cycle ~ Class) %>% select(-Cycle) %>% 
+  kbl(caption = paste0("Probabilities to agree each item 2-class European model \\label{tab:lca2_eu}"),
+      booktabs = TRUE, longtable = TRUE, align = "llrr", row.names = FALSE, digits = 3, escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 9, full_width = FALSE) %>% 
+  column_spec(1, width = "20em") %>%  
+  column_spec(2:3, width = "7em", bold = TRUE) %>%  
+  collapse_rows(1, valign = "top") %>% 
+  print()
+#graphclass(lc2_EU, nclass = 2, orden = c(1,2,3,4) ,title = "LCA with 2 classes", mg = FALSE)
+```
+
+```{r, echo=FALSE}
+#----LA
+lca_LA_C3cl2 <- lca_LA$LA_lca_C3cl2.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) 
+
+lca_LA_C3cl2$Class <- factor(lca_LA_C3cl2$Class, 
+                             levels = c("2", "1"), labels = classes2LA)
+
+lc2_LA <- rbind(cbind(Cycle = "South America", lca_LA_C3cl2))
+
+sizelca2_LA <- lca_LA$LA_lca_C3cl2.out$class_counts$modelEstimated %>% dplyr::select(-count) %>% 
+  rename_with(~ c("South America", "Class")[which(c("proportion", "class") == .x)], .cols = c("proportion", "class")) %>% 
+  mutate(Class = factor(case_when(
+    Class == 1 ~ 2, 
+    Class == 2 ~ 1), levels = 1:2, labels = classes2LA))
+
+sizelca2_LA <- sizelca2_LA %>% 
+  reshape2::melt(id.vars = c("Class"), variable.name = "Cycle") %>% 
+  dplyr::arrange(Cycle) %>% 
+  dplyr::group_by(Cycle) %>%
+  dplyr::mutate(countT= sum(value, na.rm = TRUE)) %>%
+  dplyr::group_by(Class) %>%
+  dplyr::mutate(per=value/countT) %>% 
+  dplyr::select(Cycle, Class, per) 
+```
+
+```{r, echo=FALSE}
+
+lci2_LA <- VarClass(lc2_LA)
+lci2_LA %>% group_by(Cycle, Class, param) %>% 
+  filter(category == 1) %>% 
+  select(Cycle, param, Class, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value >= 0.8, "Myblue", 
+                                                 ifelse(value < 0.8 & value > 0.49, "Mygreen","Myred")))) %>% 
+  reshape2::dcast(param  + Cycle ~ Class) %>% select(-Cycle) %>% 
+  kbl(caption = paste0("Probabilities to agree each item 2-class South American model \\label{tab:lca2_la}"),
+      booktabs = TRUE, longtable = TRUE, align = "llrr", row.names = FALSE, digits = 3, escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 9, full_width = FALSE) %>% 
+  column_spec(1, width = "20em") %>%  
+  column_spec(2:3, width = "7em", bold = TRUE) %>%  
+  collapse_rows(1, valign = "top") %>% 
+  print()
+#graphclass(lc2_LA, nclass = 2, orden = c(1,2,3,4) ,title = "LCA with 2 classes", mg = FALSE)
+```
+
+```{r sizelca2, echo=FALSE, fig.cap="Response category probabilities for 2-classes model", fig.width=5, fig.height=4, fig.pos='H'}
+
+lc2 <- rbind(lc2_EU,lc2_LA)
+sizelca2 <- rbind(sizelca2_EU, sizelca2_LA)
+
+HighProb(lc2, sizelca2,  orden = c(1,2,3,4), title = "Response categories probabilities and class size for\n 2-classes model")
+
+```
+
+\newpage  
+
+3-classes models  
+
+When 3 classes are incorporated to the model, tables \@ref(tab:lca3_la) and \@ref(tab:lca3_eu), the first class **Fully egalitarian** class remains stable in terms of estimated probabilities for agree to each item. The class estimated sizes increase in both regions, from 82.9% to 89.5% in the European model, and from 62.5% to 67%, as can be seen in \@ref(fig:sizelca3). The second class previously called as **Competition-driven sexism** class is now clearly divided into new different classes that differ between regions.
+For the European model a 7.4% of the sample is classified into the Competition driven sexism class, compared to the South American model that had a 31.5% of the remaining sample. The estimated probabilities for this class are similar for the first 2 items between regions, but for the sexist items the estimations of agreeing are much lower in the European model, close to 0 (0.1 and 0.0 for item 4 and 6), meanwhile in the South American model these estimations are around 0.3. 
+The third class is clearly different between regions, in the European model, this class was called as **Not egalitarian in every way**, that indicate that 0.5 probability to agree to most of the items but 0.1 to the item **Men and women should have the same rights in every way**. This class classified the remaining 3% of the sample.
+On the other hand, for the South American model, the third class called **Anti competition-driven sexism** shows the opposite behavior as the second class, now the sexism items has the highest probabilities to agree, around 0.8. This class contain 1.5% of the sample.  
+
+```{r, echo=FALSE}
+#----EU
+lca_EU_C3cl3 <- lca_EU$EU_lca_C3cl3.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) 
+
+lca_EU_C3cl3$Class <- factor(lca_EU_C3cl3$Class, 
+                             levels = c("2", "3", "1"), labels = classes3EU)
+
+lc3_EU <- rbind(cbind(Cycle = "Europe", lca_EU_C3cl3))
+
+sizelca3_EU <- lca_EU$EU_lca_C3cl3.out$class_counts$modelEstimated %>% 
+  dplyr::select(-count) %>% 
+  rename_with(~ c("Europe", "Class")[which(c("proportion", "class") == .x)], .cols = c("proportion", "class")) %>% 
+  mutate(Class =  factor(case_when(
+    Class == 1 ~ 3, 
+    Class == 2 ~ 1,
+    Class == 3 ~ 2), levels = 1:3, labels = classes3EU))
+
+sizelca3_EU <- sizelca3_EU %>% 
+  reshape2::melt(id.vars = c("Class"), variable.name = "Cycle") %>% 
+  dplyr::arrange(Cycle) %>% 
+  dplyr::group_by(Cycle) %>%
+  dplyr::mutate(countT= sum(value, na.rm = TRUE)) %>%
+  dplyr::group_by(Class) %>%
+  dplyr::mutate(per=value/countT) %>% 
+  dplyr::select(Cycle, Class, per) 
+#graphclass(lc3_EU, nclass = 3, orden = c(1,2,3,4) ,title = "LCA with 3 classes-EU", mg = FALSE)
+
+```
+
+```{r, echo=FALSE}
+lci3_EU <- VarClass(lc3_EU)
+lci3_EU %>% group_by(Cycle, Class, param) %>% 
+  filter(category == 1) %>% 
+  select(Cycle, param, Class, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value >= 0.8, "Myblue", ifelse(value < 0.8 & value >= 0.5, "Mygreen", "Myred")))) %>% 
+  reshape2::dcast(param  + Cycle ~ Class) %>% select(-Cycle) %>% 
+  kbl(caption = paste0("Probabilities to agree each item 3-class European model \\label{tab:lca3_eu}"), booktabs = TRUE, longtable = TRUE, 
+      align = "lrrr", row.names = FALSE, digits = 3, escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 9, full_width = FALSE) %>% 
+  column_spec(1, width = "20em") %>%  
+  column_spec(2:4, width = "5em", bold = TRUE) %>%  
+  collapse_rows(1, valign = "top") %>% 
+  print()
+```
+
+```{r, echo=FALSE}
+#----LA
+lca_LA_C3cl3 <- lca_LA$LA_lca_C3cl3.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) 
+
+lca_LA_C3cl3$Class <- factor(lca_LA_C3cl3$Class, 
+                             levels = c("3", "1", "2"), labels = classes3LA)
+
+lc3_LA <- rbind(cbind(Cycle = "South America", lca_LA_C3cl3))
+
+sizelca3_LA <- lca_LA$LA_lca_C3cl3.out$class_counts$modelEstimated %>% 
+  dplyr::select(-count) %>% 
+  rename_with(~ c("South America", "Class")[which(c("proportion", "class") == .x)], .cols = c("proportion", "class")) %>% 
+  mutate(Class =  factor(case_when(
+    Class == 1 ~ 2, 
+    Class == 2 ~ 3,
+    Class == 3 ~ 1), levels = 1:3, labels = classes3LA))
+
+sizelca3_LA <- sizelca3_LA %>% 
+  reshape2::melt(id.vars = c("Class"), variable.name = "Cycle") %>% 
+  dplyr::arrange(Cycle) %>% 
+  dplyr::group_by(Cycle) %>%
+  dplyr::mutate(countT= sum(value, na.rm = TRUE)) %>%
+  dplyr::group_by(Class) %>%
+  dplyr::mutate(per=value/countT) %>% 
+  dplyr::select(Cycle, Class, per) 
+#graphclass(lc3_LA, nclass = 3, orden = c(1,2,3,4) ,title = "LCA with 3 classes - LA", mg = FALSE)
+```
+
+```{r, echo=FALSE}
+
+lci3_LA <- VarClass(lc3_LA)
+lci3_LA %>% group_by(Cycle, Class, param) %>% 
+  filter(category == 1) %>% 
+  select(Cycle, param, Class, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value >= 0.8, "Myblue", ifelse(value < 0.8 & value >= 0.5, "Mygreen", "Myred")))) %>% 
+  reshape2::dcast(param  + Cycle ~ Class) %>% select(-Cycle) %>% 
+  kbl(caption = paste0("Probabilities to agree each item 3-class South American model \\label{tab:lca3_la}"), booktabs = TRUE, longtable = TRUE, 
+      align = "lrrr", row.names = FALSE, digits = 3, escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 9, full_width = FALSE) %>% 
+  column_spec(1, width = "20em") %>%  
+  column_spec(2:4, width = "5em", bold = TRUE) %>%  
+  collapse_rows(1, valign = "top") %>% 
+  print()
+```
+
+```{r sizelca3, echo=FALSE, fig.cap="Response category probabilities for 3-classes model", fig.width=6, fig.height=6, fig.pos='H'}
+
+lc3 <- rbind(lc3_EU,lc3_LA)
+sizelca3 <- rbind(sizelca3_EU, sizelca3_LA)
+
+HighProb(lc3, sizelca3, orden = c(1,2,3,4), title = "Response category probabilities and class size for\n 3-classes model")
+
+```
+
+\newpage  
+
+4-classes models  
+As the optimal model according to the model fit statistics, we can identify again the first class **Fully egalitarian** in figure \@ref(fig:sizelca4), for the European model with 81.3% of the sample and 76% for the South American model sample. 
+
+The second class identified in both models is the **Competition driven sexism** class with 15% of the sample in the European model but with higher probabilities to agree (around 0.3) to the sexist items compared to the South American model, table \@ref(tab:lca4_eu), where the estimated probabilities to agree to these items is 0.1, with a sample size of 17.4%.
+
+Third class identified previously in the 3-class European model is now identify in the South American model, where a group of individuals that tend to agree with most of the items but **Men and women should have the same rights in every way**, called **Not egalitarian in every way**, with a 2.4% and 2.9% of the sample in the European and South American model respectively.
+
+Last class identified is different in both models. In the European this class called **Not egalitarian** classifies individuals that are more likely to disagree with most of the items, with a 1.2% of the sample. On the other hand, the South American model identifies a class called **Not involved** where most of the individuals are not likely to choose either agreement or disagreement with the items, \@ref(tab:lca4_la), even though a slight inclination to disagree with sexist related items, this class includes the 3.7% of the South American sample.
+
+```{r, echo=FALSE}
+#----EU
+lca_EU_C3cl4 <- lca_EU$EU_lca_C3cl4.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) 
+
+lca_EU_C3cl4$Class <- factor(lca_EU_C3cl4$Class, 
+                             levels = c("3", "4", "1", "2"), labels = classes4EU)
+
+lc4_EU <- rbind(cbind(Cycle = "Europe", lca_EU_C3cl4))
+#graphclass(lc4_EU, nclass = 4, orden = c(1,2,3,4) ,title = "LCA with 4 classes-EU", mg = FALSE)
+sizelca4_EU <- lca_EU$EU_lca_C3cl4.out$class_counts$modelEstimated %>% 
+  dplyr::select(-count) %>% 
+  rename_with(~ c("Europe", "Class")[which(c("proportion", "class") == .x)], .cols = c("proportion", "class")) %>% 
+  mutate(Class =  factor(case_when(
+    Class == 1 ~ 3, 
+    Class == 2 ~ 4,
+    Class == 3 ~ 1,
+    Class == 4 ~ 2), levels = 1:4, labels = classes4EU))
+
+sizelca4_EU <- sizelca4_EU %>% 
+  reshape2::melt(id.vars = c("Class"), variable.name = "Cycle") %>% 
+  dplyr::arrange(Cycle) %>% 
+  dplyr::group_by(Cycle) %>%
+  dplyr::mutate(countT= sum(value, na.rm = TRUE)) %>%
+  dplyr::group_by(Class) %>%
+  dplyr::mutate(per=value/countT) %>% 
+  dplyr::select(Cycle, Class, per) 
+```
+
+```{r, echo=FALSE}
+lci4_EU <- VarClass(lc4_EU)
+lci4_EU %>% group_by(Cycle, Class, param) %>% 
+  filter(category == 1) %>% 
+  select(Cycle, param, Class, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value >= 0.8, "Myblue", ifelse(value < 0.8 & value >= 0.5, "Mygreen", "Myred")))) %>% 
+  reshape2::dcast(param  + Cycle ~ Class) %>% select(-Cycle) %>% 
+  kbl(caption = paste0("Probabilities to agree each item 4-class European model \\label{tab:lca4_eu}"), booktabs = TRUE, longtable = TRUE, 
+      align = "lrrrr", row.names = FALSE, digits = 3, escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 9, full_width = FALSE) %>% 
+  column_spec(1, width = "20em") %>%  
+  column_spec(2:5, width = "5em", bold = TRUE) %>%  
+  collapse_rows(1, valign = "top") %>% 
+  print()
+
+```
+
+```{r, echo=FALSE}
+#----LA
+lca_LA_C3cl4 <- lca_LA$LA_lca_C3cl4.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) 
+
+lca_LA_C3cl4$Class <- factor(lca_LA_C3cl4$Class, 
+                             levels = c("3", "4", "2", "1"), labels = classes4LA)
+
+lc4_LA <- rbind(cbind(Cycle = "South America", lca_LA_C3cl4))
+#graphclass(lc4_LA, nclass = 4, orden = c(1,2,3,4) ,title = "LCA with 4 classes - LA", mg = FALSE)
+sizelca4_LA <- lca_LA$LA_lca_C3cl4.out$class_counts$modelEstimated %>% 
+  dplyr::select(-count) %>% 
+  rename_with(~ c("South America", "Class")[which(c("proportion", "class") == .x)], .cols = c("proportion", "class")) %>% 
+  mutate(Class =  factor(case_when(
+    Class == 1 ~ 4, 
+    Class == 2 ~ 3,
+    Class == 3 ~ 1,
+    Class == 4 ~ 2), levels = 1:4, labels = classes4LA))
+
+sizelca4_LA <- sizelca4_LA %>% 
+  reshape2::melt(id.vars = c("Class"), variable.name = "Cycle") %>% 
+  dplyr::arrange(Cycle) %>% 
+  dplyr::group_by(Cycle) %>%
+  dplyr::mutate(countT= sum(value, na.rm = TRUE)) %>%
+  dplyr::group_by(Class) %>%
+  dplyr::mutate(per=value/countT) %>% 
+  dplyr::select(Cycle, Class, per) 
+```
+
+```{r, echo=FALSE}
+
+lci4_LA <- VarClass(lc4_LA)
+lci4_LA %>% group_by(Cycle, Class, param) %>% 
+  filter(category == 1) %>% 
+  select(Cycle, param, Class, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value >= 0.8, "Myblue", ifelse(value < 0.8 & value >= 0.5, "Mygreen", "Myred")))) %>% 
+  reshape2::dcast(param  + Cycle ~ Class) %>% select(-Cycle) %>% 
+  kbl(caption = paste0("Probabilities to agree each item 4-class South American model \\label{tab:lca4_la}"), booktabs = TRUE, longtable = TRUE, 
+      align = "lrrrr", row.names = FALSE, digits = 3, escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 9, full_width = FALSE) %>% 
+  column_spec(1, width = "20em") %>%  
+  column_spec(2:5, width = "5em", bold = TRUE) %>%  
+  collapse_rows(1, valign = "top") %>% 
+  print()
+
+```
+
+```{r sizelca4, echo=FALSE, fig.cap="Response category probabilities for 4-classes model", fig.width=6, fig.height=6, fig.pos='H'}
+lc4 <- rbind(lc4_EU,lc4_LA)
+sizelca4 <- rbind(sizelca4_EU, sizelca4_LA)
+
+HighProb(lc4, sizelca4, orden = c(1,2,3,4), title = "Response category probabilities and class size for\n 4-classes model")
+
+```
+
+
+\newpage  
 
 ## By country
 
+```{r}
+load("data/MplusModels_ByCountryC3.RData")
+CNT <- c("BFL", "CHL", "COL", "NLD")
+```
+
+```{r }
+ByCNTlcaC3 <- list(lca1 = ByCountry_lca1$C3,
+                   lca2 = ByCountry_lca2$C3,
+                   lca3 = ByCountry_lca3$C3,
+                   lca4 = ByCountry_lca4$C3) 
+
+ByCNTlca_C3 <- data.frame(NULL)
+
+for(y in 1:4){
+  for (j in 1:length(CNT)) {
+    lcabcC3 <- cbind(CNT = CNT[j], Cycle = ifelse(CNT[j] %in% c("BFL", "NLD"), "Europe", ifelse(CNT[j] %in% c("CHL", "COL"), "South America", NA)),
+               eval(parse(text=paste0("ByCNTlcaC3$lca",y,"$data.MplusModels.ByCountry.lca_",CNT[j],"_C3cl",y,".out$summaries"))))
+    ByCNTlca_C3 <- plyr::rbind.fill(ByCNTlca_C3, lcabcC3)
+  }
+}
+```
+
+\blandscape 
+```{r modelfitbycntryc3}
+ModelfitByContry(ByCNTlca_C3,title = "Model fit statistics by country") %>% 
+  pack_rows("Europe", 1, 8) %>%
+  pack_rows("Belgium (Flanders)", 1, 4) %>%
+  pack_rows("Nederlands", 5, 8) %>%
+  pack_rows("South America", 9, 16) %>%
+  pack_rows("Chile", 9, 12) %>%
+  pack_rows("Colombia", 13, 16) %>% 
+  row_spec(c(2,6,11,15), bold = TRUE)
+  
+```
+\elandscape  
+
+\newpage  
+
+2-classes  
+
+```{r }
+ByCNTlca2C3 <- ByCountry_lca2[[1]] 
+ByCNTlca_C3cl2 <- NULL
+warnByCNTlca_C3cl2 <- NULL
+
+for (j in 1:length(CNT)) {
+  warnByCNTlca_C3cl2[CNT[j]] <- eval(parse(text=paste0("list(",CNT[j], " = ByCNTlca2C3$data.MplusModels.ByCountry.lca_",CNT[j],"_C3cl2.out$warnings)")))
+  
+  lcascC3 <- cbind(CNT = CNT[j], Cycle = "2016",
+               eval(parse(text=paste0("ByCNTlca2C3$data.MplusModels.ByCountry.lca_",CNT[j],"_C3cl2.out$parameters$probability.scale"))))
+  ByCNTlca_C3cl2 <- rbind(ByCNTlca_C3cl2, lcascC3)
+}
+
+ByCNTlca_C3cl2_LA <- ByCNTlca_C3cl2 %>% filter(CNT %in% c("CHL", "COL")) %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = "South America", ClassN = factor(case_when(
+    CNT == "CHL" & Class == "1" ~ 2,
+    CNT == "CHL" & Class == "2" ~ 1,
+    CNT == "COL" & Class == "1" ~ 1,
+    CNT == "COL" & Class == "2" ~ 2
+  ), levels = c("1", "2"), labels = classes2LA))
+
+ByCNTlca_C3cl2_EU <- ByCNTlca_C3cl2 %>% filter(CNT %in% c("BFL", "NLD")) %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = "Europe", ClassN = factor(case_when(
+    CNT == "BFL" & Class == "1" ~ 2,
+    CNT == "BFL" & Class == "2" ~ 1,
+    CNT == "NLD" & Class == "1" ~ 2,
+    CNT == "NLD" & Class == "2" ~ 1
+  ), levels = c("1", "2"), labels = classes2EU),
+  )
+
+ByCNTlca2 <- rbind(ByCNTlca_C3cl2_LA, ByCNTlca_C3cl2_EU)
+
+```
+
+
+```{r }
+#Extracting patterns
+SizeByCNTlca_C3cl2 <- NULL
+for (j in 1:length(CNT)) {
+  lcasz3 <- cbind(CNT = CNT[j], Cycle = "2019",eval(parse(text=paste0("ByCNTlca2C3$data.MplusModels.ByCountry.lca_",CNT[j],"_C3cl2.out$class_counts$modelEstimated"))))
+  SizeByCNTlca_C3cl2 <- rbind(SizeByCNTlca_C3cl2, lcasz3)
+}
+sizelca2LA <- SizeByCNTlca_C3cl2 %>% filter(CNT %in% c("CHL", "COL")) %>% 
+    rename_with(~ c("2016")[which(c("count") == .x)], .cols = c("count")) %>% 
+    mutate(Group = "South America",
+           ClassN = factor(case_when(
+   #-----
+    CNT == "CHL" & class == "1" ~ 2,
+    CNT == "CHL" & class == "2" ~ 1,
+    CNT == "COL" & class == "1" ~ 1,
+    CNT == "COL" & class == "2" ~ 2
+    #----
+    ), levels = 1:2, labels = classes2LA)) %>% dplyr::select(-proportion, -class, -Cycle) %>% 
+  select(Group, CNT, ClassN, `2016`) 
+
+sizelca2EU <- SizeByCNTlca_C3cl2 %>% filter(CNT %in% c("BFL", "NLD")) %>% 
+    rename_with(~ c("2016")[which(c("count") == .x)], .cols = c("count")) %>% 
+    mutate(Group = "Europe",
+      ClassN = factor(case_when(
+   #-----
+    CNT == "BFL" & class == "1" ~ 2,
+    CNT == "BFL" & class == "2" ~ 1,
+    CNT == "NLD" & class == "1" ~ 2,
+    CNT == "NLD" & class == "2" ~ 1
+    #----
+    ), levels = 1:2, labels = classes2EU)) %>% dplyr::select(-proportion, -class, -Cycle) %>% 
+  select(Group, CNT, ClassN, `2016`) 
+
+sizelca2 <- sizelca2LA %>% bind_rows(sizelca2EU) %>% 
+  reshape2::melt(id.vars = c("Group","CNT", "ClassN"), variable.name = "Cycle") %>% 
+  dplyr::arrange(Group, CNT, Cycle) %>% 
+  dplyr::group_by(Group, CNT, Cycle) %>%
+  dplyr::mutate(countT= sum(value, na.rm = TRUE)) %>%
+  dplyr::group_by(Group, ClassN) %>%
+  dplyr::mutate(per=value/countT) %>% 
+  dplyr::select(CNT, Cycle, Group, ClassN, per) 
+
+```
+
+
+```{r}
+ByCNTlcign1 <- VarClass(ByCNTlca2) %>% filter(CNT %in% c("BFL", "NLD", "COL", "CHL")) 
+ByCNTlcign <- ByCNTlcign1 %>% group_by(CNT, Cycle, ClassN,  param) %>% filter(category == 1) %>% 
+  select(CNT, Cycle, param, ClassN, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value >= 0.8, "Myblue", 
+                                                 ifelse(value < 0.8 & value > 0.49, "Mygreen","Myred")))) %>% 
+  reshape2::dcast(CNT + param + Cycle ~ ClassN) %>% mutate(group = ifelse(CNT %in% c("BFL", "NLD"), "Europe", "South America")) %>% 
+  mutate(CNT = factor(CNT, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                      labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY)) 
+
+ByCNTlcign %>% ungroup() %>% arrange(group) %>% select(-Cycle, -group) %>% 
+  kbl(caption = "Probabilities to agree each item 2-class model by country", booktabs = TRUE, longtable = TRUE, 
+      align = "llrr", row.names = FALSE, digits = 3, col.names = c("Country","Item", classes2LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 9, full_width = FALSE) %>% 
+  column_spec(2, width = "19em") %>%  
+  column_spec(1, width = "4em") %>%  
+  column_spec(3:4, width = "4em") %>%  
+  collapse_rows(c(1), valign = "top") %>%
+  pack_rows("Europe", 1, 8) %>%
+  pack_rows("South America", 9, 16) %>%
+  print()
+```
+
+```{r SizeByCntry2, echo=FALSE}
+
+sizelca2 %>% 
+reshape2::dcast(CNT ~ Group + ClassN) %>% arrange(desc(.[[2]])) %>% 
+mutate(CNT = factor(CNT, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY)) %>% 
+kbl(caption = "Estimated class sizes 2-classes model by country", booktabs = TRUE, longtable = TRUE, row.names = FALSE, 
+    digits = 3, col.names = c("Country", classes2LA, classes2EU)) %>%
+kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"),
+              position = "left", font_size = 9, full_width = FALSE) %>%     
+column_spec(1, width = "10em") %>%     
+column_spec(2:5, width = "6em") %>% 
+add_header_above(c(" " = 1 , "Europe" = 2, "South America" = 2)) %>%
+print()
+  
+```
+
+
+```{r }
+ByCNTlca3C3 <- ByCountry_lca3[[1]] 
+```
+
+
+```{r }
+ByCNTlca_C3cl3 <- NULL
+warnByCNTlca_C3cl3 <- NULL
+
+for (j in 1:length(CNT)) {
+  warnByCNTlca_C3cl3[CNT[j]] <- eval(parse(text=paste0("list(",CNT[j], " = ByCNTlca3C3$data.MplusModels.ByCountry.lca_",CNT[j],"_C3cl3.out$warnings)")))
+  
+  lcascC3 <- cbind(CNT = CNT[j], Cycle = "2016",
+               eval(parse(text=paste0("ByCNTlca3C3$data.MplusModels.ByCountry.lca_",CNT[j],"_C3cl3.out$parameters$probability.scale"))))
+  ByCNTlca_C3cl3 <- rbind(ByCNTlca_C3cl3, lcascC3)
+}
+
+ByCNTlca_C3cl3_EU <- ByCNTlca_C3cl3 %>% filter(CNT %in% c("BFL", "NLD")) %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = "Europe", ClassN = factor(case_when(
+    #-----
+           CNT == "BFL" & Class == "1" ~ 2,
+           CNT == "BFL" & Class == "2" ~ 3,
+           CNT == "BFL" & Class == "3" ~ 1,
+           CNT == "NLD" & Class == "1" ~ 3,
+           CNT == "NLD" & Class == "2" ~ 1,
+           CNT == "NLD" & Class == "3" ~ 2
+           #----
+         ), levels = c("1", "2", "3"), labels = classes3EU))
+
+
+ByCNTlca_C3cl3_LA <- ByCNTlca_C3cl3 %>% filter(CNT %in% c("CHL", "COL")) %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = "South America", ClassN = factor(case_when(
+    #-----
+           CNT == "CHL" & Class == "1" ~ 2,
+           CNT == "CHL" & Class == "2" ~ 3,
+           CNT == "CHL" & Class == "3" ~ 1,
+           CNT == "COL" & Class == "1" ~ 3,
+           CNT == "COL" & Class == "2" ~ 1,
+           CNT == "COL" & Class == "3" ~ 2
+           #----
+         ), levels = c("1", "2", "3"), labels = classes3LA))
+
+ByCNTlca3 <- rbind(ByCNTlca_C3cl3_LA, ByCNTlca_C3cl3_EU)
+
+```
+
+```{r }
+#Extracting patterns
+SizeByCNTlca_C3cl3 <- NULL
+for (j in 1:length(CNT)) {
+  lcasz3 <- cbind(CNT = CNT[j], Cycle = "2019",
+                  eval(parse(text=paste0("ByCNTlca3C3$data.MplusModels.ByCountry.lca_",CNT[j],
+                                         "_C3cl3.out$class_counts$modelEstimated"))))
+  SizeByCNTlca_C3cl3 <- rbind(SizeByCNTlca_C3cl3, lcasz3)
+}
+
+sizelca3LA <- SizeByCNTlca_C3cl3 %>% filter(CNT %in% c("CHL", "COL")) %>% 
+    rename_with(~ c("2016")[which(c("count") == .x)], .cols = c("count")) %>% 
+    mutate(Group = "South America",
+           ClassN = factor(case_when(
+      #----
+           CNT == "CHL" & class == "1" ~ 2,
+           CNT == "CHL" & class == "2" ~ 3,
+           CNT == "CHL" & class == "3" ~ 1,
+           CNT == "COL" & class == "1" ~ 3,
+           CNT == "COL" & class == "2" ~ 1,
+           CNT == "COL" & class == "3" ~ 2
+          #----
+         ), levels = c("1", "2", "3"), labels = classes3LA)) %>% dplyr::select(-proportion, -class, -Cycle) %>% 
+  select(Group, CNT, ClassN, `2016`) 
+sizelca3EU <- SizeByCNTlca_C3cl3 %>% filter(CNT %in% c("BFL", "NLD")) %>% 
+    rename_with(~ c("2016")[which(c("count") == .x)], .cols = c("count")) %>% 
+    mutate(Group = "Europe",
+           ClassN = factor(case_when(
+      #----
+          CNT == "BFL" & class == "1" ~ 2,
+           CNT == "BFL" & class == "2" ~ 3,
+           CNT == "BFL" & class == "3" ~ 1,
+           CNT == "NLD" & class == "1" ~ 3,
+           CNT == "NLD" & class == "2" ~ 1,
+           CNT == "NLD" & class == "3" ~ 2
+          #----
+         ), levels = c("1", "2", "3"), labels = classes3EU)) %>% dplyr::select(-proportion, -class, -Cycle) %>% 
+  select(Group, CNT, ClassN, `2016`) 
+
+sizelca3 <- sizelca3LA %>% bind_rows(sizelca3EU) %>% 
+  reshape2::melt(id.vars = c("Group", "CNT", "ClassN"), variable.name = "Cycle") %>% 
+  dplyr::arrange(Group,CNT, Cycle) %>% 
+  dplyr::group_by(Group,CNT, Cycle) %>%
+  dplyr::mutate(countT= sum(value, na.rm = TRUE)) %>%
+  dplyr::group_by(Group, ClassN) %>%
+  dplyr::mutate(per=value/countT) %>% 
+  dplyr::select(CNT, Cycle, Group, ClassN, per) 
+
+```
+
+
+```{r}
+ByCNTlcign1 <- VarClass(ByCNTlca3) %>% filter(CNT %in% c("BFL", "NLD", "COL", "CHL")) 
+ByCNTlcign <- ByCNTlcign1 %>% group_by(CNT, Cycle, ClassN,  param) %>% filter(category == 1) %>% 
+  select(CNT, Cycle, param, ClassN, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value >= 0.8, "Myblue", 
+                                                 ifelse(value < 0.8 & value > 0.49, "Mygreen","Myred")))) %>% 
+  reshape2::dcast(CNT + param + Cycle ~ ClassN) %>% mutate(group = ifelse(CNT %in% c("BFL", "NLD"), "Europe", "South America")) %>% 
+  mutate(CNT = factor(CNT, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                      labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY)) 
+
+ByCNTlcign %>% ungroup() %>% arrange(group) %>% filter(group == "Europe") %>% select(CNT, param, all_of(classes3EU)) %>% 
+  kbl(caption = "Probabilities to agree each item 3-class European model by country", booktabs = TRUE, longtable = TRUE, 
+      align = "llrrr", row.names = FALSE, digits = 3, col.names = c("Country","Item", classes3EU), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 9, full_width = FALSE) %>% 
+  column_spec(2, width = "19em") %>%  
+  column_spec(1, width = "4em") %>%  
+  column_spec(3:5, width = "4em") %>%  
+  collapse_rows(c(1), valign = "top") %>%
+  print()
+
+
+ByCNTlcign %>% ungroup() %>% arrange(group) %>% filter(group == "South America") %>% select(CNT, param, all_of(classes3LA)) %>% 
+  kbl(caption = "Probabilities to agree each item 3-class South American model by country", booktabs = TRUE, longtable = TRUE, 
+      align = "lllrr", row.names = FALSE, digits = 3, col.names = c("Country","Item", classes3LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 9, full_width = FALSE) %>% 
+  column_spec(2, width = "19em") %>%  
+  column_spec(1, width = "4em") %>%  
+  column_spec(3:5, width = "4em") %>%  
+  collapse_rows(c(1), valign = "top") %>%
+  print()
+```
+
+```{r SizeByCntry3, echo=FALSE, fig.cap="Class proportions 3-Class model by country and year"}
+sizelca3 %>% filter(Group == "Europe") %>% 
+  reshape2::dcast(CNT ~ ClassN) %>% arrange(desc(.[[2]])) %>%
+  mutate(CNT = factor(CNT, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY)) %>% 
+  kbl(caption = "Estimated class sizes 3-classes Europe model by country", booktabs = TRUE, longtable = TRUE, row.names = FALSE, 
+      digits = 3, col.names = c("Country", classes3EU)) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"),
+                position = "left", font_size = 9, full_width = FALSE) %>%     
+  column_spec(1, width = "10em") %>%     
+  column_spec(2:4, width = "6em") %>% 
+  add_header_above(c(" " = 1 , "Europe" = 3)) %>%
+  print()
+  
+sizelca3 %>% filter(Group == "South America") %>% 
+  reshape2::dcast(CNT ~ ClassN) %>% arrange(desc(.[[2]])) %>% 
+  mutate(CNT = factor(CNT, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY)) %>% 
+  kbl(caption = "Estimated class sizes 3-classes South American model by country", booktabs = TRUE, longtable = TRUE, row.names = FALSE, 
+      digits = 3, col.names = c("Country", classes3LA)) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"),
+                position = "left", font_size = 9, full_width = FALSE) %>%     
+  column_spec(1, width = "10em") %>%     
+  column_spec(2:4, width = "6em") %>% 
+  add_header_above(c(" " = 1 , "South America" = 3)) %>%
+  print()
+  
+```
+
+```{r }
+ByCNTlca4C3 <- ByCountry_lca4[[1]] 
+```
+
+```{r }
+ByCNTlca_C3cl4 <- NULL
+warnByCNTlca_C3cl4 <- NULL
+
+for (j in 1:length(CNT)) {
+  warnByCNTlca_C3cl4[CNT[j]] <- eval(parse(text=paste0("list(",CNT[j], " = ByCNTlca4C3$data.MplusModels.ByCountry.lca_",CNT[j],"_C3cl4.out$warnings)")))
+  
+  lcascC3 <- cbind(CNT = CNT[j], Cycle = "2016",
+               eval(parse(text=paste0("ByCNTlca4C3$data.MplusModels.ByCountry.lca_",CNT[j],
+                                      "_C3cl4.out$parameters$probability.scale"))))
+  ByCNTlca_C3cl4 <- rbind(ByCNTlca_C3cl4, lcascC3)
+}
+
+
+ByCNTlca_C3cl4_LA <- ByCNTlca_C3cl4 %>% filter(CNT %in% c("CHL", "COL")) %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = "South America", ClassN = factor(case_when(
+    #-----
+           CNT == "CHL" & Class == "1" ~ 3,
+           CNT == "CHL" & Class == "2" ~ 1,
+           CNT == "CHL" & Class == "3" ~ 2,
+           CNT == "CHL" & Class == "4" ~ 4,
+           CNT == "COL" & Class == "1" ~ 3,
+           CNT == "COL" & Class == "2" ~ 2,
+           CNT == "COL" & Class == "3" ~ 4,
+           CNT == "COL" & Class == "4" ~ 1
+           #----
+         ), levels = c("1", "2", "3", "4"), labels = classes4LA))
+
+ByCNTlca_C3cl4_EU <- ByCNTlca_C3cl4 %>% filter(CNT %in% c("BFL", "NLD")) %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = "Europe", ClassN = factor(case_when(
+    #-----
+           CNT == "BFL" & Class == "1" ~ 3,
+           CNT == "BFL" & Class == "2" ~ 4,
+           CNT == "BFL" & Class == "3" ~ 1,
+           CNT == "BFL" & Class == "4" ~ 2,
+           CNT == "NLD" & Class == "1" ~ 2,
+           CNT == "NLD" & Class == "2" ~ 3,
+           CNT == "NLD" & Class == "3" ~ 4,
+           CNT == "NLD" & Class == "4" ~ 1
+           #----
+         ), levels = c("1", "2", "3", "4"), labels = classes4EU))
+
+ByCNTlca4 <- rbind(ByCNTlca_C3cl4_LA, ByCNTlca_C3cl4_EU)
+
+```
+
+```{r }
+#Extracting patterns
+SizeByCNTlca_C3cl4 <- NULL
+for (j in 1:length(CNT)) {
+  lcasz3 <- cbind(CNT = CNT[j], Cycle = "2016",
+                  eval(parse(text=paste0("ByCNTlca4C3$data.MplusModels.ByCountry.lca_",CNT[j],
+                                         "_C3cl4.out$class_counts$modelEstimated"))))
+  SizeByCNTlca_C3cl4 <- rbind(SizeByCNTlca_C3cl4, lcasz3)
+}
+
+sizelca4LA <- SizeByCNTlca_C3cl4 %>% filter(CNT %in% c("CHL", "COL")) %>% 
+    rename_with(~ c("2016")[which(c("count") == .x)], .cols = c("count")) %>% 
+    mutate(Group = "South America",
+           ClassN = factor(case_when(
+        #-----
+           CNT == "CHL" & class == "1" ~ 3,
+           CNT == "CHL" & class == "2" ~ 1,
+           CNT == "CHL" & class == "3" ~ 2,
+           CNT == "CHL" & class == "4" ~ 4,
+           CNT == "COL" & class == "1" ~ 3,
+           CNT == "COL" & class == "2" ~ 2,
+           CNT == "COL" & class == "3" ~ 4,
+           CNT == "COL" & class == "4" ~ 1
+           #----
+         ), levels = c("1", "2", "3", "4"), labels = classes4LA)) %>% dplyr::select(-proportion, -class, -Cycle) %>% 
+  select(Group, CNT, ClassN, `2016`) 
+
+sizelca4EU <- SizeByCNTlca_C3cl4 %>% filter(CNT %in% c("BFL", "NLD")) %>% 
+    rename_with(~ c("2016")[which(c("count") == .x)], .cols = c("count")) %>% 
+    mutate(Group = "Europe",
+           ClassN = factor(case_when(
+        #-----
+           CNT == "BFL" & class == "1" ~ 3,
+           CNT == "BFL" & class == "2" ~ 4,
+           CNT == "BFL" & class == "3" ~ 1,
+           CNT == "BFL" & class == "4" ~ 2,
+           CNT == "NLD" & class == "1" ~ 2,
+           CNT == "NLD" & class == "2" ~ 3,
+           CNT == "NLD" & class == "3" ~ 4,
+           CNT == "NLD" & class == "4" ~ 1
+           #----
+         ), levels = c("1", "2", "3", "4"), labels = classes4EU)) %>% dplyr::select(-proportion, -class, -Cycle) %>% 
+  select(Group, CNT, ClassN, `2016`) 
+
+sizelca4 <- sizelca4LA %>% bind_rows(sizelca4EU) %>% 
+  reshape2::melt(id.vars = c("Group", "CNT", "ClassN"), variable.name = "Cycle") %>% 
+  dplyr::arrange(Group, CNT, Cycle) %>% 
+  dplyr::group_by(Group, CNT, Cycle) %>%
+  dplyr::mutate(countT= sum(value, na.rm = TRUE)) %>%
+  dplyr::group_by(Group, ClassN) %>%
+  dplyr::mutate(per=value/countT) %>% 
+  dplyr::select(CNT, Cycle, Group, ClassN, per) 
+
+```
+
+```{r}
+ByCNTlcign1 <- VarClass(ByCNTlca4) %>% filter(CNT %in% c("BFL", "NLD", "COL", "CHL")) 
+ByCNTlcign <- ByCNTlcign1 %>% group_by(CNT, Cycle, ClassN,  param) %>% filter(category == 1) %>% 
+  select(CNT, Cycle, param, ClassN, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value >= 0.8, "Myblue", 
+                                                 ifelse(value < 0.8 & value > 0.49, "Mygreen","Myred")))) %>% 
+  reshape2::dcast(CNT + param + Cycle ~ ClassN) %>% mutate(group = ifelse(CNT %in% c("BFL", "NLD"), "Europe", "South America"))  %>% 
+  mutate(CNT = factor(CNT, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                      labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY)) 
+
+ByCNTlcign %>% ungroup() %>% arrange(group) %>% filter(group == "Europe") %>% select(CNT, param, all_of(classes4EU)) %>% 
+  kbl(caption = "Probabilities to agree each item 4-class Europe model by country", booktabs = TRUE, longtable = TRUE, 
+      align = "llrrrr", row.names = FALSE, digits = 3, col.names = c("Country","Item", classes4LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 9, full_width = FALSE) %>% 
+  column_spec(2, width = "19em") %>%  
+  column_spec(1, width = "4em") %>%  
+  column_spec(3:6, width = "4em") %>%  
+  collapse_rows(c(1), valign = "top") %>%
+  print()
+
+ByCNTlcign %>% ungroup() %>% arrange(group) %>% filter(group == "South America") %>% select(CNT, param, all_of(classes4LA)) %>% 
+  kbl(caption = "Probabilities to agree each item 4-class South American model by country", booktabs = TRUE, longtable = TRUE, 
+      align = "llrrrr", row.names = FALSE, digits = 3, col.names = c("Country","Item", classes4LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 9, full_width = FALSE) %>% 
+  column_spec(2, width = "19em") %>%  
+  column_spec(1, width = "4em") %>%  
+  column_spec(3:6, width = "4em") %>%  
+  collapse_rows(c(1), valign = "top") %>%
+  print()
+```
+
+```{r SizeByCntry4, echo=FALSE}
+sizelca4 %>% filter(Group == "Europe") %>% 
+  reshape2::dcast(CNT ~ ClassN) %>% arrange(desc(.[[2]])) %>% 
+  mutate(CNT = factor(CNT, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY)) %>% 
+  kbl(caption = "Estimated class sizes 4-classes Europe model by country", booktabs = TRUE, longtable = TRUE, row.names = FALSE, 
+      digits = 3, col.names = c("Country", classes4EU)) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"),
+                position = "left", font_size = 9, full_width = FALSE) %>%     
+  column_spec(1, width = "10em") %>%     
+  column_spec(2:5, width = "6em") %>% 
+  add_header_above(c(" " = 1 , "Europe" = 4)) %>%
+  print()
+
+sizelca4 %>% filter(Group == "South America") %>% 
+  reshape2::dcast(CNT ~ ClassN) %>% arrange(desc(.[[2]])) %>% 
+  mutate(CNT = factor(CNT, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY)) %>% 
+  kbl(caption = "Estimated class sizes 4-classes South American model by country", booktabs = TRUE, longtable = TRUE, row.names = FALSE, 
+      digits = 3, col.names = c("Country", classes4LA)) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"),
+                position = "left", font_size = 9, full_width = FALSE) %>%     
+  column_spec(1, width = "10em") %>%     
+  column_spec(2:5, width = "6em") %>% 
+  add_header_above(c(" " = 1 , "South American" = 4)) %>%
+  print()
+  
+```
+
+```{r lcabycntry}
+#ByGroupgraphclass(ByCNTlca2, nclass = 2, orden = c(1,2,3,4) ,title = "LCA with 2 classes", mg = FALSE)
+#ByGroupgraphclass(ByCNTlca3, nclass = 3, orden = c(1,2,3,4) ,title = "LCA with 3 classes", mg = FALSE)
+#ByGroupgraphclass(ByCNTlca4, nclass = 4, orden = c(1,2,3,4) ,title = "LCA with 4 classes", mg = FALSE)
+```
+
+```{r ProbByCntry2, echo=FALSE, fig.cap="Response category probabilities for 2-classes model by country", fig.width=6, fig.height=5, fig.pos='H'}
+
+ByGroupHighProbMG(ByCNTlca2, sizelca2, orden = c(1,2,3,4), n = 1:2, 
+                  title = "Response categories probabilities for 2-class model \nby country")
+
+```
+
+```{r ProbByCntry3, echo=FALSE, fig.cap="Response category probabilities for 3-classes model by country", fig.width=6, fig.height=5, fig.pos='H'}
+
+ByGroupHighProbMG(ByCNTlca3, sizelca3, orden = c(1,2,3,4), n = 1:3, 
+                  title = "Response categories probabilities for 3-class model \nby country")
+
+```
+
+```{r ProbByCntry4, echo=FALSE, fig.cap="Response category probabilities for 4-classes model by country", fig.width=6, fig.height=5, fig.pos='H'}
+
+ByGroupHighProbMG(ByCNTlca4, sizelca4, orden = c(1,2,3,4), n = 1:4, 
+                  title = "Response categories probabilities for 4-class model \nby country")
+
+```
+
+\newpage  
+
 ## Multigroup across countries
 
-## Multigroup across countries and cycles
+\blandscape  
 
-## Comparison of LC across countries and over time
+```{r modelfitMGCnt, echo=FALSE}
+cntEU <- c("BFL", "NLD")
+cntLA <- c("CHL", "COL")
 
-## Gender differences, gender class membership
+#--Model fit
+ModelfitMGCntry("MGCntry_EU", title = "European country multigroup model fit statistics") %>% 
+     pack_rows("2-classes", 1, 3) %>%
+     pack_rows("3-classes", 4, 6) %>% 
+     pack_rows("4-classes", 7, 9) %>% 
+     row_spec(c(2,5,8), bold = TRUE) %>% 
+    print()
+  cat('\n')
+  cat('\n')
 
-## Cycles differences
+ModelfitMGCntry("MGCntry_LA", title = "South America country multigroup model fit statistics") %>% 
+     pack_rows("2-classes", 1, 3) %>%
+     pack_rows("3-classes", 4, 6) %>% 
+     pack_rows("4-classes", 7, 9) %>% 
+     row_spec(c(2,5,8), bold = TRUE) %>% 
+    print()
+  cat('\n')
+  cat('\n')
+
+```
+\elandscape
+
+\newpage  
+
+Complete heterogeneity  
+
+```{r}
+
+MGCntyCHe_LA_C3cl2 <- MGCntry_LA$LA_MGCnty_C3cl2_1CHet.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = factor(sub('\\..*', '', Class), 
+                        levels = 1:length(cntLA), labels = cntLA),
+         Cycle = "South America",
+         ClassN = sub('*.\\.', '', Class), 
+         ClassN = factor(case_when(Group == "CHL" & ClassN == 1 ~ 1,
+                                   Group == "CHL" & ClassN == 2 ~ 2,
+                                   Group == "COL" & ClassN == 1 ~ 2,
+                                   Group == "COL" & ClassN == 2 ~ 1), 
+                         levels = c("1", "2"), labels = classes2LA))
+#graphclass(MGCntyCHe_LA_C3cl2, nclass = 2, orden = c(1,2,3,4) ,title = "MG Country Complete Heterogeneity LA")
+
+
+MGCntyCHe_EU_C3cl2 <- MGCntry_EU$EU_MGCnty_C3cl2_1CHet.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = factor(sub('\\..*', '', Class), 
+                        levels = 1:length(cntLA), labels = cntEU),
+            Cycle = "Europe",
+         ClassN = sub('*.\\.', '', Class), 
+         ClassN = factor(case_when(Group == "BFL" & ClassN == 1 ~ 2,
+                                   Group == "BFL" & ClassN == 2 ~ 1,
+                                   Group == "NLD" & ClassN == 1 ~ 1,
+                                   Group == "NLD" & ClassN == 2 ~ 2), 
+                         levels = c("1", "2"), labels = classes2EU))
+#graphclass(MGCntyCHe_EU_C3cl2, nclass = 2, orden = c(1,2,3,4) ,title = "MG Country Complete Heterogeneity EU")
+
+```
+
+```{r}
+lcignEU <- VarClass(MGCntyCHe_EU_C3cl2)
+lcignEU %>% group_by(ClassN, Group, param) %>% filter(category == 1) %>% 
+  select(param, ClassN, Group, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Group + ClassN) %>%
+  kbl(caption = "Probabilities to Agree each item 2-class Europe country complete heterogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "llrrrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes2EU, classes2LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "14em") %>%  
+  column_spec(2:5, width = "5em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Belgium (Flanders)" = 2, "Netherlands" = 2)) %>% 
+  print()
+cat('\n')
+cat('\n')
+lcignLA <- VarClass(MGCntyCHe_LA_C3cl2)
+lcignLA %>% group_by(ClassN, Group, param) %>% filter(category == 1) %>% 
+  select(param, ClassN, Group, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Group + ClassN) %>%
+  kbl(caption = "Probabilities to Agree each item 2-class, South America country complete heterogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "llrrrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes2LA, classes2LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "14em") %>%  
+  column_spec(2:5, width = "5em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Chile" = 2, "Colombia" = 2)) %>% 
+  print()
+cat('\n')
+cat('\n')
+```
+
+```{r, fig.height=6, fig.width=5}
+sizeMGGndr3CHe_EU <- MGCntry_EU$EU_MGCnty_C3cl2_1CHet.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("Europe", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 2,
+             Class == "1.2" ~ 1,
+             Class == "2.1" ~ 1,
+             Class == "2.2" ~ 2),
+             levels = 1:2, labels = classes2EU)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntEU)) %>% select(Group, ClassN, Europe)
+
+sizeMGGndr3CHe_EU <- sizeMGGndr3CHe_EU %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+sizeMGGndr3CHe_LA <- MGCntry_LA$LA_MGCnty_C3cl2_1CHet.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("South America", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 1,
+             Class == "1.2" ~ 2,
+             Class == "2.1" ~ 2,
+             Class == "2.2" ~ 1),
+             levels = 1:2, labels = classes2LA)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntLA)) %>% select(Group, ClassN, `South America`)
+
+sizeMGGndr3CHe_LA <- sizeMGGndr3CHe_LA %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+ProbMGCntyCHe_cl2 <- rbind(MGCntyCHe_LA_C3cl2,
+                           MGCntyCHe_EU_C3cl2) %>% 
+  mutate(Group = factor(Group, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY))
+  
+sizeMGCntyCHe_cl2 <- rbind(sizeMGGndr3CHe_LA,
+                        sizeMGGndr3CHe_EU) %>% 
+  mutate(Group = factor(Group, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY))
+HighProbMG(ProbMGCntyCHe_cl2, sizeMGCntyCHe_cl2, orden = c(1,2,3,4), n = 1:4, 
+           title = "Probabilities to agree and size for each 2-class country multigroup analysis\n Complete Heterogeneity")
+
+```
+
+```{r}
+
+MGCntyCHe_LA_C3cl3 <- MGCntry_LA$LA_MGCnty_C3cl3_1CHet.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = factor(sub('\\..*', '', Class), 
+                        levels = 1:length(cntLA), labels = cntLA),
+         Cycle = "South America",
+         ClassN = sub('*.\\.', '', Class), 
+         ClassN = factor(case_when(Group == "CHL" & ClassN == 1 ~ 1,
+                                   Group == "CHL" & ClassN == 2 ~ 2,
+                                   Group == "CHL" & ClassN == 3 ~ 3,
+                                   Group == "COL" & ClassN == 1 ~ 3,
+                                   Group == "COL" & ClassN == 2 ~ 2,
+                                   Group == "COL" & ClassN == 3 ~ 1), 
+                         levels = c("1", "2", "3"), labels = classes3LA))
+#graphclass(MGCntyCHe_LA_C3cl3, nclass = 2, orden = c(1,2,3,4) ,title = "MG Country Complete Heterogeneity LA")
+
+
+MGCntyCHe_EU_C3cl3 <- MGCntry_EU$EU_MGCnty_C3cl3_1CHet.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = factor(sub('\\..*', '', Class), 
+                        levels = 1:length(cntLA), labels = cntEU),
+            Cycle = "Europe",
+         ClassN = sub('*.\\.', '', Class), 
+         ClassN = factor(case_when(Group == "BFL" & ClassN == 1 ~ 2,
+                                   Group == "BFL" & ClassN == 2 ~ 3,
+                                   Group == "BFL" & ClassN == 3 ~ 1,
+                                   Group == "NLD" & ClassN == 1 ~ 1,
+                                   Group == "NLD" & ClassN == 2 ~ 3,
+                                   Group == "NLD" & ClassN == 3 ~ 2), 
+                         levels = c("1", "2", "3"), labels = classes3EU))
+#graphclass(MGCntyCHe_EU_C3cl3, nclass = 2, orden = c(1,2,3,4) ,title = "MG Country Complete Heterogeneity EU")
+
+```
+
+```{r}
+lcignEU <- VarClass(MGCntyCHe_EU_C3cl3)
+lcignEU %>% group_by(ClassN, Group, param) %>% filter(category == 1) %>% 
+  select(param, ClassN, Group, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Group + ClassN) %>%
+  kbl(caption = "Probabilities to Agree each item 3-class Europe country complete heterogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "llrrrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes3EU, classes3LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "12em") %>%  
+  column_spec(2:7, width = "5em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Belgium (Flanders)" = 3, "Netherlands" = 3)) %>% 
+  print()
+cat('\n')
+cat('\n')
+lcignLA <- VarClass(MGCntyCHe_LA_C3cl3)
+lcignLA %>% group_by(ClassN, Group, param) %>% filter(category == 1) %>% 
+  select(param, ClassN, Group, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Group + ClassN) %>%
+  kbl(caption = "Probabilities to Agree each item 3-class South America country complete heterogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "llrrrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes3LA, classes3LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "12em") %>%  
+  column_spec(2:7, width = "5em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Chile" = 3, "Colombia" = 3)) %>% 
+  print()
+cat('\n')
+cat('\n')
+```
+
+```{r, fig.height=6, fig.width=5}
+sizeMGGndr3CHe_EU <- MGCntry_EU$EU_MGCnty_C3cl3_1CHet.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("Europe", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 2,
+             Class == "1.2" ~ 3,
+             Class == "1.3" ~ 1,
+             Class == "2.1" ~ 1,
+             Class == "2.2" ~ 3,
+             Class == "2.3" ~ 2),
+             levels = 1:3, labels = classes3EU)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntEU)) %>% select(Group, ClassN, Europe)
+
+sizeMGGndr3CHe_EU <- sizeMGGndr3CHe_EU %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+sizeMGGndr3CHe_LA <- MGCntry_LA$LA_MGCnty_C3cl3_1CHet.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("South America", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 1,
+             Class == "1.2" ~ 2,
+             Class == "1.3" ~ 3,
+             Class == "2.1" ~ 3,
+             Class == "2.2" ~ 2,
+             Class == "2.3" ~ 1),
+             levels = 1:3, labels = classes3LA)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntLA)) %>% select(Group, ClassN, `South America`)
+
+sizeMGGndr3CHe_LA <- sizeMGGndr3CHe_LA %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+ProbMGCntyCHe_cl3 <- rbind(MGCntyCHe_LA_C3cl3,
+                           MGCntyCHe_EU_C3cl3) %>% 
+  mutate(Group = factor(Group, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY))
+
+sizeMGCntyCHe_cl3 <- rbind(sizeMGGndr3CHe_LA,
+                        sizeMGGndr3CHe_EU) %>% 
+  mutate(Group = factor(Group, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY))
+
+HighProbMG(ProbMGCntyCHe_cl3, sizeMGCntyCHe_cl3, orden = c(1,2,3,4), n = 1:4, 
+           title = "Probabilities to agree and size for 3-class country multigroup analysis\n Complete Heterogeneity")
+
+```
+
+```{r}
+
+MGCntyCHe_LA_C3cl4 <- MGCntry_LA$LA_MGCnty_C3cl4_1CHet.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = factor(sub('\\..*', '', Class), 
+                        levels = 1:length(cntLA), labels = cntLA),
+         Cycle = "South America",
+         ClassN = sub('*.\\.', '', Class), 
+         ClassN = factor(case_when(Group == "CHL" & ClassN == 1 ~ 3,
+                                   Group == "CHL" & ClassN == 2 ~ 4,
+                                   Group == "CHL" & ClassN == 3 ~ 1,
+                                   Group == "CHL" & ClassN == 4 ~ 2,
+                                   Group == "COL" & ClassN == 1 ~ 1,
+                                   Group == "COL" & ClassN == 2 ~ 3,
+                                   Group == "COL" & ClassN == 3 ~ 2,
+                                   Group == "COL" & ClassN == 4 ~ 4), 
+                         levels = c("1", "2", "3", "4"), labels = classes4LA))
+#graphclass(MGCntyCHe_LA_C3cl4, nclass = 2, orden = c(1,2,3,4) ,title = "MG Country Complete Heterogeneity LA")
+
+
+MGCntyCHe_EU_C3cl4 <- MGCntry_EU$EU_MGCnty_C3cl4_1CHet.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = factor(sub('\\..*', '', Class), 
+                        levels = 1:length(cntLA), labels = cntEU),
+            Cycle = "Europe",
+         ClassN = sub('*.\\.', '', Class), 
+         ClassN = factor(case_when(Group == "BFL" & ClassN == 1 ~ 1,
+                                   Group == "BFL" & ClassN == 2 ~ 2,
+                                   Group == "BFL" & ClassN == 3 ~ 3,
+                                   Group == "BFL" & ClassN == 4 ~ 4,
+                                   Group == "NLD" & ClassN == 1 ~ 3,
+                                   Group == "NLD" & ClassN == 2 ~ 1,
+                                   Group == "NLD" & ClassN == 3 ~ 4,
+                                   Group == "NLD" & ClassN == 4 ~ 2), 
+                         levels = c("1", "2", "3", "4"), labels = classes4EU))
+#graphclass(MGCntyCHe_EU_C3cl4, nclass = 4, orden = c(1,2,3,4) ,title = "MG Country Complete Heterogeneity EU")
+
+```
+
+```{r}
+lcignEU <- VarClass(MGCntyCHe_EU_C3cl4)
+lcignEU %>% group_by(ClassN, Group, param) %>% filter(category == 1) %>% 
+  select(param, ClassN, Group, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Group + ClassN) %>%
+  kbl(caption = "Probabilities to Agree each item 4-class Europe country complete heterogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "llrrrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes4EU, classes4LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "12em") %>%  
+  column_spec(2:9, width = "3em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Belgium (Flanders)" = 4, "Netherlands" = 4)) %>% 
+  print()
+cat('\n')
+cat('\n')
+lcignLA <- VarClass(MGCntyCHe_LA_C3cl4)
+lcignLA %>% group_by(ClassN, Group, param) %>% filter(category == 1) %>% 
+  select(param, ClassN, Group, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Group + ClassN) %>%
+  kbl(caption = "Probabilities to Agree each item 4-class South America country complete heterogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "llrrrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes4LA, classes4LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "12em") %>%  
+  column_spec(2:9, width = "3em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Chile" = 4, "Colombia" = 4)) %>% 
+  print()
+cat('\n')
+cat('\n')
+```
+
+```{r, fig.height=6, fig.width=5}
+sizeMGGndr3CHe_EU <- MGCntry_EU$EU_MGCnty_C3cl4_1CHet.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("Europe", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 1,
+             Class == "1.2" ~ 2,
+             Class == "1.3" ~ 3,
+             Class == "1.4" ~ 4,
+             Class == "2.1" ~ 3,
+             Class == "2.2" ~ 1,
+             Class == "2.3" ~ 4,
+             Class == "2.4" ~ 2),
+             levels = 1:4, labels = classes4EU)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntEU)) %>% select(Group, ClassN, Europe)
+
+sizeMGGndr3CHe_EU <- sizeMGGndr3CHe_EU %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+sizeMGGndr3CHe_LA <- MGCntry_LA$LA_MGCnty_C3cl4_1CHet.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("South America", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 3,
+             Class == "1.2" ~ 4,
+             Class == "1.3" ~ 1,
+             Class == "1.4" ~ 2,
+             Class == "2.1" ~ 1,
+             Class == "2.2" ~ 3,
+             Class == "2.3" ~ 2,
+             Class == "2.4" ~ 4),
+             levels = 1:4, labels = classes4LA)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntLA)) %>% select(Group, ClassN, `South America`)
+
+sizeMGGndr3CHe_LA <- sizeMGGndr3CHe_LA %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+ProbMGCntyCHe_cl4 <- rbind(MGCntyCHe_LA_C3cl4,
+                           MGCntyCHe_EU_C3cl4) %>% 
+  mutate(Group = factor(Group, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY))
+
+sizeMGCntyCHe_cl4 <- rbind(sizeMGGndr3CHe_LA,
+                        sizeMGGndr3CHe_EU) %>% 
+  mutate(Group = factor(Group, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY))
+
+HighProbMG(ProbMGCntyCHe_cl4, sizeMGCntyCHe_cl4, orden = c(1,2,3,4), n = 1:4, 
+           title = "Probabilities to agree and size for 4-class country multigroup analysis\n Complete Heterogeneity")
+
+```
+
+\newpage  
+
+Partial homogeneity  
+
+```{r}
+MGCntyPHo_LA_C3cl2 <- MGCntry_LA$LA_MGCnty_C3cl2_2PHom.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Cycle="South America",
+         ClassN = factor(case_when(
+           Class == "C#1" ~ 1,
+           Class == "C#2" ~ 2), levels = c("1", "2"), labels = classes2LA))
+
+MGCntyPHo_EU_C3cl2 <- MGCntry_EU$EU_MGCnty_C3cl2_2PHom.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Cycle="Europe",
+         ClassN = factor(case_when(
+           Class == "C#1" ~ 2,
+           Class == "C#2" ~ 1), levels = c("1", "2"), labels = classes2EU))
+
+MGCntyPHo_C3cl2 <- rbind(MGCntyPHo_LA_C3cl2,MGCntyPHo_EU_C3cl2)
+#graphclass(MGCntyPHo_C3cl2, nclass = 2, orden = c(1,2,3,4) ,title = "MG Country 2-class Partial Homogeneity")
+```
+
+```{r}
+lcignEU <- VarClass(MGCntyPHo_EU_C3cl2)
+lcignLA <- VarClass(MGCntyPHo_LA_C3cl2)
+
+lcignEU %>% bind_rows(lcignLA) %>% dplyr::group_by(ClassN, Cycle, param) %>% filter(category == 1) %>% 
+  dplyr::select(param, ClassN, Cycle, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Cycle + ClassN) %>%
+  kbl(caption = "Probabilities to agree each item 2-class, country partial homogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "lrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes2EU, classes2LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "14em") %>%  
+  column_spec(2:5, width = "4em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Europe" = 2, "South America" = 2)) %>% 
+  print()
+cat('\n')
+cat('\n')
+```
+
+```{r, fig.height=6, fig.width=5}
+sizeMGGndr3PHo_EU <- MGCntry_EU$EU_MGCnty_C3cl2_2PHom.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("Europe", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 2,
+             Class == "1.2" ~ 1,
+             Class == "2.1" ~ 2,
+             Class == "2.2" ~ 1),
+             levels = 1:2, labels = classes2EU)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntEU)) %>% select(Group, ClassN, Europe)
+
+sizeMGGndr3PHo_EU <- sizeMGGndr3PHo_EU %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+sizeMGGndr3PHo_LA <- MGCntry_LA$LA_MGCnty_C3cl2_2PHom.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("South America", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 1,
+             Class == "1.2" ~ 2,
+             Class == "2.1" ~ 1,
+             Class == "2.2" ~ 2),
+             levels = 1:2, labels = classes2LA)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntLA)) %>% select(Group, ClassN, `South America`)
+
+sizeMGGndr3PHo_LA <- sizeMGGndr3PHo_LA %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+ProbMGCntyPHo_cl2 <- rbind(rbind(cbind(Group = "CHL", MGCntyPHo_LA_C3cl2), cbind(Group = "COL", MGCntyPHo_LA_C3cl2)),
+                           rbind(cbind(Group = "BFL", MGCntyPHo_EU_C3cl2), cbind(Group = "NLD", MGCntyPHo_EU_C3cl2))) %>% 
+  mutate(Group = factor(Group, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY))
+
+sizeMGCntyPHo_cl2 <- rbind(sizeMGGndr3PHo_LA,
+                           sizeMGGndr3PHo_EU) %>% 
+  mutate(Group = factor(Group, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY))
+
+HighProbMG(ProbMGCntyPHo_cl2, sizeMGCntyPHo_cl2, orden = c(1,2,3,4), n = 1:4,
+           title = "Probabilities to agree and size for 2-class country multigroup analysis\n Partial Homogeneity")
+
+```
+
+
+```{r}
+MGCntyPHo_LA_C3cl3 <- MGCntry_LA$LA_MGCnty_C3cl3_2PHom.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Cycle="South America",
+         ClassN = factor(case_when(
+           Class == "C#1" ~ 3,
+           Class == "C#2" ~ 1,
+           Class == "C#3" ~ 2), levels = c("1", "2", "3"), labels = classes3LA))
+
+MGCntyPHo_EU_C3cl3 <- MGCntry_EU$EU_MGCnty_C3cl3_2PHom.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Cycle="Europe",
+         ClassN = factor(case_when(
+           Class == "C#1" ~ 1,
+           Class == "C#2" ~ 3,
+           Class == "C#3" ~ 2), levels = c("1", "2", "3"), labels = classes3EU))
+
+MGCntyPHo_C3cl3 <- rbind(MGCntyPHo_LA_C3cl3,MGCntyPHo_EU_C3cl3)
+#graphclass(MGCntyPHo_C3cl3, nclass = 2, orden = c(1,2,3,4) ,title = "MG Country Partial Homogeneity")
+```
+
+```{r}
+lcignEU <- VarClass(MGCntyPHo_EU_C3cl3)
+lcignLA <- VarClass(MGCntyPHo_LA_C3cl3)
+
+lcignEU %>% bind_rows(lcignLA) %>% dplyr::group_by(ClassN, Cycle, param) %>% filter(category == 1) %>% 
+  dplyr::select(param, ClassN, Cycle, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Cycle + ClassN) %>%
+  kbl(caption = "Probabilities to agree each item by Class, country partial homogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "lrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes3EU, classes3LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "14em") %>%  
+  column_spec(2:7, width = "4em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Europe" = 3, "South America" = 3)) %>% 
+  print()
+cat('\n')
+cat('\n')
+```
+
+```{r, fig.height=6, fig.width=5}
+sizeMGGndr3PHo_EU <- MGCntry_EU$EU_MGCnty_C3cl3_2PHom.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("Europe", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 1,
+             Class == "1.2" ~ 3,
+             Class == "1.3" ~ 2,
+             Class == "2.1" ~ 1,
+             Class == "2.2" ~ 3,
+             Class == "2.3" ~ 2),
+             levels = 1:3, labels = classes3EU)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntEU)) %>% select(Group, ClassN, Europe)
+
+sizeMGGndr3PHo_EU <- sizeMGGndr3PHo_EU %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+sizeMGGndr3PHo_LA <- MGCntry_LA$LA_MGCnty_C3cl3_2PHom.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("South America", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 3,
+             Class == "1.2" ~ 1,
+             Class == "1.3" ~ 2,
+             Class == "2.1" ~ 3,
+             Class == "2.2" ~ 1,
+             Class == "2.3" ~ 2),
+             levels = 1:3, labels = classes3LA)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntLA)) %>% select(Group, ClassN, `South America`)
+
+sizeMGGndr3PHo_LA <- sizeMGGndr3PHo_LA %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+ProbMGCntyPHo_cl3 <- rbind(rbind(cbind(Group = "CHL", MGCntyPHo_LA_C3cl3), cbind(Group = "COL", MGCntyPHo_LA_C3cl3)),
+                           rbind(cbind(Group = "BFL", MGCntyPHo_EU_C3cl3), cbind(Group = "NLD", MGCntyPHo_EU_C3cl3))) %>% 
+  mutate(Group = factor(Group, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY))
+
+sizeMGCntyPHo_cl3 <- rbind(sizeMGGndr3PHo_LA,
+                           sizeMGGndr3PHo_EU) %>% 
+  mutate(Group = factor(Group, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY))
+
+HighProbMG(ProbMGCntyPHo_cl3, sizeMGCntyPHo_cl3, orden = c(1,2,3,4), n = 1:4,
+           title = "Probabilities to agree and size for 3-class country multigroup analysis\n Partial Homogeneity")
+
+```
+
+
+```{r}
+MGCntyPHo_LA_C3cl4 <- MGCntry_LA$LA_MGCnty_C3cl4_2PHom.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Cycle="South America",
+         ClassN = factor(case_when(
+           Class == "C#1" ~ 2,
+           Class == "C#2" ~ 4,
+           Class == "C#3" ~ 3,
+           Class == "C#4" ~ 1), levels = c("1", "2", "3", "4"), labels = classes4LA))
+
+MGCntyPHo_EU_C3cl4 <- MGCntry_EU$EU_MGCnty_C3cl4_2PHom.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Cycle="Europe",
+         ClassN = factor(case_when(
+           Class == "C#1" ~ 4,
+           Class == "C#2" ~ 3,
+           Class == "C#3" ~ 1,
+           Class == "C#4" ~ 2), levels = c("1", "2", "3", "4"), labels = classes4EU))
+
+MGCntyPHo_C3cl4 <- rbind(MGCntyPHo_LA_C3cl4,MGCntyPHo_EU_C3cl4)
+#graphclass(MGCntyPHo_C3cl4, nclass = 2, orden = c(1,2,3,4) ,title = "MG Country Partial Homogeneity")
+```
+
+```{r}
+lcignEU <- VarClass(MGCntyPHo_EU_C3cl4)
+lcignLA <- VarClass(MGCntyPHo_LA_C3cl4)
+
+lcignEU %>% bind_rows(lcignLA) %>% dplyr::group_by(ClassN, Cycle, param) %>% filter(category == 1) %>% 
+  dplyr::select(param, ClassN, Cycle, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Cycle + ClassN) %>%
+  kbl(caption = "Probabilities to agree each item by Class, country partial homogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "lrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes4EU, classes4LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "14em") %>%  
+  column_spec(2:9, width = "4em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Europe" = 4, "South America" = 4)) %>% 
+  print()
+cat('\n')
+cat('\n')
+```
+
+```{r, fig.height=6, fig.width=5}
+sizeMGGndr3PHo_EU <- MGCntry_EU$EU_MGCnty_C3cl4_2PHom.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("Europe", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 4,
+             Class == "1.2" ~ 3,
+             Class == "1.3" ~ 1,
+             Class == "1.4" ~ 2,
+             Class == "2.1" ~ 4,
+             Class == "2.2" ~ 3,
+             Class == "2.3" ~ 1,
+             Class == "2.4" ~ 2),
+             levels = 1:4, labels = classes4EU)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntEU)) %>% select(Group, ClassN, Europe)
+
+sizeMGGndr3PHo_EU <- sizeMGGndr3PHo_EU %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+sizeMGGndr3PHo_LA <- MGCntry_LA$LA_MGCnty_C3cl4_2PHom.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("South America", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+             Class == "1.1" ~ 2,
+             Class == "1.2" ~ 4,
+             Class == "1.3" ~ 3,
+             Class == "1.4" ~ 1,
+             Class == "2.1" ~ 2,
+             Class == "2.2" ~ 4,
+             Class == "2.3" ~ 3,
+             Class == "2.4" ~ 1),
+             levels = 1:4, labels = classes4LA)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntLA)) %>% select(Group, ClassN, `South America`)
+
+sizeMGGndr3PHo_LA <- sizeMGGndr3PHo_LA %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+ProbMGCntyPHo_cl4 <- rbind(rbind(cbind(Group = "CHL", MGCntyPHo_LA_C3cl4), cbind(Group = "COL", MGCntyPHo_LA_C3cl4)),
+                           rbind(cbind(Group = "BFL", MGCntyPHo_EU_C3cl4), cbind(Group = "NLD", MGCntyPHo_EU_C3cl4))) %>% 
+  mutate(Group = factor(Group, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY))
+
+sizeMGCntyPHo_cl4 <- rbind(sizeMGGndr3PHo_LA,
+                           sizeMGGndr3PHo_EU) %>% 
+  mutate(Group = factor(Group, levels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$COUNTRY, 
+                    labels = unique(ISC_lvRlca[,c("IDCNTRY", "COUNTRY")])$IDCNTRY))
+
+HighProbMG(ProbMGCntyPHo_cl4, sizeMGCntyPHo_cl4, orden = c(1,2,3,4), n = 1:4,
+           title = "Probabilities to agree and size for 4-class country multigroup analysis\n Partial Homogeneity")
+
+```
+
+\newpage  
+
+Complete homogeneity  
+
+```{r}
+MGCntyCHo_LA_C3cl2 <- MGCntry_LA$LA_MGCnty_C3cl2_3CHom.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Cycle="South America",
+         ClassN = factor(case_when(
+           Class == "C#1" ~ 2,
+           Class == "C#2" ~ 1), levels = c("1", "2"), labels = classes2LA))
+
+MGCntyCHo_EU_C3cl2 <- MGCntry_EU$EU_MGCnty_C3cl2_3CHom.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Cycle="Europe",
+         ClassN = factor(case_when(
+           Class == "C#1" ~ 2,
+           Class == "C#2" ~ 1), levels = c("1", "2"), labels = classes2EU))
+
+MGCntyCHo_C3cl2 <- rbind(MGCntyCHo_LA_C3cl2,MGCntyCHo_EU_C3cl2)
+#graphclass(MGCntyCHo_C3cl2, nclass = 2, orden = c(1,2,3,4) ,title = "MG Country Partial Homogeneity")
+```
+
+```{r}
+lcignEU <- VarClass(MGCntyCHo_EU_C3cl2)
+lcignLA <- VarClass(MGCntyCHo_LA_C3cl2)
+
+lcignEU %>% bind_rows(lcignLA) %>% dplyr::group_by(ClassN, Cycle, param) %>% filter(category == 1) %>% 
+  dplyr::select(param, ClassN, Cycle, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Cycle + ClassN) %>%
+  kbl(caption = "Probabilities to agree each item 2-class, country complete homogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "lrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes2EU, classes2LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "14em") %>%  
+  column_spec(2:5, width = "4em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Europe" = 2, "South America" = 2)) %>% 
+  print()
+cat('\n')
+cat('\n')
+```
+
+```{r, fig.height=6, fig.width=5}
+sizeMGGndr3CHo_EU <- MGCntry_EU$EU_MGCnty_C3cl2_3CHom.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("Europe", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 2,
+             Class == "1.2" ~ 1,
+             Class == "2.1" ~ 2,
+             Class == "2.2" ~ 1),
+             levels = 1:2, labels = classes2EU)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntEU)) %>% select(Group, ClassN, Europe)
+
+sizeMGGndr3CHo_EU <- sizeMGGndr3CHo_EU %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+sizeMGGndr3CHo_LA <- MGCntry_LA$LA_MGCnty_C3cl2_3CHom.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("South America", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 2,
+             Class == "1.2" ~ 1,
+             Class == "2.1" ~ 2,
+             Class == "2.2" ~ 1),
+             levels = 1:2, labels = classes2LA)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntLA)) %>% select(Group, ClassN, `South America`)
+
+sizeMGGndr3CHo_LA <- sizeMGGndr3CHo_LA %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+ProbMGCntyCHo_cl2 <- rbind(rbind(cbind(Group = "South America", MGCntyCHo_LA_C3cl2)),
+                           rbind(cbind(Group = "Europe", MGCntyCHo_EU_C3cl2))) %>% 
+  mutate(Cycle = Group)
+
+sizeMGCntyCHo_cl2 <- rbind(sizeMGGndr3CHo_LA,
+                           sizeMGGndr3CHo_EU) %>% 
+  filter(Group %in% c("BFL", "CHL")) %>% 
+  mutate(Group = Cycle)
+
+HighProbMG(ProbMGCntyCHo_cl2, sizeMGCntyCHo_cl2, orden = c(1,2,3,4), n = 1:4,
+           title = "Probabilities to agree and size for 2-class country multigroup analysis\n Complete Homogeneity")
+
+```
+
+```{r}
+MGCntyCHo_LA_C3cl3 <- MGCntry_LA$LA_MGCnty_C3cl3_3CHom.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Cycle="South America",
+         ClassN = factor(case_when(
+           Class == "C#1" ~ 3,
+           Class == "C#2" ~ 1,
+           Class == "C#3" ~ 2), levels = c("1", "2", "3"), labels = classes3LA))
+
+MGCntyCHo_EU_C3cl3 <- MGCntry_EU$EU_MGCnty_C3cl3_3CHom.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Cycle="Europe",
+         ClassN = factor(case_when(
+           Class == "C#1" ~ 3,
+           Class == "C#2" ~ 2,
+           Class == "C#3" ~ 1), levels = c("1", "2", "3"), labels = classes3EU))
+
+MGCntyCHo_C3cl3 <- rbind(MGCntyCHo_LA_C3cl3,MGCntyCHo_EU_C3cl3)
+#graphclass(MGCntyCHo_C3cl3, nclass = 2, orden = c(1,2,3,4) ,title = "MG Country Partial Homogeneity")
+```
+
+```{r}
+lcignEU <- VarClass(MGCntyCHo_EU_C3cl3)
+lcignLA <- VarClass(MGCntyCHo_LA_C3cl3)
+
+lcignEU %>% bind_rows(lcignLA) %>% dplyr::group_by(ClassN, Cycle, param) %>% filter(category == 1) %>% 
+  dplyr::select(param, ClassN, Cycle, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Cycle + ClassN) %>%
+  kbl(caption = "Probabilities to agree each item 3-class, country complete homogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "lrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes3EU, classes3LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "12em") %>%  
+  column_spec(2:7, width = "3em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Europe" = 3, "South America" = 3)) %>% 
+  print()
+cat('\n')
+cat('\n')
+```
+
+```{r, fig.height=6, fig.width=5}
+sizeMGGndr3CHo_EU <- MGCntry_EU$EU_MGCnty_C3cl3_3CHom.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("Europe", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+           Class == "1.1" ~ 3,
+             Class == "1.2" ~ 2,
+             Class == "1.3" ~ 1,
+             Class == "2.1" ~ 3,
+             Class == "2.2" ~ 2,
+             Class == "2.3" ~ 1),
+             levels = 1:3, labels = classes3EU)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntEU)) %>% select(Group, ClassN, Europe)
+
+sizeMGGndr3CHo_EU <- sizeMGGndr3CHo_EU %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+sizeMGGndr3CHo_LA <- MGCntry_LA$LA_MGCnty_C3cl3_3CHom.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("South America", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+             Class == "1.1" ~ 3,
+             Class == "1.2" ~ 1,
+             Class == "1.3" ~ 2,
+             Class == "2.1" ~ 3,
+             Class == "2.2" ~ 1,
+             Class == "2.3" ~ 2),
+             levels = 1:3, labels = classes3LA)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntLA)) %>% select(Group, ClassN, `South America`)
+
+sizeMGGndr3CHo_LA <- sizeMGGndr3CHo_LA %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+ProbMGCntyCHo_cl3 <- rbind(rbind(cbind(Group = "CHL", MGCntyCHo_LA_C3cl3), cbind(Group = "COL", MGCntyCHo_LA_C3cl3)),
+                           rbind(cbind(Group = "BFL", MGCntyCHo_EU_C3cl3), cbind(Group = "NLD", MGCntyCHo_EU_C3cl3))) %>%
+  filter(Group %in% c("BFL", "CHL")) %>% mutate(Group = Cycle)
+
+sizeMGCntyCHo_cl3 <- rbind(sizeMGGndr3CHo_LA,
+                           sizeMGGndr3CHo_EU) %>% 
+  filter(Group %in% c("BFL", "CHL")) %>% 
+  mutate(Group = Cycle)
+
+HighProbMG(ProbMGCntyCHo_cl3, sizeMGCntyCHo_cl3, orden = c(1,2,3,4), n = 1:4,
+           title = "Probabilities to agree and size for 3-class country multigroup analysis\n Complete Homogeneity")
+
+```
+
+```{r}
+MGCntyCHo_LA_C3cl4 <- MGCntry_LA$LA_MGCnty_C3cl4_3CHom.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Cycle="South America",
+         ClassN = factor(case_when(
+           Class == "C#1" ~ 1,
+           Class == "C#2" ~ 3,
+           Class == "C#3" ~ 2,
+           Class == "C#4" ~ 4), levels = c("1", "2", "3", "4"), labels = classes4LA))
+
+MGCntyCHo_EU_C3cl4 <- MGCntry_EU$EU_MGCnty_C3cl4_3CHom.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Cycle="Europe",
+         ClassN = factor(case_when(
+           Class == "C#1" ~ 1,
+           Class == "C#2" ~ 2,
+           Class == "C#3" ~ 4,
+           Class == "C#4" ~ 3), levels = c("1", "2", "3", "4"), labels = classes4EU))
+
+MGCntyCHo_C3cl4 <- rbind(MGCntyCHo_LA_C3cl4,MGCntyCHo_EU_C3cl4)
+#graphclass(MGCntyCHo_C3cl4, nclass = 2, orden = c(1,2,3,4) ,title = "MG Country Partial Homogeneity")
+```
+
+```{r}
+lcignEU <- VarClass(MGCntyCHo_EU_C3cl4)
+lcignLA <- VarClass(MGCntyCHo_LA_C3cl4)
+
+lcignEU %>% bind_rows(lcignLA) %>% dplyr::group_by(ClassN, Cycle, param) %>% filter(category == 1) %>% 
+  dplyr::select(param, ClassN, Cycle, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Cycle + ClassN) %>%
+  kbl(caption = "Probabilities to agree each item 4-class, country complete homogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "lrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes4EU, classes4LA), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "10em") %>%  
+  column_spec(2:9, width = "3em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Europe" = 4, "South America" = 4)) %>% 
+  print()
+cat('\n')
+cat('\n')
+```
+
+```{r, fig.height=6, fig.width=5}
+sizeMGGndr3CHo_EU <- MGCntry_EU$EU_MGCnty_C3cl4_3CHom.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("Europe", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(ClassN = factor(case_when(
+             C == "1" ~ 1,
+             C == "2" ~ 2,
+             C == "3" ~ 4,
+             C == "4" ~ 3),
+             levels = 1:4, labels = classes4EU)) %>% dplyr::select(-proportion, -C)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntEU)) %>% select(Group, ClassN, Europe)
+
+sizeMGGndr3CHo_EU <- sizeMGGndr3CHo_EU %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+sizeMGGndr3CHo_LA <- MGCntry_LA$LA_MGCnty_C3cl4_3CHom.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("South America", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(ClassN = factor(case_when(
+    C == "1" ~ 1,
+    C == "2" ~ 3,
+    C == "3" ~ 2,
+    C == "4" ~ 4),
+    levels = 1:4, labels = classes4LA)) %>% dplyr::select(-proportion, -C)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = cntLA)) %>% select(Group, ClassN, `South America`)
+
+sizeMGGndr3CHo_LA <- sizeMGGndr3CHo_LA %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+ProbMGCntyCHo_cl4 <- rbind(rbind(cbind(Group = "CHL", MGCntyCHo_LA_C3cl4), cbind(Group = "COL", MGCntyCHo_LA_C3cl4)),
+                           rbind(cbind(Group = "BFL", MGCntyCHo_EU_C3cl4), cbind(Group = "NLD", MGCntyCHo_EU_C3cl4))) %>% filter(Group %in% c("BFL", "CHL")) %>% mutate(Group = Cycle)
+
+sizeMGCntyCHo_cl4 <- rbind(sizeMGGndr3CHo_LA,
+                           sizeMGGndr3CHo_EU) %>% filter(Group %in% c("BFL", "CHL")) %>% mutate(Group = Cycle)
+HighProbMG(ProbMGCntyCHo_cl4, sizeMGCntyCHo_cl4, orden = c(1,2,3,4), n = 1:4,
+           title = "Probabilities to agree and size for 4-class country multigroup analysis\n Complete Homogeneity")
+
+```
+
+\newpage  
+
+## Comparison of LC across region
+
+\blandscape  
+```{r}
+#--Model fit
+ModelfitMGRegion("RegionMG", title = "Region multigroup model fit statistics") %>% 
+    row_spec(c(2), bold = TRUE) %>% 
+    print()
+  cat('\n')
+  cat('\n')
+```
+\elandscape
+
+
+```{r}
+MGRegionPHet_C3cl3 <- RegionMG$MGRegion_C3cl3_2PHet.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Group = ifelse(sub('\\..*', '', Class) == 1, "Europe","South America"),
+         Cycle= "2016",
+         ClassN = factor(case_when(
+            Class == "1.1" ~ 2,
+             Class == "1.2" ~ 1,
+             Class == "1.3" ~ 3,
+             Class == "2.1" ~ 2,
+             Class == "2.2" ~ 1,
+             Class == "2.3" ~ 3), levels = c("1", "2", "3"), labels = classes3R))
+
+#graphclass(MGRegionPHet_C3cl3, nclass = 3, orden = c(1,2,3,4) ,title = "MG Region Partial Homogeneity")
+```
+
+```{r}
+lcign <- VarClass(MGRegionPHet_C3cl3)
+
+lcign %>% dplyr::group_by(ClassN, Group, param) %>% filter(category == 1) %>% 
+  dplyr::select(param, ClassN,Group, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value > 0.8, "Myblue", "Myred"))) %>% 
+  reshape2::dcast(param ~ Group+ClassN) %>%
+  kbl(caption = "Probabilities to agree each item by Class, region partial homogeneity multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "lrrrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes3R, classes3R), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 10, full_width = FALSE) %>% 
+  column_spec(1, width = "14em") %>%  
+  column_spec(2:7, width = "4em") %>%  
+  collapse_rows(1, valign = "top") %>%
+  add_header_above(c(" "=1,"Europe" = 3, "South America" = 3)) %>% 
+  print()
+cat('\n')
+cat('\n')
+```
+
+```{r, fig.height=6, fig.width=5}
+sizeMGRegionPHet <- RegionMG$MGRegion_C3cl3_2PHet.out$class_counts$modelEstimated.patterns %>%
+  rename_with(~ c("2016", "Group")[which(c("count", "G") == .x)], .cols = c("count", "G")) %>% 
+  mutate(Class = paste(Group,C,sep="."),
+         Class1 = sub('*.\\.', '', Class),
+         ClassN = factor(case_when(
+             Class == "1.1" ~ 2,
+             Class == "1.2" ~ 1,
+             Class == "1.3" ~ 3,
+             Class == "2.1" ~ 2,
+             Class == "2.2" ~ 1,
+             Class == "2.3" ~ 3),
+             levels = 1:3, labels = classes3R)) %>% dplyr::select(-proportion, -C, -Class)  %>%
+  mutate(Group = factor(Group, levels = c("1", "2"), labels = c("Europe","South America"))) %>% select(Group, ClassN, `2016`)
+
+sizeMGRegionPHet <- sizeMGRegionPHet %>% 
+  reshape2::melt(id.vars = c("Group","ClassN"), variable.name = "Cycle") %>% 
+  arrange(Group, Cycle) %>% 
+  group_by(Group, Cycle) %>%
+  mutate(countT= sum(value, na.rm = TRUE)) %>%
+  group_by(ClassN) %>%
+  mutate(per=value/countT) %>% dplyr::select(Group, Cycle, ClassN, per) 
+
+HighProbMG(MGRegionPHet_C3cl3, sizeMGRegionPHet, orden = c(1,2,3,4), n = 1:3,
+           title = "Probabilities to agree and size for 3-class region multigroup analysis\n Partial Homogeneity")
+
+```
+
+## Confirmatory Latent Class Model
+
+The probabilities based on the Partial homogeneity multigroup model with 2 first classes to be equal across regions will be used to obtain the class membership to the 3-class model.  
+
+```{r}
+classmemb <- read_table("data/MplusModels/RegionMG/Prob_MGRegion_C3cl3PHet.dat", 
+                        col_names = c("GND1", "GND2", "GND4", "GND6", 
+                                      "CPROB1", "CPROB2", "CPROB3", "CPROB4", "CPROB5", "CPROB6", 
+                                      "G", "C", "MLCJOINT", 
+                                      "ws", "IDSTUD", "id_s", "id_j", "GROUP"), 
+                        col_types = cols("d","d","d","d",
+                                      "d","d","d","d","d","d",
+                                      "d","d","d",
+                                      "d","d","d","d","d"), guess_max = 15000)
+
+addmargins(table(classmemb$G, classmemb$C, useNA = "ifany"))
+classmemb <- classmemb %>% dplyr::select(id_s, id_j, IDSTUD, G, C, MLCJOINT)
+# 
+# ISC_lvRlca$IDCL_f <- as.numeric(ISC_lvRlca$IDCL)
+# ISC_lvRlca$IDJK_f <- as.numeric(ISC_lvRlca$IDJK)
+# str(ISC_lvRlca)
+# classmemb_lca <- classmemb %>% left_join(ISC_lvRlca[,c("IDSTUD","IDCL", "IDCL_f", "IDJK", "IDJK_f", "COUNTRY", "IDCLASS", "IDSCHOOL")], by = c("IDSTUD", "IDCL"="IDCL_f", "IDJK" ="IDJK_f"))
+# addmargins(table(classmemb_lca$C,classmemb_lca$COUNTRY,classmemb_lca$G, useNA = "ifany"))
+```
+
+
+```{r, include=FALSE}
+data_lca <- data_model %>% left_join(classmemb, 
+                                     by = c("id_s", "id_j","IDSTUD"))
+addmargins(table(data_lca$C,data_lca$COUNTRY,data_lca$G, useNA = "ifany"))
+str(data_lca)
+
+library(RALSA)
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("C"),
+                new.variables = c("ClassM"),
+                variable.labels = c("Binomial Class membership"),
+                old.new = "2=0;1=1;3=NA",
+                new.labels = c("Full egalitarian", "Competition- driven sexism"))
+```
+
+```{r, include=FALSE}
+table(data_lca$S_GENDER, useNA = "ifany")
+table(as.numeric(data_lca$S_GENDER), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("S_GENDER"),
+                new.variables = c("GENDER"),
+                variable.labels = c("Gender"),
+                old.new = "1=1;2=2",
+                new.labels = c("Boy", "Girl"))
+data_lca$GENDER <- relevel(data_lca$GENDER, ref = 2)
+
+table(data_lca$S_IMMIG, useNA = "ifany")
+table(as.numeric(data_lca$S_IMMIG), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("S_IMMIG"),
+                new.variables = c("IMMIG"),
+                variable.labels = c("Immigration background"),
+                old.new = "1=1;2=2;3=2;4=NA;5=NA;6=NA",
+                new.labels = c("At least one parent born in country", "Parents born abroad"))
+data_lca$IMMIG <- relevel(data_lca$IMMIG, ref = 1)
+
+table(data_lca$S_RELIG, useNA = "ifany")
+table(as.numeric(data_lca$S_RELIG), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("S_RELIG"),
+                new.variables = c("RELIG"),
+                variable.labels = c("Immigration background"),
+                old.new = "1=1;2=2;3=NA;4=NA;5=NA",
+                new.labels = c("No religion", "Religion"))
+data_lca$RELIG <- relevel(data_lca$RELIG, ref = 1)
+
+table(data_lca$S_MISCED, useNA = "ifany")
+table(as.numeric(data_lca$S_MISCED), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("S_MISCED"),
+                new.variables = c("MISCED"),
+                variable.labels = c("Mother Education"),
+                old.new = "1=1;2=1;3=2;4=2;5=3;6=NA;7=NA;8=NA",
+                new.labels = c("Primary", "Secondary", "Higher"))
+data_lca$MISCED <- relevel(data_lca$MISCED, ref = 3)
+
+table(data_lca$S_FISCED, useNA = "ifany")
+table(as.numeric(data_lca$S_FISCED), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("S_FISCED"),
+                new.variables = c("FISCED"),
+                variable.labels = c("Father Education"),
+                old.new = "1=1;2=1;3=2;4=2;5=3;6=NA;7=NA;8=NA",
+                new.labels = c("Primary", "Secondary", "Higher"))
+data_lca$FISCED <- relevel(data_lca$FISCED, ref = 3)
+
+table(data_lca$S_ISCED, useNA = "ifany")
+table(as.numeric(data_lca$S_ISCED), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("S_ISCED"),
+                new.variables = c("ISCED"),
+                variable.labels = c("Student Expected Education"),
+                old.new = "1=1;2=1;3=2;4=2;5=NA;6=NA;7=NA",
+                new.labels = c("Secondary at most", "Technical or more"))
+data_lca$ISCED <- relevel(data_lca$ISCED, ref = 2)
+
+
+table(data_lca$S_MINT, useNA = "ifany")
+table(as.numeric(data_lca$S_MINT), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("S_MINT"),
+                new.variables = c("MINT"),
+                variable.labels = c("Mother interest"),
+                old.new = "1=1;2=1;3=2;4=2;5=NA;6=NA;7=NA",
+                new.labels = c("Not interested", "Interested"))
+data_lca$MINT <- relevel(data_lca$MINT, ref = 2)
+
+table(data_lca$S_FINT, useNA = "ifany")
+table(as.numeric(data_lca$S_FINT), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("S_FINT"),
+                new.variables = c("FINT"),
+                variable.labels = c("Father interest"),
+                old.new = "1=1;2=1;3=2;4=2;5=NA;6=NA;7=NA",
+                new.labels = c("Not interested", "Interested"))
+data_lca$FINT <- relevel(data_lca$FINT, ref = 2)
+
+table(data_lca$S_SINT, useNA = "ifany")
+table(as.numeric(data_lca$S_SINT), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("S_SINT"),
+                new.variables = c("SINT"),
+                variable.labels = c("Student interest"),
+                old.new = "1=1;2=1;3=2;4=2;5=NA;6=NA;7=NA",
+                new.labels = c("Not interested", "Interested"))
+data_lca$SINT <- relevel(data_lca$SINT, ref = 2)
+
+table(data_lca$S_HOMLIT, useNA = "ifany")
+table(as.numeric(data_lca$S_HOMLIT), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("S_HOMLIT"),
+                new.variables = c("HOMLIT"),
+                variable.labels = c("Home literacy resources"),
+                old.new = "1=1;2=1;3=2;4=3;5=3;6=NA;7=NA;8=NA",
+                new.labels = c("Less than 25 books", "Between 25 and 100", "More than 100"))
+data_lca$HOMLIT <- relevel(data_lca$HOMLIT, ref = 3)
+
+
+table(data_lca$IS3G03BA, useNA = "ifany")
+table(as.numeric(data_lca$IS3G03BA), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("IS3G03BA"),
+                new.variables = c("MOHOM"),
+                variable.labels = c("Mother live at home"),
+                old.new = "1=1;2=2;3=NA;4=NA;5=NA",
+                new.labels = c("Yes", "No"))
+data_lca$MOHOM <- relevel(data_lca$MOHOM, ref = 1)
+
+table(data_lca$IS3G03BC, useNA = "ifany")
+table(as.numeric(data_lca$IS3G03BC), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("IS3G03BC"),
+                new.variables = c("FAHOM"),
+                variable.labels = c("Father live at home"),
+                old.new = "1=1;2=2;3=NA;4=NA;5=NA",
+                new.labels = c("Yes", "No"))
+data_lca$FAHOM <- relevel(data_lca$FAHOM, ref = 1)
+
+table(data_lca$IS3G23G, useNA = "ifany")
+table(as.numeric(data_lca$IS3G23G), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("IS3G23G"),
+                new.variables = c("PACPRO"),
+                variable.labels = c("Participating in peaceful protests"),
+                old.new = "1=1;2=1;3=2;4=2;5=NA;6=NA;7=NA",
+                new.labels = c("Important", "Not important"))
+data_lca$PACPRO <- relevel(data_lca$PACPRO, ref = 1)
+
+#----- School variables 
+table(data_lca$IC3G20, useNA = "ifany")
+table(as.numeric(data_lca$IC3G20), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("IC3G20"),
+                new.variables = c("SCLOC"),
+                variable.labels = c("School location"),
+                old.new = "1=1;2=1;3=2;4=3;5=3;6=NA;7=NA;8=NA",
+                new.labels = c("Small town", "Town", "City"))
+data_lca$SCLOC <- relevel(data_lca$SCLOC, ref = 3)
+
+table(data_lca$C_URBAN, useNA = "ifany")
+table(as.numeric(data_lca$C_URBAN), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("C_URBAN"),
+                new.variables = c("URBAN"),
+                variable.labels = c("Urbanicity"),
+                old.new = "1=1;2=2;3=NA;4=NA;5=NA",
+                new.labels = c("Not urban", "Urban"))
+data_lca$URBAN <- relevel(data_lca$URBAN, ref = 1)
+
+table(data_lca$C_COMP, useNA = "ifany")
+table(as.numeric(data_lca$C_COMP), useNA = "ifany")
+lsa.recode.vars(data.object = data_lca, 
+                src.variables = c("C_COMP"),
+                new.variables = c("COMP"),
+                variable.labels = c("School composition"),
+                old.new = "1=1;2=1;3=3",
+                new.labels = c("Not more disadvantaged",
+                               "More disadvantaged than affluent"))
+data_lca$COMP <- relevel(data_lca$COMP, ref = 1)
+
+#"IS3G14A","IS3G14B", "IS3G14C", "IS3G14D", "IS3G14E", "IS3G14F", "IS3G14G", "IS3G14H"
+
+```
+
+```{r, include=FALSE}
+data_lca$S_NISB <- ifelse(data_lca$S_NISB %in% c(99999997, 99999998, 99999999), NA, data_lca$S_NISB)
+#quantile(data_lca$S_NISB, na.rm = TRUE)
+data_lca <- data_lca %>% 
+  mutate(NISB = factor(case_when(
+    S_NISB <= -0.7 ~ 1,
+    S_NISB > -0.7 & S_NISB <= 0.86 ~ 2,
+    S_NISB > 0.86 ~ 3), 
+    labels = c("Low NISB", "Middle NISB", "High NISB")))
+table(data_lca$NISB, useNA = "ifany")
+data_lca$NISB <- relevel(data_lca$NISB, ref = 3)
+
+#quantile(data_lca$PV1CIV, na.rm = TRUE)
+data_lca <- data_lca %>% 
+  mutate(PVCIV = factor(case_when(
+    PV1CIV <= 442.54 ~ 1,
+    PV1CIV > 442.54 & PV1CIV <= 569.30 ~ 2,
+    PV1CIV > 569.30 ~ 3), 
+    labels = c("Low PVCIV", "Middle PVCIV", "High PVCIV")))
+table(data_lca$PVCIV, useNA = "ifany")
+data_lca$PVCIV <- relevel(data_lca$PVCIV, ref = 3)
+
+data_lca$S_GENEQL <- ifelse(data_lca$S_GENEQL %in% c(99999997, 99999998, 99999999), NA, data_lca$S_GENEQL)
+#quantile(data_lca$S_GENEQL, na.rm = TRUE)
+data_lca <- data_lca %>% 
+  mutate(GENEQL = factor(case_when(
+    S_GENEQL <= 44.37 ~ 1,
+    S_GENEQL > 44.37 & S_GENEQL < 63.94 ~ 2,
+    S_GENEQL >= 63.94 ~ 3), 
+    labels = c("Low gender equality", "Middle gender equality", "High gender equality")))
+table(data_lca$GENEQL, useNA = "ifany")
+data_lca$GENEQL <- relevel(data_lca$GENEQL, ref = 3)
+
+data_lca$S_AGE <- ifelse(data_lca$S_AGE %in% c(99999997, 99999998, 99999999), NA, data_lca$S_AGE)
+#quantile(data_lca$S_AGE, na.rm = TRUE)
+data_lca <- data_lca %>% 
+  mutate(AGE = factor(case_when(
+    S_AGE <= 14 ~ 1,
+    S_AGE > 14 ~ 2), 
+    labels = c("<= 14", "> 14")))
+table(data_lca$AGE, useNA = "ifany")
+data_lca$AGE <- relevel(data_lca$AGE, ref = 1)
+
+
+data_lca$COUNTRY <- relevel(factor(data_lca$COUNTRY), ref = 3)
+
+
+data_lca$GROUP <- relevel(factor(data_lca$GROUP), ref = 2)
+
+#save(data_lca, file = "ToHLMdata.RData")
+```
+
+## Factors related to Competition- driven sexism class  
+
+```{r}
+#load("ToHLMdata.RData")
+
+data_lca %>% group_by(IDCNTRY, IDSCHOOL, ClassM) %>% add_count(wt = ws) %>% 
+  filter(!is.na(ClassM)) %>% 
+  ungroup() %>%  
+  ggplot() +
+  stat_density(aes(x = n, color = IDCNTRY, weight = ws),
+               geom="line",position="identity") +
+  theme_bw() +
+  scale_color_brewer(type = "qual", palette = "Dark2") +
+  facet_grid(ClassM ~., switch = "y") +
+  ggtitle("Distribution of number of same class members in the same school") +
+  theme(legend.position = "top", legend.box="vertical",
+          strip.text.y = element_text(size = 8),
+          legend.spacing.y = unit(-0.2, 'cm'),
+          title = element_text(size = 8), 
+          axis.text.y = element_text(size = 8),
+          legend.title = element_text(size = 8), 
+          legend.text = element_text(size = 8)) +
+  labs(y="Density", color = "Country", 
+       x = "Number of members in a class by school")  
+
+```
+
+
+```{r}
+data_lca %>% filter(!is.na(ClassM)) %>% 
+  ggplot(aes(x=IDSCHOOL, y = PV1CIV, color = ClassM)) + 
+  geom_jitter(aes(alpha = ClassM), size = 1) +
+  theme_bw() +
+  ggtitle("Class membership distribution across civic knowledge") +
+  facet_wrap(GROUP + IDCNTRY ~ ., scales = "free") +
+  scale_color_brewer(type = "qual", palette = "Dark2") +
+  theme(legend.position = "top", legend.box="vertical",
+          strip.text.y = element_text(size = 8),
+          legend.spacing.y = unit(-0.2, 'cm'),
+          title = element_text(size = 9), 
+          axis.title.x = element_blank(), 
+          axis.text.y = element_text(size = 8),
+          legend.title = element_text(size = 8), 
+          legend.text = element_text(size = 8),
+          axis.text.x = element_blank()) +
+  guides(alpha = FALSE) +
+  labs(y="Scores 1st plausible value Civic knowledge", color = "Class Membership")  
+```
+
+
+```{r}
+data_lca %>% filter(!is.na(ClassM)) %>% 
+  ggplot(aes(x=IDSCHOOL, y = S_GENEQL, color = ClassM)) + 
+  geom_jitter(aes(alpha = ClassM), size = 1) +
+  theme_bw() +
+  ggtitle("Class membership distribution across Attitude towards Gender Equality index") +
+  facet_wrap(GROUP + IDCNTRY ~ ., scales = "free") +
+  scale_color_brewer(type = "qual", palette = "Dark2") +
+  theme(legend.position = "top", legend.box="vertical",
+          strip.text.y = element_text(size = 8),
+          legend.spacing.y = unit(-0.2, 'cm'),
+          title = element_text(size = 9), 
+          axis.title.x = element_blank(), 
+          axis.text.y = element_text(size = 8),
+          legend.title = element_text(size = 8), 
+          legend.text = element_text(size = 8),
+          axis.text.x = element_blank()) +
+  guides(alpha = FALSE) +
+  labs(y="Attitude towards Gender Equality index", color = "Class Membership")  
+```
+
+```{r}
+data_lca %>% filter(!is.na(ClassM)) %>% 
+  ggplot(aes(x = S_NISB, y = IDCNTRY, group = IDCNTRY, fill = IDCNTRY)) +
+        geom_violin(aes(weight = ws), alpha = 0.5) +
+        geom_boxplot(aes(weight = ws), width=0.1) +
+        geom_vline(xintercept = 0, linetype="dotted", size = 0.8) +
+        facet_grid( ClassM ~ GENDER, switch = "y") +
+  theme_bw() +
+  ggtitle("Class membership distribution by National index of socioeconomic \nbackground and Gender") +
+  scale_color_brewer(type = "qual", palette = "Dark2") +
+  theme(legend.position = "none", legend.box="vertical",
+          strip.text.y = element_text(size = 8),
+          legend.spacing.y = unit(-0.2, 'cm'),
+          title = element_text(size = 9), 
+          axis.text.y = element_text(size = 8),
+        axis.title.y = element_blank()) +
+  labs(x="Scores for National index of socioeconomic background") 
+
+```
+
+
+```{r, echo=FALSE, include=FALSE}
+library(survey)
+library(sjPlot)
+options(survey.lonely.psu="adjust")
+RSchl_cate <- c("URBAN", "COMP", "SCLOC")
+RStud_cate <- c("PV1CIV", "PVCIV", "GENDER", "IMMIG", "RELIG", "S_NISB", "NISB", "ISCED", #"MISCED", "FISCED", "FINT",
+                "HOMLIT", "SINT",  "MINT", "PACPRO","MOHOM", "FAHOM", "GENEQL", "AGE")
+
+data_bin <- data_lca %>% 
+  dplyr::select(COUNTRY, GROUP, id_s, id_j, ws, wt, ClassM, IDSCHOOL,
+                all_of(RSchl_cate),
+                all_of(RStud_cate)) %>% 
+  mutate(Class = case_when(ClassM == "Full egalitarian" ~ 0,
+                           ClassM == "Competition- driven sexism" ~ 1)) %>% 
+  filter(!is.na(ClassM))
+summary(data_bin)
+survey.design <- svydesign(ids = ~id_j, weights = ~ws, data=data_bin, strata = ~id_s, nest = TRUE)
+
+logit2 <- svyglm(ClassM ~ PVCIV + GENDER + PACPRO + RELIG + ISCED + IMMIG + NISB + COMP,
+                 data = data_bin, family = binomial, design = survey.design)  
+summary(logit2)
+
+plot_model(logit2, sort.est = TRUE, show.values = TRUE, value.offset = .3)
+plot_model(logit2, sort.est = TRUE, transform = "plogis")
+
+library(lme4)
+pl <- c(`(Intercept)` = "Intercept", 
+        `PVCIVLow PVCIV` = "Civic Knowledge [Low Level PV1]",
+        `PVCIVMiddle PVCIV` ="Civic Knowledge [Medium Level PV1]", 
+        COUNTRYBFL = "Country [Belgium (Flanders)]", 
+        COUNTRYCHL = "Country [Chile]", 
+        COUNTRYNLD = "Country [Netherland]",
+        GENDERBoy = "Gender [Boy]", 
+        `PACPRONot important` = "Paceful protests participation [Not important]", 
+        `RELIGReligion` = "Religion [With religion]", 
+        `ISCEDSecondary at most` = "Expected education student [Secondary at most]",
+        `IMMIGParents born abroad` =  "Immigration [Parents born abroad]", 
+        `NISBLow NISB` = "National Socio Economical Background [Low level]", 
+        `NISBMiddle NISB` = "National Socio Economical Background [Middle level]",
+        `COMPMore disadvantaged than affluent` = "School composition [More disadvantage than affluent students]",
+        `COUNTRYBFL:GENDERBoy` = "Belgium:Boy", 
+        `COUNTRYCHL:GENDERBoy` = "Chile:Boy", 
+        `COUNTRYNLD:GENDERBoy` = "Netherland:Boy", 
+        `GROUPEurope:RELIGReligion` = "Europe:Religion")
+
+glmmln <- glmer(ClassM ~ 1 +
+                  (1|GROUP) + (1|GROUP:COUNTRY) + (1|COUNTRY:id_s) + 
+                  (1|id_s:IDSCHOOL), weights = wt,
+                 data=data_bin, family=binomial)
+
+glmml0 <- glmer(ClassM ~ PVCIV + GENDER + PACPRO + ISCED + IMMIG + COMP + NISB + RELIG +
+                  (1|GROUP) + (1|GROUP:COUNTRY) + (1|COUNTRY:id_s) + 
+                  (1|id_s:IDSCHOOL), weights = wt,
+                 data=data_bin, family=binomial)
+summary(glmml0)
+tab_model(glmml0, dv.labels = c("Multilevel GLM"),
+          pred.labels = pl)
+tab_model(glmmln, glmml0, dv.labels = c("Multilevel GLM Null", "Multilevel GLM"),
+          pred.labels = pl)
+tab_model(logit2, dv.labels = c("GLM with survey"),
+          pred.labels = pl)
+
+tab_model(logit2, glmml0, dv.labels = c("GLM with survey", "Multilevel GLM"),
+          pred.labels = pl)
+```
+
+```{r}
+glmml1 <- glmer(ClassM ~ PV1CIV + GENDER + PACPRO + ISCED + IMMIG + COMP + NISB + RELIG +
+                  (1|GROUP) + (1|GROUP:COUNTRY) + (1|COUNTRY:id_s) + 
+                  (1|id_s:IDSCHOOL), weights = ws,
+                 data=data_bin, family=binomial)
+
+plot_model(glmml1, sort.est = TRUE, show.values = TRUE, value.offset = .3)
+cat("\n")
+cat("\n")
+plot_model(glmml1, sort.est = TRUE, transform = "plogis")
+cat("\n")
+cat("\n")
+plot_model(glmml1, type = "pred", terms = c("PV1CIV","GENDER"), pred.type = "re",
+           title = "Predicted probabilities for Competition- driven sexism class membership - Random effects",
+           axis.title = "Competition- driven sexism class membership")
+cat("\n")
+cat("\n")
+plot_model(glmml1, type = "pred", terms = c("NISB","GENDER"), pred.type = "re")
+cat("\n")
+cat("\n")
+```
+
+
+
+```{r include=FALSE, eval = FALSE}
+#For slides
+a <- levels(factor(lc3_EU$param))
+  a <- a[order(a)[orden]]
+  labels <- NULL
+  for (each in a){
+    labels[each] <- attr(data_model[[each]], "variable.label")
+  }
+  
+#------------------------
+# Europe
+#------------------------
+lc3_EU  %>%  filter(category == 1) %>% select(param, Class, value) %>% 
+  reshape2::dcast(param ~ Class) %>% bind_rows(sizelca3_EU %>% select(-Cycle) %>% 
+                                                 reshape2::dcast(.~Class)) %>% select(-".") %>% 
+  mutate(param = c(labels,"Class estimated size")) %>% 
+  kbl(digits = 3,align = "lrrr",
+    col.names = c("Items", classes3EU),
+    caption = "Conditional probabilities Europe", escape = FALSE) %>%
+  footnote(general_title = "Fit statistics", 
+           general = 
+             paste0("AIC = ",round(lca_EU$EU_lca_C3cl3.out$summaries$AIC,0),
+                    ", BIC = ", round(lca_EU$EU_lca_C3cl3.out$summaries$BIC,0),
+                    ", aBIC = ",round(lca_EU$EU_lca_C3cl3.out$summaries$aBIC,0),
+                    ", Entropy = ",lca_EU$EU_lca_C3cl3.out$summaries$Entropy), escape = FALSE) %>% 
+  kable_classic_2(full_width = F) %>% 
+  kable_styling(latex_options = c("HOLD_position")) %>%
+  column_spec(1, width = "14cm") %>%
+  column_spec(2:4, width = "4cm") %>%
+  row_spec(5, bold = TRUE)
+
+
+resultsbyallo <- mixtureSummaryTable(MGCntry_EU, 
+                                     keepCols = c("Title", "NLatentClasses", "Parameters", "LL", 
+                                                  "AIC", "BIC", "aBIC","Entropy", "ChiSqCategoricalLRT_DF")) %>%
+  filter(NLatentClasses == 5)
+resultsbyall <- resultsbyallo %>% 
+  dplyr::mutate( Type = str_extract(Title,"[A-Z]{1}\\.[A-Za-z]{3}+"),
+                 Type = ifelse(Type == "C.Het", "Complete heterogeneity", 
+                               ifelse(Type == "P.Hom", "Partial homogeneity",
+                                      ifelse(Type == "C.Hom", "Complete homogeneity", NA))),
+                 Reduction = scales::percent(ifelse(is.na(lag(LL)), NA, (LL-lag(LL))/lag(LL)),accuracy = 0.1),
+                 deltaLL = round(LL-lag(LL),0),
+                 deltadf = ChiSqCategoricalLRT_DF-lag(ChiSqCategoricalLRT_DF),
+                 pvaluedelta = round(1-pchisq(abs(deltaLL),deltadf),3)) %>% ungroup()
+resultsbyall <- resultsbyall[,c("Type", "LL", "AIC",	"BIC",	"aBIC",	"Entropy", 
+                                "Reduction")] %>% 
+  setNames(c("Type", "Log-Likelihood", "AIC",	"BIC",	"aBIC",	"Entropy", 
+             "LL\n Reduction"))
+resultsbyall %>% 
+  kbl(caption="Multigroup fit statistics Europe", align = "lrrrrrr",
+    booktabs = TRUE, longtable = TRUE, row.names = FALSE, escape = FALSE) %>%
+  kable_classic_2(full_width = F) %>% 
+  kable_styling(latex_options = c("HOLD_position")) %>%
+  column_spec(1, width = "14em") %>% 
+  column_spec(c(2:7), width = "4em") %>% 
+  row_spec(2, bold = TRUE)
+
+#------------------------
+# Latam
+#------------------------
+lc4_LA  %>%  filter(category == 1) %>% select(param, Class, value) %>% 
+  reshape2::dcast(param ~ Class) %>% bind_rows(sizelca4_LA %>% select(-Cycle) %>% 
+                                                 reshape2::dcast(.~Class)) %>% select(-".") %>% 
+  mutate(param = c(labels,"Class estimated size")) %>% 
+  kbl(digits = 3,align = "lrrrr",
+    col.names = c("Items", classes4LA),
+    caption = "Conditional probabilities South America", escape = FALSE) %>%
+  footnote(general_title = "Fit statistics", 
+           general = 
+             paste0("AIC = ",round(lca_LA$LA_lca_C3cl4.out$summaries$AIC,0),
+                    ", BIC = ", round(lca_LA$LA_lca_C3cl4.out$summaries$BIC,0),
+                    ", aBIC = ",round(lca_LA$LA_lca_C3cl4.out$summaries$aBIC,0),
+                    ", Entropy = ",lca_LA$LA_lca_C3cl4.out$summaries$Entropy), escape = FALSE) %>% 
+  kable_classic_2(full_width = F) %>% 
+  kable_styling(latex_options = c("HOLD_position")) %>%
+  column_spec(1, width = "14cm") %>%
+  column_spec(2:5, width = "4cm") %>%
+  row_spec(5, bold = TRUE)
+
+
+resultsbyallo <- mixtureSummaryTable(MGCntry_LA, 
+                                     keepCols = c("Title", "NLatentClasses", "Parameters", "LL", 
+                                                  "AIC", "BIC", "aBIC","Entropy", "ChiSqCategoricalLRT_DF")) %>%
+  filter(NLatentClasses == 6)
+resultsbyall <- resultsbyallo %>% 
+  dplyr::mutate( Type = str_extract(Title,"[A-Z]{1}\\.[A-Za-z]{3}+"),
+                 Type = ifelse(Type == "C.Het", "Complete heterogeneity", 
+                               ifelse(Type == "P.Hom", "Partial homogeneity",
+                                      ifelse(Type == "C.Hom", "Complete homogeneity", NA))),
+                 Reduction = scales::percent(ifelse(is.na(lag(LL)), NA, (LL-lag(LL))/lag(LL)),accuracy = 0.1),
+                 deltaLL = round(LL-lag(LL),0),
+                 deltadf = ChiSqCategoricalLRT_DF-lag(ChiSqCategoricalLRT_DF),
+                 pvaluedelta = round(1-pchisq(abs(deltaLL),deltadf),3)) %>% ungroup()
+resultsbyall <- resultsbyall[,c("Type", "LL", "AIC",	"BIC",	"aBIC",	"Entropy", 
+                                "Reduction")] %>% 
+  setNames(c("Type", "Log-Likelihood", "AIC",	"BIC",	"aBIC",	"Entropy", 
+             "LL\n Reduction"))
+resultsbyall %>% 
+  kbl(caption="Multigroup fit statistics South America", align = "lrrrrrr",
+    booktabs = TRUE, longtable = TRUE, row.names = FALSE, escape = FALSE) %>%
+  kable_classic_2(full_width = F) %>% 
+  kable_styling(latex_options = c("HOLD_position")) %>%
+  column_spec(1, width = "14em") %>% 
+  column_spec(c(2:7), width = "4em") %>% 
+  row_spec(2, bold = TRUE)
+
+
+
+#------------------------
+# Region
+#------------------------
+Rresultsbyallo <- mixtureSummaryTable(RegionMG, 
+                                     keepCols = c("Title", "NLatentClasses", "Parameters", "LL", 
+                                                  "AIC", "BIC", "aBIC","Entropy", "ChiSqCategoricalLRT_DF"))
+Rresultsbyall <- Rresultsbyallo %>% 
+  dplyr::mutate(Type = str_extract(Title,"[A-Z]{1}\\.[A-Za-z]{3}+"),
+           Subtype = ifelse(Type == "P.Het", "2 classes", 
+                            ifelse(Type == "P.Hom", "3 classes", NA)),
+           Type = ifelse(Type == "C.Het", "Complete heterogeneity", 
+                         ifelse(Type == "P.Hom", "Partial homogeneity",
+                                ifelse(Type == "C.Hom", "Complete homogeneity", 
+                                       ifelse(Type == "P.Het", "Partial homogeneity",NA)))),
+           orden = ifelse(Type == "C.Het", 1, 
+                         ifelse(Type == "P.Hom", 3,
+                                ifelse(Type == "C.Hom", 4, 
+                                       ifelse(Type == "P.Het", 2,NA)))),
+                 Reduction = scales::percent(ifelse(is.na(lag(LL)), NA, (LL-lag(LL))/lag(LL)),accuracy = 0.1),
+                 deltaLL = round(LL-lag(LL),0),
+                 deltadf = ChiSqCategoricalLRT_DF-lag(ChiSqCategoricalLRT_DF),
+                 pvaluedelta = round(1-pchisq(abs(deltaLL),deltadf),3)) %>% arrange(orden)
+Rresultsbyall <- Rresultsbyall[,c("Type", "Subtype", "LL", "AIC",	"BIC",	"aBIC",	"Entropy", 
+                                "Reduction")] %>% 
+  setNames(c("Type", "Subtype", "Log-Likelihood", "AIC",	"BIC",	"aBIC",	"Entropy", 
+             "LL\n Reduction"))
+Rresultsbyall %>% 
+  kbl(caption="Multigroup fit statistics Regions", align = "llrrrrrr",
+    booktabs = TRUE, longtable = TRUE, row.names = FALSE, escape = FALSE) %>%
+  kable_classic_2(full_width = F) %>% 
+  kable_styling(latex_options = c("HOLD_position")) %>%
+  column_spec(1, width = "12em") %>% 
+  column_spec(2, width = "5em") %>% 
+  column_spec(c(3:8), width = "4em") %>% 
+  row_spec(2, bold = TRUE) %>% 
+  collapse_rows(1)
+
+lcign <- VarClass(MGRegionPHet_C3cl3)
+lcign %>% dplyr::group_by(ClassN, Group, param) %>% filter(category == 1) %>% 
+  dplyr::select(param, ClassN,Group, value) %>% 
+  reshape2::dcast(param ~ Group+ClassN) %>% bind_rows(sizeMGRegionPHet %>% select(-Cycle) %>% 
+                                                 reshape2::dcast(.~Group+ClassN)) %>% select(-".") %>% 
+  mutate(param = c(labels,"Class estimated size")) %>% 
+  kbl(caption = "Conditional probabilities partial homogeneity region multigroup analysis", booktabs = TRUE, longtable = TRUE, 
+      align = "lrrrrrr", row.names = FALSE, digits = 3, col.names = c("Item", classes3R, classes3R), escape = FALSE) %>%
+  kable_classic_2(full_width = F) %>% 
+  kable_styling(latex_options = c("HOLD_position")) %>%
+  column_spec(1, width = "14em") %>%  
+  column_spec(2:7, width = "4em") %>%  
+  collapse_rows(1, valign = "top")  %>%
+  row_spec(5, bold = TRUE) %>%
+  add_header_above(c(" "=1,"Europe" = 3, "South America" = 3)) %>% 
+  column_spec(c(4), border_right = TRUE) %>% 
+  column_spec(c(4,7), bold = TRUE, italic = TRUE)
+
+```
