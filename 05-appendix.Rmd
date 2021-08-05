@@ -1,117 +1,221 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 `r if(knitr:::is_latex_output()) '\\appendix'`
 
 `r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'` 
 
-
-# Complementary tables  
-
-```{r table1, echo=FALSE, warning=FALSE, message=FALSE, results="asis", fig.cap="left-aligned"}
-
-kbl(table(data_model$IDCNTRY,data_model$YEAR), 
-    caption = "Countries sample sizes included in the analysis", label = "tableA1",
-    escape = FALSE, booktabs = TRUE, longtable = TRUE) %>% 
-  column_spec(1, width = "10em") %>%
-  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
-                position = "left", font_size = 11, full_width = FALSE) %>% print()
-
-```  
+# Appendix  
+## Complementary tables  
 
 
+```{r tableA1, echo=FALSE, warning=FALSE, message=FALSE, results="asis", fig.cap="left-aligned"}
+#orScalesIMM <- c("ES3G04A", "ES3G04B", "ES3G04C", "ES3G04D", "ES3G04E")
+orScalesGND <- c("IS3G24A", "IS3G24B", "IS3G24E")
+orScalesinvGND <- c("IS3G24C", "IS3G24D", "IS3G24F")#, "IS3G24G")
 
-```{r table2, eval = FALSE, echo=FALSE, warning=FALSE, message=FALSE, results="asis", fig.cap="left-aligned"}
+orScalesETH <- c("IS3G25A", "IS3G25B","IS3G25C","IS3G25D", "IS3G25E")
 
-items99 <-  rbind(
-c("WOMRTMLE","Attitudes toward Women’s Political and Economic Rights",""),
-c("BS4G1","Women should run for public office [a seat in the legislature] and take part in the government just as men do.",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("BS4G4","Women should have the same rights as men in every way.",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("BS4G6","Women should stay out of politics",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("BS4G9","When jobs are scarce, men [should] have more right to a job than women.",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("BS4G11","Men and women should get equal pay when they are in the same jobs [occupations].",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("BS4G13","Men are better qualified to be political leaders than women.",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")))
+or1ScalesETH <- c("IS3G25A", "IS3G25B")
+or2ScalesETH <- c("IS3G25C")
+or3ScalesETH <- c("IS3G25D", "IS3G25E")
 
-colnames(items99) <- c("CIVED 1999",	"Description question",	"Resp categories")
+Scales <- c(orScalesGND, orScalesinvGND, orScalesETH)
 
-kbl(items99, 
-    caption = "Items attitudes towards gender equality. Cived 1999", 
-    label = "tableA2",
-    escape = FALSE,
-    booktabs = TRUE,
-    longtable = TRUE) %>% 
-  column_spec(1, width = "8em") %>%
-  column_spec(2, width = "25em") %>%
-  column_spec(3, width = "10em") %>%
-  row_spec(c(0,1), bold = TRUE) %>%
-  collapse_rows(columns = 3, valign = "middle")  %>% 
-  kable_styling(bootstrap_options = c("bordered", "hover"), 
-                latex_options = c("repeat_header", "HOLD_position"), 
-                position = "left", font_size = 11, full_width = FALSE) 
+labelsScales <- NULL
+for(i in 1:length(Scales)){
+  labelsScales <- c(labelsScales, ifelse(Scales[i] %in% or1ScalesETH , 
+                             paste0("All ethnic and racial groups ",
+                                    tolower(str_remove(attr(data_model[[Scales[i]]], "variable.label"), 
+           "Rights and Responsibilities/Rights and responsibilities/"))),
+           ifelse(Scales[i] %in% or2ScalesETH , 
+                             paste0(str_remove(attr(data_model[[Scales[i]]], "variable.label"), 
+           "Rights and Responsibilities/Rights and responsibilities/"),
+           " members of all ethnic and racial groups"),
+           ifelse(Scales[i] %in% or3ScalesETH , 
+                             paste0("Members of all ethnic and racial groups ",
+                                    tolower(str_remove(attr(data_model[[Scales[i]]], "variable.label"), 
+           "Rights and Responsibilities/Rights and responsibilities/"))),
+           ifelse(Scales[i] %in% orScalesinvGND,
+                  paste0(str_remove(attr(data_model[[Scales[i]]], "variable.label"), 
+           "Rights and Responsibilities/Roles women and men/"), " (r)"),
+           gsub("[][<>]", "", str_remove(attr(data_model[[Scales[i]]], "variable.label"), 
+           "Rights and Responsibilities/Roles women and men/|Moving/")))))))
+}
 
-```
-
-```{r table3, eval = FALSE, echo=FALSE, warning=FALSE, message=FALSE, results="asis", fig.cap="left-aligned"}
-
-items09 <-  rbind(
-c("GENEQL","Students’ attitudes toward gender equality",""),
-c("IS2P24A","Men and women should have equal opportunities to take part in government",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("IS2P24B","Men and women should have the same rights in every way ",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("IS2P24C","Women should stay out of politics",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("IS2P24D","When there are not many jobs available, men should have more right to a job than women",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("IS2P24E","Men and women should get equal pay when they are doing the same jobs",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("IS2P24F","Men are better qualified to be political leaders than women",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")))
-
-colnames(items09) <- c("ICCS 2009",	"Description question",	"Resp categories")
-
-kbl(items09, 
-    caption = "Items attitudes towards gender equality. ICCS 2009", 
-    label = "tableA3",
-    escape = FALSE,
-    booktabs = TRUE,
-    longtable = TRUE) %>% 
-  column_spec(1, width = "8em") %>%
-  column_spec(2, width = "25em") %>%
-  column_spec(3, width = "10em") %>%
-  row_spec(c(0,1), bold = TRUE) %>% 
-  collapse_rows(columns = 3, valign = "middle")  %>% 
-  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
-                position = "left", font_size = 11, full_width = FALSE)
-
-```
-
-
-```{r table4, echo=FALSE, warning=FALSE, message=FALSE, results="asis", fig.cap="left-aligned"}
-
-items16 <-  rbind(
-c("S\\_GENEQL","Attitudes toward gender equality",""),
-c("IS3G24A","Roles women and men/Men and women should have equal opportunities to take part in government",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("IS3G24B","Roles women and men/Men and women should have the same rights in every way",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("IS3G24C","Roles women and men/Women should stay out of politics",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("IS3G24D","Roles women and men/Not many jobs available, men should have more right to a job than women",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("IS3G24E","Roles women and men/Men and women should get equal pay when they are doing the same jobs",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("IS3G24F","Roles women and men/Men are better qualified to be political leaders than women",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")),
-c("IS3G24G","Roles women and men/Women’s first priority should be raising children",linebreak("1-Strongly disagree\n2-Disagree\n3-Agree\n4-Strongly agree")))
-
-colnames(items16) <- c("ICCS 2016",	"Description question",	"Resp categories")
+items16 <- cbind(Scales, labelsScales) %>% data.frame()
 
 kbl(items16, 
-    caption = "Items attitudes towards gender equality. ICCS 2016", 
-    label = "tableA4",
+    caption = "Items for students' endorsement of equal rights and opportunities. ICCS 2016", 
+    #label = "tableA4",
     escape = FALSE,
     booktabs = TRUE,
-    longtable = TRUE) %>% 
+    longtable = TRUE, col.names = c("Item", "Description")) %>% 
   column_spec(1, width = "8em") %>%
-  column_spec(2, width = "25em") %>%
-  column_spec(3, width = "10em") %>%
-  row_spec(c(0,1), bold = TRUE) %>%
-  collapse_rows(columns = 3, valign = "middle")  %>% 
-  kable_styling(bootstrap_options = c("bordered", "hover"), latex_options = c("repeat_header", "HOLD_position"), 
-                position = "left", font_size = 11, full_width = FALSE)
+  column_spec(2, width = "35em") %>%
+  kable_styling(bootstrap_options = c("bordered", "hover"), 
+                latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 11, full_width = FALSE) %>% 
+  #pack_rows("Equal rights for immigrants", 1, 5) %>% 
+  pack_rows("Gender equality", 1, 6) %>%
+  pack_rows("Equal rights for all ethnic and racial groups", 7, 11)
 
 ```
 
-# Syntax
+\newpage  
 
 
-**Packages used**
+```{r tableA2, echo=FALSE, warning=FALSE, message=FALSE, results="asis", fig.cap="left-aligned"}
+Country <- c("Belgium (Flemish)", "Bulgaria", "Chile", "Chinese Taipei", "Colombia", "Croatia", "Denmark", "Dominican Republic", " Estonia", "Finland",
+             "Hong Kong SAR", "Italy", "Korea, Republic of", "Latvia", "Lithuania", "Malta", "Mexico", "Netherlands", "Norway", "Peru", 
+             "Russian Federation", "Slovenia", "Sweden")
+
+Code <- c("BFL", "BGR", "CHL", "TWN","COL","HRV", "DNK", "DOM", "EST", "FIN", "HKG", "ITA", "KOR", "LVA", "LTU", "MLT", "MEX","NLD", "NOR", "PER", "RUS", "SVN", "SWE")
+
+Students <- c(2931,2966,5081,3953,5609,3896,6254,3937,2857,3173,2653,3450,2601,3224,3631,3764,5526,2812,6271,5166,7289,2844,3264)
+
+Schools <- c(162,147,178,141,150,175,184,141,164,179,91,170,93,147,182,47,213,123,148,206,352,145,155)
+
+sample<- data.frame(Code, Country, Schools, Students)
+sample %>% 
+kbl(caption = "Countries sample sizes that participate in ICCS 2016", 
+    #label = "tableA1",
+    escape = FALSE, booktabs = TRUE, longtable = TRUE, col.names = c("AlphaCode","Country","Participating schools", "Participating students")) %>% 
+  column_spec(1, width = "10em") %>%
+  row_spec(c(1,2,6,7,9,10,12,14,15,16,18,19,22,23), bold = TRUE, italic = FALSE) %>% 
+  kable_styling(bootstrap_options = c("bordered", "hover"), 
+                latex_options = c("repeat_header", "HOLD_position"), 
+                position = "left", font_size = 11, full_width = FALSE) %>% 
+  footnote(general = "Bold countries were selected for this research")
+```  
+
+\newpage  
+
+
+\blandscape
+
+## Detailed output
+
+```{r detailed1, ref.label='modelfitcnty1', echo = FALSE}
+```
+
+\elandscape
+
+```{r detailedplot1, ref.label='higprob1', echo = FALSE, fig.cap = "Response categories probabilities and class size for 4-classes global model for Attitude towards gender equality scale", fig.width=5, fig.height=4}
+```
+
+
+```{r detailed2, ref.label='cfa1', echo = FALSE}
+```
+
+
+\blandscape
+
+```{r detailed3, ref.label='modelfitcnty2', echo = FALSE}
+```
+
+\elandscape
+
+```{r detailedplot2, ref.label='higprob2', echo = FALSE , fig.cap = "Response categories probabilities and class size for 4-classes global model for Attitude towards ethnic and race equal rights scale", fig.width=5, fig.height=4}
+```
+
+```{r detailed4, ref.label='cfa2', echo = FALSE}
+```
+
+## Syntax
+
+#### Packages used
 
 ```{r ref.label='include_packages', results='hide', echo = TRUE}
 ```
+
+#### MplusAutomation syntax
+
+```{r results='markup'}
+fileName <- 'functions/Create_RunModels.R'
+#89780
+cat(readChar(fileName, 3318), collapse = "\n")
+```
+
+#### Automatized R code
+
+```{r results='markup'}
+fileName <- 'functions/0.functions.R'
+#23152
+cat(readChar(fileName, 11468), collapse = "\n")
+```
+
+
+```{r results='markup'}
+fileName <- 'functions/code.txt'
+cat(readChar(fileName, file.info(fileName)$size), collapse = "\n")
+```
+
+
+#### Mplus syntax  
+
+##### Latent Class model with 4 classes  
+
+\  
+
+```{r mplussyntax1, results='markup', echo = FALSE}
+fileName <- 'data/MplusModels/LCA/GND_lca_C3cl4.inp'
+
+cat(readChar(fileName, file.info(fileName)$size), collapse = "\n")
+```
+
+
+##### Complete homogeneous multigroup latent class model with 4 classes
+
+\  
+
+```{r mplussyntax2, results='markup', echo = FALSE}
+fileName <- 'data/MplusModels/CountryMG/GND_MGCnty_C3cl4_3CHom.inp'
+
+cat(readChar(fileName, file.info(fileName)$size), collapse = "\n")
+```
+
+
+#### Partial homogeneous multigroup latent class model with 4 classes  
+
+\  
+
+```{r mplussyntax3, results='markup', echo = FALSE}
+fileName <- 'functions/PartialMGmpluscode.txt'
+
+cat(readChar(fileName, file.info(fileName)$size), collapse = "\n")
+```
+
+#### Complete heterogeneous multigroup latent class model with 4 classes
+
+\  
+
+```{r mplussyntax4, results='markup', echo = FALSE}
+fileName <- 'functions/HeterMGmpluscode.txt'
+
+cat(readChar(fileName, file.info(fileName)$size), collapse = "\n")
+```
+
+#### Confirmatory latent class model with 4 classes for Students' endorsement of gender equality scale
+
+\  
+
+```{r mplussyntax5, results='markup', echo = FALSE}
+fileName <- 'data/MplusModels/LCA/GND_Conflca_C3cl4.inp'
+
+cat(readChar(fileName, file.info(fileName)$size), collapse = "\n")
+```
+
+#### Confirmatory latent class model with 4 classes for Students' endorsement of equal rights for all ethnic/racial groups scale
+
+\  
+
+```{r mplussyntax6, results='markup', echo = FALSE}
+
+fileName <- 'data/MplusModels/LCA/ETH_Conflca_C3cl4.inp'
+
+cat(readChar(fileName, file.info(fileName)$size), collapse = "\n")
+```
+

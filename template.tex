@@ -24,17 +24,21 @@
 %% Preamble
 %%
 % \documentclass{<something>} must begin each LaTeX document
-\documentclass[12pt,twoside]{reedthesis}
+\documentclass[12pt,a4paper,oneside]{reedthesis}
 % Packages are extensions to the basic LaTeX functions. Whatever you
 % want to typeset, there is probably a package out there for it.
 % Chemistry (chemtex), screenplays, you name it.
 % Check out CTAN to see: https://www.ctan.org/
 %%
-\usepackage{graphicx,latexsym}
+\usepackage{graphicx,xcolor,textpos}
+\usepackage{helvet}
+\usepackage{textcomp} % nice greek alphabet
+\usepackage{pifont}   % Dingbats
+\usepackage{latexsym}
 \usepackage{amsmath}
 \usepackage{amssymb,amsthm}
 \usepackage{longtable,booktabs,setspace}
-\usepackage{chemarr} %% Useful for one reaction arrow, useless if you're not a chem major
+%\usepackage{chemarr} %% Useful for one reaction arrow, useless if you're not a chem major
 \usepackage[hyphens]{url}
 % Added by CII
 \usepackage{hyperref}
@@ -46,7 +50,20 @@
 % End of CII addition
 \usepackage{rotating}
 
-\usepackage[dvipsnames]{xcolor}
+\topmargin -10mm
+\textwidth 160truemm
+\textheight 240truemm
+\oddsidemargin 0mm
+\evensidemargin 0mm
+
+\definecolor{green}{RGB}{172,196,0}
+\definecolor{bluetitle}{RGB}{29,141,176}
+\definecolor{blueaff}{RGB}{0,0,128}
+\definecolor{blueline}{RGB}{82,189,236}
+\setlength{\TPHorizModule}{1mm}
+\setlength{\TPVertModule}{1mm}
+
+%\usepackage[dvipsnames]{xcolor}
 \definecolor{Mygreen}{HTML}{1B9E77}
 \definecolor{Myred}{HTML}{D95F02}
 \definecolor{Myblue}{HTML}{7570B3}
@@ -56,6 +73,7 @@
 \definecolor{Mybrown}{HTML}{A6761D}
 \definecolor{Mygrey}{HTML}{666666}
 
+\hypersetup{pdfborder=0 0 0}
 
 % Next line commented out by CII
 %%% \usepackage{natbib}
@@ -69,7 +87,7 @@
 % Added by CII (Thanks, Hadley!)
 % Use ref for internal links
 \renewcommand{\hyperref}[2][???]{\autoref{#1}}
-\def\chapterautorefname{Chapter}
+%\def\chapterautorefname{Chapter}
 \def\sectionautorefname{Section}
 \def\subsectionautorefname{Subsection}
 % End of CII addition
@@ -131,7 +149,7 @@ $if(csl-refs)$
 \newlength{\csllabelwidth}
 \setlength{\csllabelwidth}{3em}
 \newlength{\cslhangindent}
-\setlength{\cslhangindent}{1.5em}
+\setlength{\cslhangindent}{1em}
 % for Pandoc 2.8 to 2.10.1
 \newenvironment{cslreferences}%
   {$if(csl-hanging-indent)$\setlength{\parindent}{0pt}%
@@ -196,16 +214,20 @@ $endif$
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
-\Acknowledgements{
-$acknowledgements$
-}
-
-\Dedication{
-$dedication$
-}
+%\Acknowledgements{
+%$acknowledgements$
+%}
+%
+%\Dedication{
+%$dedication$
+%}
 
 \Preface{
 $preface$
+}
+
+\Listabbrev{
+$listabbrev$
 }
 
 \Abstract{
@@ -225,37 +247,141 @@ $endfor$
 
 
 \thispagestyle{empty}
-\begin{center}
-  {\Large{\bf $title$}} \vspace{0.5cm}
+\newcommand{\form}[1]{\scalebox{1.087}{\boldmath{#1}}}
+\sffamily
+%
+\begin{textblock}{191}(-24,-11)
+\colorbox{green}{\hspace{139mm}\ \parbox[c][18truemm]{52mm}{\textcolor{white}{FACULTY OF SCIENCE}}}
+\end{textblock}
+%
+\begin{textblock}{70}(-18,-19)
+\textblockcolour{}
+\includegraphics*[height=19.8truemm]{LogoKULeuven}
+\end{textblock}
+%
+\begin{textblock}{160}(-6,63)
+\textblockcolour{}
+\vspace{-\parskip}
+\flushleft
+\fontsize{40}{42}\selectfont \textcolor{bluetitle}{$title$}\\[1.5mm]
+\fontsize{20}{22}\selectfont $subtitle$
+\end{textblock}
+%
+\begin{textblock}{160}(8,153)
+\textblockcolour{}
+\vspace{-\parskip}
+\flushright
+\fontsize{14}{16}\selectfont \textbf{$author$}
+\end{textblock}
+%
+\begin{textblock}{70}(-6,191)
+\textblockcolour{}
+\vspace{-\parskip}
+\flushleft
+Supervisor: Prof. $advisoro$\\[-2pt]
+%\textcolor{blueaff}{Affiliation \textsl{(optional)}}\\[5pt]
+Co-supervisor: $advisort$\\[-2pt]
+%\textcolor{blueaff}{Affiliation \textsl{(optional)}}\\[5pt]
+%Mentor: \textsl{(optional)}\\[-2pt]
+%\textcolor{blueaff}{Affiliation \textsl{(optional)}}\\
+\end{textblock}
+%
+\begin{textblock}{160}(8,191)
+\textblockcolour{}
+\vspace{-\parskip}
+\flushright
+Thesis presented in\\[4.5pt]
+fulfillment of the requirements\\[4.5pt]
+for the degree of Master of Science\\[4.5pt]
+in $program$\\
+\end{textblock}
+%
+\begin{textblock}{160}(8,232)
+\textblockcolour{}
+\vspace{-\parskip}
+\flushright
+Academic year $academicyear$
+\end{textblock}
+%
+\begin{textblock}{191}(-24,248)
+{\color{blueline}\rule{550pt}{5.5pt}}
+\end{textblock}
+%
+\vfill
+\newpage
 
-  $type$ submitted \\\vspace{0.5cm}
-  to \\\vspace{0.5cm}
-  \textbf{$advisoro$} \\
-  \textbf{$advisort$} \\\vspace{0.5cm}
-  $university$ \\
-  $institute$ \\
-  $chair$ \\
-  $if(chair2)$ $chair2$ \\ $endif$ \vspace{1cm}
+% In case you want to integrate the TeX-file for the titlepage
+% with the rest of your thesis, you cab continue below
+% ------------------------- First pages ---------------------------
+% For table of contents, acknowlegments, ...
+% -----------------------------------------------------------------
+\rmfamily
+\setcounter{page}{0}
+\pagenumbering{roman}
 
-  \includegraphics[width=0.35\textwidth]{KUL.pdf}
-  
-  by \\\vspace{0.5cm}
-  \textbf{$author$} \\
-  ($matriculation_number$) \\
-  
-  \medskip
-  \medskip
-  in partial fulfillment of the requirements \\
-  for the program of \\
-  \textbf{$program$} \\\vspace{0.5cm}
-  $date$
-  
-\end{center}
+
+\newpage
+% -------------------------- Proper text --------------------------
+% Introduction, chapters, ...
+% -----------------------------------------------------------------
+\setcounter{page}{0}
+\pagenumbering{arabic}
+
+
+\newpage
+% ----------------------- Back cover ------------------------------
+% Please fill in:
+% - Department
+% - Department's address
+% - Telephone number and fax number
+% -----------------------------------------------------------------
+\thispagestyle{empty}
+\sffamily
+%
+\begin{textblock}{191}(113,-11)
+{\color{blueline}\rule{160pt}{5.5pt}}
+\end{textblock}
+%
+\begin{textblock}{191}(168,-11)
+{\color{blueline}\rule{5.5pt}{59pt}}
+\end{textblock}
+%
+\begin{textblock}{183}(-24,-11)
+\textblockcolour{}
+\flushright
+\fontsize{7}{7.5}\selectfont
+\textbf{FACULTEIT WETENSCHAPPEN}\\
+Celestijnenlaan 200H bus 2100\\
+3001 LEUVEN (HEVERLEE), BELGI\"{E}\\
+tel. + 32 16 32 14 01\\
+fax + 32 16 32 14 01\\
+www.kuleuven.be\\
+\end{textblock}
+%
+\begin{textblock}{191}(154,-7)
+\textblockcolour{}
+\includegraphics*[height=16.5truemm]{sedes}
+\end{textblock}
+%
+
+\begin{textblock}{170}(-5,190)
+\textblockcolour{}
+\vspace{-\parskip}
+© Copyright by KU Leuven
+
+Without written permission of the promoters and the authors it is forbidden to reproduce or adapt in any form or by any means any part of this publication. Requests for obtaining the right to reproduce or utilize parts of this publication should be addressed to KU Leuven, Faculteit Wetenschappen, Celestijnenlaan 200H - bus 2100 , 3001 Leuven (Heverlee), Telephone +32 16 32 14 01.
+
+A written permission of the promoter is also required to use the methods, products, schematics and programs described in this work for industrial or commercial use, and for submitting this publication in scientific contests.
+\end{textblock}
+
+\begin{textblock}{191}(-20,235)
+{\color{bluetitle}\rule{544pt}{55pt}}
+\end{textblock}
 
  %Everything below added by CII
-$if(title)$
- \maketitle
-$endif$
+%$if(title)$
+	%\maketitle
+%$endif$
 
 %---------------------------
 \frontmatter % this stuff will be roman-numbered
@@ -273,21 +399,6 @@ $if(preface)$
   \end{preface}
 $endif$
 
-$if(toc)$
-  \hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$black$endif$}
-  \setcounter{secnumdepth}{$toc-depth$}
-  \setcounter{tocdepth}{$toc-depth$}
-  \tableofcontents
-$endif$
-
-$if(lot)$
-  \listoftables
-$endif$
-
-$if(lof)$
-  \listoffigures
-$endif$
-
 $if(abstract)$
   \begin{abstract}
     $abstract$
@@ -300,6 +411,29 @@ $if(dedication)$
   \end{dedication}
 $endif$
 
+$if(listabbrev)$
+  \begin{listabbrev}
+    $listabbrev$
+  \end{listabbrev}
+$endif$
+
+$if(toc)$
+  \hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$black$endif$}
+  \setcounter{secnumdepth}{$toc-depth$}
+  \setcounter{tocdepth}{$toc-depth$}
+  \tableofcontents
+$endif$
+
+
+$if(lot)$
+  \listoftables
+$endif$
+
+$if(lof)$
+  \listoffigures
+$endif$
+
+
 \mainmatter % here the regular arabic numbering starts
 \pagestyle{fancyplain} % turns page numbering back on
 
@@ -307,6 +441,8 @@ $body$
 
 
 % Index?
-
 \end{document}
 
+
+\thispagestyle{empty}
+\thispagestyle{empty}

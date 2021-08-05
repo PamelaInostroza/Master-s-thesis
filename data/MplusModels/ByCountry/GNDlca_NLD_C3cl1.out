@@ -1,0 +1,950 @@
+Mplus VERSION 8.5 (Mac)
+MUTHEN & MUTHEN
+04/07/2021  10:31 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: NLDGND LCA - C3 with 1 classes;
+  DATA:
+  FILE = GNDDtaC3.dat;
+
+  VARIABLE:
+  NAMES = id_i
+  id_j
+  id_r
+  id_s
+  id_k
+  wt
+  ws
+  GND1
+  GND2
+  GND3
+  GND4
+  GND5
+  GND6
+  IDSTUD;
+  IDVARIABLE = IDSTUD;
+  USEVARIABLES = GND1
+  GND2
+  GND3
+  GND4
+  GND5
+  GND6;
+  USEOBSERVATIONS ARE id_k EQ 11;
+  CATEGORICAL = GND1
+  GND2
+  GND3
+  GND4
+  GND5
+  GND6;
+  MISSING = .;
+  CLASSES = c(1);
+  WEIGHT = ws;
+  STRATIFICATION = id_s;
+  CLUSTER = id_j;
+
+  ANALYSIS:
+  TYPE = COMPLEX MIXTURE;
+  PROCESSORS = 4;
+  STARTS = 1000 250;
+  STITERATIONS = 20;
+  STSEED = 288;
+
+  MODEL:
+  %OVERALL%
+
+  OUTPUT:
+  TECH10
+  TECH11
+  SVALUES
+  ;
+
+  SAVEDATA:
+  FILE = Prob_NLD_GNDlca_C3cl1.dat;
+  SAVE = CPROBABILITIES;
+
+
+
+*** WARNING in VARIABLE command
+  When a subpopulation is analyzed with TYPE=COMPLEX, standard errors
+  may be incorrect.  Use the SUBPOPULATION option instead of the
+  USEOBSERVATIONS option to obtain correct standard errors.
+*** WARNING in OUTPUT command
+  TECH11 option is not available for TYPE=MIXTURE with only one class.
+  Request for TECH11 is ignored.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  32
+   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+NLDGND LCA - C3 with 1 classes;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        2780
+
+Number of dependent variables                                    6
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+Number of categorical latent variables                           1
+
+Observed dependent variables
+
+  Binary and ordered categorical (ordinal)
+   GND1        GND2        GND3        GND4        GND5        GND6
+
+Categorical latent variables
+   C
+
+Variables with special functions
+
+  Stratification        ID_S
+  Cluster variable      ID_J
+  Weight variable       WS
+  ID variable           IDSTUD
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                                 100
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-06
+    Relative loglikelihood change                        0.100D-06
+    Derivative                                           0.100D-05
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Random Starts Specifications
+  Number of initial stage random starts                       1000
+  Number of final stage optimizations                          250
+  Number of initial stage iterations                            20
+  Initial stage convergence criterion                    0.100D+01
+  Random starts scale                                    0.500D+01
+  Random seed for generating random starts                     288
+Link                                                         LOGIT
+
+Input data file(s)
+  GNDDtaC3.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             7
+     Number of y missing data patterns           0
+     Number of u missing data patterns           7
+     Number of strata                           62
+     Number of clusters                        123
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR U
+
+
+           Covariance Coverage
+              GND1          GND2          GND3          GND4          GND5
+              ________      ________      ________      ________      ________
+ GND1           1.000
+ GND2           1.000         1.000
+ GND3           0.998         0.997         0.998
+ GND4           0.996         0.996         0.994         0.996
+ GND5           0.997         0.997         0.995         0.994         0.997
+ GND6           0.998         0.997         0.996         0.994         0.995
+
+
+           Covariance Coverage
+              GND6
+              ________
+ GND6           0.998
+
+
+UNIVARIATE PROPORTIONS AND COUNTS FOR CATEGORICAL VARIABLES
+
+    GND1
+      Category 1    0.964         2680.046
+      Category 2    0.036           99.954
+    GND2
+      Category 1    0.943         2620.032
+      Category 2    0.057          159.514
+    GND3
+      Category 1    0.904         2505.082
+      Category 2    0.096          267.087
+    GND4
+      Category 1    0.816         2259.940
+      Category 2    0.184          510.047
+    GND5
+      Category 1    0.928         2572.855
+      Category 2    0.072          198.564
+    GND6
+      Category 1    0.793         2200.337
+      Category 2    0.207          574.319
+
+
+RANDOM STARTS RESULTS RANKED FROM THE BEST TO THE WORST LOGLIKELIHOOD VALUES
+
+Final stage loglikelihood values at local maxima, seeds, and initial stage start numbers:
+
+           -5372.526  255481           751
+           -5372.526  729705           501
+           -5372.526  158964           251
+           -5372.526  unperturbed      0
+           -5372.526  609201           3
+           -5372.526  514978           7
+           -5372.526  829916           15
+           -5372.526  208289           31
+           -5372.526  703404           63
+           -5372.526  267441           127
+           -5372.526  730563           128
+           -5372.526  38078            64
+           -5372.526  719428           129
+           -5372.526  794864           130
+           -5372.526  555689           32
+           -5372.526  587107           65
+           -5372.526  742602           131
+           -5372.526  943264           132
+           -5372.526  654184           66
+           -5372.526  106293           133
+           -5372.526  536337           134
+           -5372.526  615751           16
+           -5372.526  365939           33
+           -5372.526  15050            67
+           -5372.526  257000           135
+           -5372.526  363526           136
+           -5372.526  977786           68
+           -5372.526  319498           137
+           -5372.526  462004           138
+           -5372.526  901673           34
+           -5372.526  425103           69
+           -5372.526  710841           139
+           -5372.526  965671           140
+           -5372.526  412035           70
+           -5372.526  993659           141
+           -5372.526  667357           142
+           -5372.526  578065           8
+           -5372.526  867952           17
+           -5372.526  3314             35
+           -5372.526  775133           71
+           -5372.526  699343           143
+           -5372.526  256224           144
+           -5372.526  90128            72
+           -5372.526  328890           145
+           -5372.526  701157           146
+           -5372.526  47928            36
+           -5372.526  241342           73
+           -5372.526  767001           147
+           -5372.526  112959           148
+           -5372.526  960487           74
+           -5372.526  545226           149
+           -5372.526  751299           150
+           -5372.526  339904           18
+           -5372.526  316890           37
+           -5372.526  219014           75
+           -5372.526  739223           151
+           -5372.526  722666           152
+           -5372.526  613990           76
+           -5372.526  107578           153
+           -5372.526  353096           154
+           -5372.526  126667           38
+           -5372.526  341151           77
+           -5372.526  572149           155
+           -5372.526  509819           156
+           -5372.526  104144           78
+           -5372.526  704750           1
+           -5372.526  761649           512
+           -5372.526  480214           256
+           -5372.526  16924            513
+           -5372.526  998022           514
+           -5372.526  18598            257
+           -5372.526  564698           515
+           -5372.526  776360           516
+           -5372.526  148293           258
+           -5372.526  440588           517
+           -5372.526  825343           518
+           -5372.526  563703           259
+           -5372.526  139726           519
+           -5372.526  690502           520
+           -5372.526  949814           260
+           -5372.526  642399           521
+           -5372.526  72800            522
+           -5372.526  424344           261
+           -5372.526  212295           523
+           -5372.526  328337           524
+           -5372.526  568707           262
+           -5372.526  21190            525
+           -5372.526  237882           526
+           -5372.526  256261           263
+           -5372.526  298512           527
+           -5372.526  723752           528
+           -5372.526  369771           264
+           -5372.526  41136            529
+           -5372.526  384138           530
+           -5372.526  683344           265
+           -5372.526  26859            531
+           -5372.526  838073           532
+           -5372.526  499903           266
+           -5372.526  289713           533
+           -5372.526  75864            534
+           -5372.526  83824            267
+           -5372.526  712313           535
+           -5372.526  798276           536
+           -5372.526  372786           268
+           -5372.526  449914           537
+           -5372.526  746499           538
+           -5372.526  755225           269
+           -5372.526  442141           539
+           -5372.526  102664           540
+           -5372.526  508005           270
+           -5372.526  850201           541
+           -5372.526  332221           542
+           -5372.526  655232           271
+           -5372.526  124010           543
+           -5372.526  648136           544
+           -5372.526  941180           272
+           -5372.526  985923           545
+           -5372.526  488184           546
+           -5372.526  385729           273
+           -5372.526  637758           547
+           -5372.526  986007           548
+           -5372.526  863129           274
+           -5372.526  509856           549
+           -5372.526  702720           550
+           -5372.526  811896           275
+           -5372.526  732345           551
+           -5372.526  214082           552
+           -5372.526  566609           276
+           -5372.526  55657            553
+           -5372.526  141596           554
+           -5372.526  626683           277
+           -5372.526  835969           555
+           -5372.526  699749           556
+           -5372.526  183675           278
+           -5372.526  453466           557
+           -5372.526  18935            558
+           -5372.526  619016           279
+           -5372.526  217522           559
+           -5372.526  912118           560
+           -5372.526  163252           280
+           -5372.526  95624            561
+           -5372.526  607682           562
+           -5372.526  926166           281
+           -5372.526  999536           563
+           -5372.526  438247           564
+           -5372.526  782833           282
+           -5372.526  947186           565
+           -5372.526  756060           566
+           -5372.526  519601           283
+           -5372.526  566415           567
+           -5372.526  812961           568
+           -5372.526  16555            284
+           -5372.526  551927           569
+           -5372.526  379997           570
+           -5372.526  634855           285
+           -5372.526  149951           571
+           -5372.526  499068           572
+           -5372.526  74848            286
+           -5372.526  988355           287
+           -5372.526  73135            288
+           -5372.526  571411           289
+           -5372.526  126060           290
+           -5372.526  741061           291
+           -5372.526  819229           292
+           -5372.526  438785           293
+           -5372.526  819256           294
+           -5372.526  967159           295
+           -5372.526  538895           296
+           -5372.526  691572           297
+           -5372.526  250285           298
+           -5372.526  792123           299
+           -5372.526  125480           300
+           -5372.526  749139           301
+           -5372.526  499805           302
+           -5372.526  624641           303
+           -5372.526  646105           304
+           -5372.526  799031           305
+           -5372.526  315906           306
+           -5372.526  533600           307
+           -5372.526  829106           308
+           -5372.526  730821           309
+           -5372.526  173363           310
+           -5372.526  230316           311
+           -5372.526  800324           312
+           -5372.526  295469           313
+           -5372.526  692037           314
+           -5372.526  270775           315
+           -5372.526  496516           316
+           -5372.526  589343           317
+           -5372.526  918761           752
+           -5372.526  611976           753
+           -5372.526  122886           754
+           -5372.526  881525           755
+           -5372.526  821515           756
+           -5372.526  566431           757
+           -5372.526  674140           758
+           -5372.526  14811            759
+           -5372.526  546573           760
+           -5372.526  823689           761
+           -5372.526  620988           762
+           -5372.526  247529           763
+           -5372.526  681430           764
+           -5372.526  253296           765
+           -5372.526  321542           798
+           -5372.526  755901           766
+           -5372.526  981654           767
+           -5372.526  552185           768
+           -5372.526  547800           794
+           -5372.526  333225           769
+           -5372.526  562941           770
+           -5372.526  589517           771
+           -5372.526  100746           790
+           -5372.526  678354           772
+           -5372.526  695057           773
+           -5372.526  846815           774
+           -5372.526  8288             775
+           -5372.526  441498           776
+           -5372.526  468128           777
+           -5372.526  798349           778
+           -5372.526  550795           779
+           -5372.526  29396            780
+           -5372.526  632977           781
+           -5372.526  601889           782
+           -5372.526  649711           783
+           -5372.526  761359           784
+           -5372.526  227359           785
+           -5372.526  264995           786
+           -5372.526  757210           787
+           -5372.526  866003           788
+           -5372.526  289707           789
+           -5372.526  125680           791
+           -5372.526  425585           792
+           -5372.526  821522           793
+           -5372.526  58768            795
+           -5372.526  293837           796
+           -5372.526  282015           797
+           -5372.526  223897           799
+           -5372.526  95515            800
+           -5372.526  527001           801
+           -5372.526  532887           942
+           -5372.526  520022           950
+           -5372.526  116127           954
+           -5372.526  619259           958
+           -5372.526  155404           966
+           -5372.526  269627           970
+           -5372.526  657384           974
+           -5372.526  807691           982
+           -5372.526  544679           986
+           -5372.526  805589           990
+           -5372.526  395024           998
+
+
+
+     WARNING:  THE VARIANCE CONTRIBUTION FROM A STRATUM WITH A SINGLE CLUSTER
+     (PSU) IS BASED ON THE DIFFERENCE BETWEEN THE SINGLE CLUSTER VALUE AND
+     THE OVERALL CLUSTER MEAN.
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                        6
+
+Loglikelihood
+
+          H0 Value                       -5372.526
+          H0 Scaling Correction Factor      2.1201
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   10757.051
+          Bayesian (BIC)                 10792.633
+          Sample-Size Adjusted BIC       10773.569
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit for the Binary and Ordered Categorical
+(Ordinal) Outcomes**
+
+          Pearson Chi-Square
+
+          Value                           1197.190
+          Degrees of Freedom                    54
+          P-Value                           0.0000
+
+          Likelihood Ratio Chi-Square
+
+          Value                            179.489
+          Degrees of Freedom                    54
+          P-Value                           0.0000
+
+** Of the 240 cells in the latent class indicator table, 3
+   were deleted in the calculation of chi-square due to extreme values.
+
+Chi-Square Test for MCAR under the Unrestricted Latent Class Indicator Model
+
+          Pearson Chi-Square
+
+          Value                             79.172
+          Degrees of Freedom                   170
+          P-Value                           1.0000
+
+          Likelihood Ratio Chi-Square
+
+          Value                             45.920
+          Degrees of Freedom                   170
+          P-Value                           1.0000
+
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THE ESTIMATED MODEL
+
+    Latent
+   Classes
+
+       1       2780.00000          1.00000
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON ESTIMATED POSTERIOR PROBABILITIES
+
+    Latent
+   Classes
+
+       1       2780.00000          1.00000
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THEIR MOST LIKELY LATENT CLASS MEMBERSHIP
+
+Class Counts and Proportions
+
+    Latent
+   Classes
+
+       1             2780          1.00000
+
+
+Average Latent Class Probabilities for Most Likely Latent Class Membership (Row)
+by Latent Class (Column)
+
+           1
+
+    1   1.000
+
+
+Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+           1
+
+    1   1.000
+
+
+Logits for the Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+              1
+
+    1      0.000
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Latent Class 1
+
+ Thresholds
+    GND1$1             3.289      0.120     27.299      0.000
+    GND2$1             2.799      0.109     25.639      0.000
+    GND3$1             2.239      0.124     18.028      0.000
+    GND4$1             1.489      0.071     20.851      0.000
+    GND5$1             2.562      0.094     27.224      0.000
+    GND6$1             1.343      0.067     19.989      0.000
+
+
+RESULTS IN PROBABILITY SCALE
+
+Latent Class 1
+
+ GND1
+    Category 1         0.964      0.004    230.855      0.000
+    Category 2         0.036      0.004      8.610      0.000
+ GND2
+    Category 1         0.943      0.006    159.628      0.000
+    Category 2         0.057      0.006      9.719      0.000
+ GND3
+    Category 1         0.904      0.011     83.591      0.000
+    Category 2         0.096      0.011      8.912      0.000
+ GND4
+    Category 1         0.816      0.011     76.071      0.000
+    Category 2         0.184      0.011     17.169      0.000
+ GND5
+    Category 1         0.928      0.006    148.330      0.000
+    Category 2         0.072      0.006     11.448      0.000
+ GND6
+    Category 1         0.793      0.011     71.899      0.000
+    Category 2         0.207      0.011     18.767      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.212E+00
+       (ratio of smallest to largest eigenvalue)
+
+
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
+
+     %OVERALL%
+
+     %C#1%
+
+     [ gnd1$1*3.28887 ];
+     [ gnd2$1*2.79881 ];
+     [ gnd3$1*2.23850 ];
+     [ gnd4$1*1.48859 ];
+     [ gnd5$1*2.56166 ];
+     [ gnd6$1*1.34318 ];
+
+
+
+TECHNICAL 10 OUTPUT
+
+
+     MODEL FIT INFORMATION FOR THE LATENT CLASS INDICATOR MODEL PART
+
+
+     RESPONSE PATTERNS
+
+     No.  Pattern    No.  Pattern    No.  Pattern    No.  Pattern
+       1  000000       2  000001       3  000010       4  000011
+       5  000100       6  000101       7  000110       8  000111
+       9  001000      10  001001      11  001010      12  001011
+      13  001100      14  001101      15  001110      16  001111
+      17  010000      18  010001      19  010010      20  010011
+      21  010100      22  010101      23  010110      24  010111
+      25  011000      26  011001      27  011010      28  011011
+      29  011100      30  011101      31  011110      32  011111
+      33  100000      34  100001      35  100010      36  100011
+      37  100100      38  100101      39  100111      40  101000
+      41  101001      42  101100      43  101101      44  101111
+      45  110000      46  110001      47  110010      48  110011
+      49  110100      50  110101      51  110110      52  111001
+      53  111101      54  111111      55  00*000      56  00*001
+      57  00*111      58  10*101      59  000*00      60  000*10
+      61  010*00      62  0000*0      63  0000*1      64  0001*0
+      65  0011*1      66  00000*      67  00110*      68  00111*
+      69  10000*      70  0*0000      71  00*00*
+
+
+     RESPONSE PATTERN FREQUENCIES AND CHI-SQUARE CONTRIBUTIONS
+
+    Response          Frequency     Standardized  Chi-square Contribution
+     Pattern    Observed  Estimated   Residual    Pearson   Loglikelihood  Deleted
+                                     (z-score)
+         1      1762.91    1355.86      12.31      99.98       187.15
+         2       211.39     353.90      -7.11      57.37      -214.62
+         3        55.67     104.64      -4.28      22.92       -70.39
+         4        28.11      27.31       0.13       0.02         1.62
+         5       156.33     306.00      -7.95      73.19      -205.97
+         6        89.35      79.87       0.94       1.11        18.03
+         7        12.99      23.62      -1.92       4.78       -15.06
+         8        19.50       6.16       4.71      28.84        46.29
+         9        35.99     144.56      -8.13      81.53      -100.75
+        10        23.66      37.73      -2.02       5.25       -22.28
+        11         3.82      11.16      -1.93       4.82        -8.27
+        12         2.96       2.91       0.02       0.00         0.03
+        13        32.61      32.63       0.00       0.00        -0.05
+        14        92.41       8.52       8.78     100.00       201.24
+        15         1.60       2.52      -0.50       0.32        -1.22
+        16        12.17       0.66       8.76      99.80        74.15
+        17        40.75      82.55      -4.09      21.14       -55.58
+        18         8.75      21.55      -2.43       7.60       -15.97
+        19         5.19       6.37      -0.41       0.22        -2.24
+        20         2.17       1.66       0.34       0.15         1.11
+        21        10.24      18.63      -1.71       3.77       -11.77
+        22         9.59       4.86       1.88       4.59        12.80
+        23         2.59       1.44       0.84       0.93         3.00
+        24         3.05       0.38       3.83      19.11        12.73
+        25         4.69       8.80      -1.22       1.92        -6.01
+        26         4.21       2.30       1.11       1.60         5.02
+        27         2.33       0.68       1.75       4.00         5.68
+        28         1.90       0.18       3.58      16.69         8.95
+        29         2.42       1.99       0.27       0.09         0.89
+        30         6.07       0.52       6.76      59.54        29.76
+        31         1.16       0.15       2.26       6.67         4.70
+        32         3.93       0.04       8.76     100.00        36.01
+        33        13.14      50.57      -4.65      27.69       -34.92
+        34         1.69      13.20      -2.78      10.04        -6.88
+        35         2.54       3.90      -0.60       0.47        -2.24
+        36         2.00       1.02       0.86       0.95         2.67
+        37         3.14      11.41      -2.15       6.00        -8.17
+        38         4.53       2.98       0.79       0.78         4.45
+        39         3.50       0.23       5.99      46.64        19.02
+        40         3.75       5.39      -0.62       0.50        -2.80
+        41         3.38       1.41       1.46       2.76         5.84
+        42         1.24       1.22       0.02       0.00         0.01
+        43         7.62       0.32       8.76      99.96        49.59
+        44         3.25       0.02       8.76     100.00        31.66
+        45         8.80       3.08       2.86      10.63        18.28
+        46         2.16       0.80       1.32       2.28         4.21
+        47        13.02       0.24       8.76     100.00       103.99
+        48         1.97       0.06       6.72      58.76        13.59
+        49         1.73       0.69       1.09       1.54         3.11
+        50         4.81       0.18       8.76     100.00        31.47
+        51         3.61       0.05       8.76     100.00        30.27
+        52         1.39       0.09       3.91      19.88         7.72
+        53         5.07       0.02       8.76     100.00        56.39
+        54         6.08       0.00       8.76     100.00       100.89      DELETED
+        55         2.47       3.63      -0.79      -0.43         0.88
+        56         1.55       0.95       0.59      -1.29        -1.56
+        57         1.55       0.02       8.77      73.82         4.98
+        58         1.08       0.01       8.77      65.35         2.97      DELETED
+        59         7.57       6.05       0.86       0.33         2.15
+        60         0.63       0.47       0.22      -0.53        -0.79
+        61         1.81       0.37       2.12      -8.15        -2.39
+        62         1.68       4.56      -1.73      -0.98         0.72
+        63         2.71       1.19       1.32      -3.16        -2.48
+        64         3.45       1.03       2.23     -10.17        -4.51
+        65         0.74       0.03       3.70      17.26         3.64
+        66         1.08       2.59      -1.34      -0.33         0.30
+        67         1.39       0.06       4.69      20.71         3.10
+        68         1.24       0.00       8.77      37.41         3.93      DELETED
+        69         0.45       0.10       1.02      -6.79        -1.31
+        70         0.45       0.24       0.56       0.11         0.20
+        71         1.19       0.82       0.64       0.06         0.17
+
+     THE TOTAL PEARSON CHI-SQUARE CONTRIBUTION FROM EMPTY CELLS IS         3.96
+
+
+     UNIVARIATE MODEL FIT INFORMATION
+
+                               Estimated Probabilities
+                                                  Standardized
+     Variable              H1           H0          Residual
+                                                   (z-score)
+     GND1
+       Category 1        0.964        0.964           0.000
+       Category 2        0.036        0.036           0.000
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     GND2
+       Category 1        0.943        0.943           0.001
+       Category 2        0.057        0.057          -0.001
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     GND3
+       Category 1        0.903        0.904          -0.045
+       Category 2        0.097        0.096           0.045
+       Univariate Pearson Chi-Square                  0.003
+       Univariate Log-Likelihood Chi-Square           0.003
+     GND4
+       Category 1        0.816        0.816           0.031
+       Category 2        0.184        0.184          -0.031
+       Univariate Pearson Chi-Square                  0.001
+       Univariate Log-Likelihood Chi-Square           0.001
+     GND5
+       Category 1        0.928        0.928          -0.007
+       Category 2        0.072        0.072           0.007
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     GND6
+       Category 1        0.793        0.793          -0.055
+       Category 2        0.207        0.207           0.055
+       Univariate Pearson Chi-Square                  0.004
+       Univariate Log-Likelihood Chi-Square           0.004
+
+       Overall Univariate Pearson Chi-Square                         0.008
+       Overall Univariate Log-Likelihood Chi-Square                  0.008
+
+
+     BIVARIATE MODEL FIT INFORMATION
+
+                                              Estimated Probabilities
+                                                                 Standardized
+     Variable       Variable              H1           H0          Residual
+                                                                  (z-score)
+     GND1           GND2
+       Category 1     Category 1        0.924        0.909           2.477
+       Category 1     Category 2        0.040        0.055          -3.120
+       Category 2     Category 1        0.018        0.034          -3.941
+       Category 2     Category 2        0.017        0.002          15.713
+       Bivariate Pearson Chi-Square                                353.110
+       Bivariate Log-Likelihood Chi-Square                         159.581
+     GND1           GND3
+       Category 1     Category 1        0.879        0.871           1.093
+       Category 1     Category 2        0.085        0.093          -1.262
+       Category 2     Category 1        0.024        0.032          -2.140
+       Category 2     Category 2        0.012        0.003           6.457
+       Bivariate Pearson Chi-Square                                 61.951
+       Bivariate Log-Likelihood Chi-Square                          41.678
+     GND1           GND4
+       Category 1     Category 1        0.797        0.787           1.135
+       Category 1     Category 2        0.167        0.178          -1.217
+       Category 2     Category 1        0.020        0.029          -2.684
+       Category 2     Category 2        0.016        0.007           5.584
+       Bivariate Pearson Chi-Square                                 51.387
+       Bivariate Log-Likelihood Chi-Square                          40.755
+     GND1           GND5
+       Category 1     Category 1        0.905        0.895           1.556
+       Category 1     Category 2        0.059        0.069          -1.881
+       Category 2     Category 1        0.023        0.033          -2.666
+       Category 2     Category 2        0.013        0.003           9.448
+       Bivariate Pearson Chi-Square                                129.510
+       Bivariate Log-Likelihood Chi-Square                          73.416
+     GND1           GND6
+       Category 1     Category 1        0.774        0.764           1.041
+       Category 1     Category 2        0.190        0.200          -1.105
+       Category 2     Category 1        0.018        0.029          -2.786
+       Category 2     Category 2        0.017        0.007           5.394
+       Bivariate Pearson Chi-Square                                 49.028
+       Bivariate Log-Likelihood Chi-Square                          40.009
+     GND2           GND3
+       Category 1     Category 1        0.860        0.852           1.081
+       Category 1     Category 2        0.083        0.091          -1.336
+       Category 2     Category 1        0.043        0.052          -1.792
+       Category 2     Category 2        0.014        0.006           5.355
+       Bivariate Pearson Chi-Square                                 43.434
+       Bivariate Log-Likelihood Chi-Square                          32.463
+     GND2           GND4
+       Category 1     Category 1        0.781        0.769           1.266
+       Category 1     Category 2        0.162        0.174          -1.408
+       Category 2     Category 1        0.036        0.047          -2.468
+       Category 2     Category 2        0.022        0.011           5.096
+       Bivariate Pearson Chi-Square                                 43.636
+       Bivariate Log-Likelihood Chi-Square                          36.415
+     GND2           GND5
+       Category 1     Category 1        0.888        0.875           1.784
+       Category 1     Category 2        0.055        0.068          -2.349
+       Category 2     Category 1        0.040        0.053          -2.634
+       Category 2     Category 2        0.017        0.004           9.241
+       Bivariate Pearson Chi-Square                                126.530
+       Bivariate Log-Likelihood Chi-Square                          78.815
+     GND2           GND6
+       Category 1     Category 1        0.757        0.748           1.026
+       Category 1     Category 2        0.185        0.195          -1.125
+       Category 2     Category 1        0.035        0.046          -2.245
+       Category 2     Category 2        0.022        0.012           4.317
+       Bivariate Pearson Chi-Square                                 31.920
+       Bivariate Log-Likelihood Chi-Square                          27.600
+     GND3           GND4
+       Category 1     Category 1        0.784        0.737           4.944
+       Category 1     Category 2        0.119        0.166          -5.878
+       Category 2     Category 1        0.032        0.079          -8.041
+       Category 2     Category 2        0.065        0.018          16.492
+       Bivariate Pearson Chi-Square                                471.364
+       Bivariate Log-Likelihood Chi-Square                         355.771
+     GND3           GND5
+       Category 1     Category 1        0.846        0.839           0.953
+       Category 1     Category 2        0.057        0.065          -1.476
+       Category 2     Category 1        0.082        0.089          -1.234
+       Category 2     Category 2        0.015        0.007           4.411
+       Bivariate Pearson Chi-Square                                 29.816
+       Bivariate Log-Likelihood Chi-Square                          23.703
+     GND3           GND6
+       Category 1     Category 1        0.760        0.717           4.459
+       Category 1     Category 2        0.143        0.187          -5.186
+       Category 2     Category 1        0.032        0.076          -7.647
+       Category 2     Category 2        0.064        0.020          14.624
+       Bivariate Pearson Chi-Square                                379.074
+       Bivariate Log-Likelihood Chi-Square                         299.322
+     GND4           GND5
+       Category 1     Category 1        0.772        0.757           1.576
+       Category 1     Category 2        0.044        0.058          -2.829
+       Category 2     Category 1        0.156        0.171          -1.800
+       Category 2     Category 2        0.028        0.013           5.833
+       Bivariate Pearson Chi-Square                                 57.809
+       Bivariate Log-Likelihood Chi-Square                          48.266
+     GND4           GND6
+       Category 1     Category 1        0.708        0.647           5.908
+       Category 1     Category 2        0.108        0.169          -7.504
+       Category 2     Category 1        0.084        0.146          -8.059
+       Category 2     Category 2        0.099        0.038          14.799
+       Bivariate Pearson Chi-Square                                423.545
+       Bivariate Log-Likelihood Chi-Square                         360.048
+     GND5           GND6
+       Category 1     Category 1        0.755        0.736           1.923
+       Category 1     Category 2        0.174        0.192          -2.156
+       Category 2     Category 1        0.038        0.057          -3.757
+       Category 2     Category 2        0.034        0.015           7.210
+       Bivariate Pearson Chi-Square                                 90.191
+       Bivariate Log-Likelihood Chi-Square                          74.812
+
+       Overall Bivariate Pearson Chi-Square                       2342.305
+       Overall Bivariate Log-Likelihood Chi-Square                1692.654
+
+
+SAVEDATA INFORMATION
+
+
+  Save file
+    Prob_NLD_GNDlca_C3cl1.dat
+
+  Order and format of variables
+
+    GND1           F10.3
+    GND2           F10.3
+    GND3           F10.3
+    GND4           F10.3
+    GND5           F10.3
+    GND6           F10.3
+    CPROB1         F10.3
+    C              F10.3
+    WS             F10.3
+    IDSTUD         I9
+    ID_S           I5
+    ID_J           I5
+
+  Save file format
+    9F10.3 I9 2I5
+
+  Save file record length    10000
+
+  Save missing symbol        *
+
+
+     Beginning Time:  22:31:46
+        Ending Time:  22:31:48
+       Elapsed Time:  00:00:02
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2020 Muthen & Muthen

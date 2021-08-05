@@ -1,0 +1,64 @@
+#----GND 4 groups----
+classes4GND <- c("Fully egalitarian",
+                "Competition- driven sexism",
+                "Non-egalitarian",
+                "Political egalitarian")
+orden4GND <- c(2,4,3,1)
+lcaGND_C3cl4 <- lcaGND$GND_lca_C3cl4.out$parameters$probability.scale %>% 
+  rename_with(~ c("Class", "value")[which(c("LatentClass", "est") == .x)], 
+              .cols = c("LatentClass", "est")) %>% 
+  mutate_at( c("param", "category", "Class"), ~ as.factor(.x)) %>% 
+  mutate(Class = factor(Class, levels = orden4GND, labels = classes4GND))
+
+counts4GND <- full_join(lcaGND$GND_lca_C3cl4.out$class_counts$modelEstimated,
+                        lcaGND$GND_lca_C3cl4.out$class_counts$mostLikely,
+                        by = c("class"))
+
+lcaGND_C3cl4$orden = rep(c(1,2,4,5,3,6), each = 2) 
+VarClass(lcaGND_C3cl4) %>% group_by(Class, param) %>% 
+  filter(category == 1) %>% 
+  select(orden, param, Class, value) %>% 
+  mutate(value = cell_spec(value, color = ifelse(value >= 0.75, "Myblue", 
+                  ifelse(value < 0.75 & value >= 0.25, "Mygreen","Myred")))) %>% 
+  reshape2::dcast(orden + param ~ Class) %>% arrange(orden) %>% select(-orden) %>% 
+  kbl(caption = "Probabilities to agree each item 4-class Gender equality model",
+      booktabs = TRUE, longtable = TRUE, align = c("l", rep("r",4)), 
+      row.names = FALSE, digits = 3, escape = FALSE) %>%
+  kable_classic_2(full_width = F) %>% 
+  kable_styling(latex_options = c("repeat_header", "HOLD_position"), 
+                font_size = 9) %>% 
+  column_spec(1, width = "15em") %>%  
+  column_spec(2:5, width = "5em") %>%  
+  collapse_rows(1, valign = "top") %>% 
+  print()
+
+counts4GND  %>% 
+  mutate(class = factor(class, levels = orden4GND, labels = classes4GND),
+         proportion.x = scales::percent(proportion.x,accuracy = 0.1),
+         proportion.y = scales::percent(proportion.y,accuracy = 0.1)) %>% 
+  arrange(desc(count.y)) %>% 
+  kbl(col.names = c("Class", "Counts", "Proportion", "Counts", "Proportion"),
+      caption = paste0("Class sizes 4-class Gender equality model"),
+      booktabs = TRUE, longtable = TRUE, align = c("l", rep("r",4)), 
+      row.names = FALSE, digits = 1, escape = TRUE) %>%
+  kable_classic_2(full_width = F) %>% 
+  kable_styling(latex_options = c("repeat_header", "HOLD_position"), 
+                font_size = 9) %>% 
+  add_header_above(c(" " = 1 , "Model estimated" = 2, "Most likely" = 2))
+
+sizelca4_GND <- lcaGND$GND_lca_C3cl4.out$class_counts$modelEstimated %>% 
+  dplyr::select(-count) %>% 
+  rename_with(~ c("Gender", "Class")[which(c("proportion", "class") == .x)], 
+              .cols = c("proportion", "class")) %>% 
+  mutate(Class = factor(Class, levels = orden4GND, labels = classes4GND)) %>% 
+  reshape2::melt(id.vars = c("Class"), variable.name = "Group") %>% 
+  dplyr::arrange(Group) %>% 
+  dplyr::group_by(Group) %>%
+  dplyr::mutate(countT= sum(value, na.rm = TRUE)) %>%
+  dplyr::group_by(Class) %>%
+  dplyr::mutate(per=value/countT) %>% 
+  dplyr::select(Group, Class, per) 
+
+HighProb(lcaGND_C3cl4, sizelca4_GND,  orden = c(1,2,5,3,4,6), 
+         title = "Response categories probabilities and class size 
+         for\n 4-classes Gender equality model") 

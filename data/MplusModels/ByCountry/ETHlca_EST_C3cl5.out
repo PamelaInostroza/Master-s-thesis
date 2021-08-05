@@ -1,0 +1,998 @@
+Mplus VERSION 8.5 (Mac)
+MUTHEN & MUTHEN
+04/07/2021  10:09 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: ESTETH LCA - C3 with 5 classes;
+  DATA:
+  FILE = ETHDtaC3.dat;
+
+  VARIABLE:
+  NAMES = id_i
+  id_j
+  id_r
+  id_s
+  id_k
+  wt
+  ws
+  ETH1
+  ETH2
+  ETH3
+  ETH4
+  ETH5
+  IDSTUD;
+  IDVARIABLE = IDSTUD;
+  USEVARIABLES = ETH1
+  ETH2
+  ETH3
+  ETH4
+  ETH5;
+  USEOBSERVATIONS ARE id_k EQ 4;
+  CATEGORICAL = ETH1
+  ETH2
+  ETH3
+  ETH4
+  ETH5;
+  MISSING = .;
+  CLASSES = c(5);
+  WEIGHT = ws;
+  STRATIFICATION = id_s;
+  CLUSTER = id_j;
+
+  ANALYSIS:
+  TYPE = COMPLEX MIXTURE;
+  PROCESSORS = 4;
+  STARTS = 1000 250;
+  STITERATIONS = 20;
+  STSEED = 288;
+
+  MODEL:
+  %OVERALL%
+
+  OUTPUT:
+  TECH10
+  TECH11
+  SVALUES
+  ;
+
+  SAVEDATA:
+  FILE = Prob_EST_ETHlca_C3cl5.dat;
+  SAVE = CPROBABILITIES;
+
+
+
+*** WARNING in VARIABLE command
+  When a subpopulation is analyzed with TYPE=COMPLEX, standard errors
+  may be incorrect.  Use the SUBPOPULATION option instead of the
+  USEOBSERVATIONS option to obtain correct standard errors.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  26
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+ESTETH LCA - C3 with 5 classes;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        2831
+
+Number of dependent variables                                    5
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+Number of categorical latent variables                           1
+
+Observed dependent variables
+
+  Binary and ordered categorical (ordinal)
+   ETH1        ETH2        ETH3        ETH4        ETH5
+
+Categorical latent variables
+   C
+
+Variables with special functions
+
+  Stratification        ID_S
+  Cluster variable      ID_J
+  Weight variable       WS
+  ID variable           IDSTUD
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                                 100
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-06
+    Relative loglikelihood change                        0.100D-06
+    Derivative                                           0.100D-05
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Random Starts Specifications
+  Number of initial stage random starts                       1000
+  Number of final stage optimizations                          250
+  Number of initial stage iterations                            20
+  Initial stage convergence criterion                    0.100D+01
+  Random starts scale                                    0.500D+01
+  Random seed for generating random starts                     288
+Link                                                         LOGIT
+
+Input data file(s)
+  ETHDtaC3.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             9
+     Number of y missing data patterns           0
+     Number of u missing data patterns           9
+     Number of strata                           75
+     Number of clusters                        164
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR U
+
+
+           Covariance Coverage
+              ETH1          ETH2          ETH3          ETH4          ETH5
+              ________      ________      ________      ________      ________
+ ETH1           1.000
+ ETH2           0.999         0.999
+ ETH3           0.997         0.996         0.997
+ ETH4           0.995         0.994         0.993         0.995
+ ETH5           0.998         0.997         0.996         0.995         0.998
+
+
+UNIVARIATE PROPORTIONS AND COUNTS FOR CATEGORICAL VARIABLES
+
+    ETH1
+      Category 1    0.978         2769.327
+      Category 2    0.022           61.673
+    ETH2
+      Category 1    0.962         2721.137
+      Category 2    0.038          106.265
+    ETH3
+      Category 1    0.910         2567.965
+      Category 2    0.090          254.419
+    ETH4
+      Category 1    0.804         2265.118
+      Category 2    0.196          552.238
+    ETH5
+      Category 1    0.948         2677.085
+      Category 2    0.052          147.337
+
+
+RANDOM STARTS RESULTS RANKED FROM THE BEST TO THE WORST LOGLIKELIHOOD VALUES
+
+Final stage loglikelihood values at local maxima, seeds, and initial stage start numbers:
+
+           -3243.495  154351           1000
+           -3243.495  702720           550
+           -3243.495  919611           405
+           -3243.495  496516           316
+           -3243.495  552466           865
+           -3243.495  920430           230
+           -3243.495  261715           458
+           -3243.495  372542           484
+           -3243.495  319498           137
+           -3243.495  401359           609
+           -3243.640  862516           26
+           -3243.744  414035           84
+           -3243.771  256398           918
+           -3243.771  85315            639
+           -3243.771  973788           188
+           -3243.771  710314           248
+           -3243.771  256261           263
+           -3243.771  353096           154
+           -3243.771  611976           753
+           -3243.771  808818           46
+           -3243.771  533106           641
+           -3243.771  983784           118
+           -3243.771  47928            36
+           -3243.771  924010           464
+           -3243.772  717571           695
+           -3243.802  247778           232
+           -3243.802  412669           59
+           -3243.802  514978           7
+           -3243.802  767001           147
+           -3243.806  328890           145
+           -3243.821  316890           37
+           -3243.821  863129           274
+           -3243.918  826323           125
+           -3244.009  425159           122
+           -3244.024  883238           52
+           -3244.050  859868           243
+           -3244.266  1583             21
+           -3244.266  256224           144
+           -3244.508  160604           121
+           -3245.059  719428           129
+           -3245.395  795921           967
+
+209 perturbed starting value run(s) did not converge or were rejected in the third stage.
+
+
+
+THE BEST LOGLIKELIHOOD VALUE HAS BEEN REPLICATED.  RERUN WITH AT LEAST TWICE THE
+RANDOM STARTS TO CHECK THAT THE BEST LOGLIKELIHOOD IS STILL OBTAINED AND REPLICATED.
+
+     IN THE OPTIMIZATION, ONE OR MORE LOGIT THRESHOLDS APPROACHED EXTREME VALUES
+     OF -15.000 AND 15.000 AND WERE FIXED TO STABILIZE MODEL ESTIMATION.  THESE
+     VALUES IMPLY PROBABILITIES OF 0 AND 1.  IN THE MODEL RESULTS SECTION, THESE
+     PARAMETERS HAVE 0 STANDARD ERRORS AND 999 IN THE Z-SCORE AND P-VALUE COLUMNS.
+
+
+     WARNING:  THE VARIANCE CONTRIBUTION FROM A STRATUM WITH A SINGLE CLUSTER
+     (PSU) IS BASED ON THE DIFFERENCE BETWEEN THE SINGLE CLUSTER VALUE AND
+     THE OVERALL CLUSTER MEAN.
+
+
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       29
+
+Loglikelihood
+
+          H0 Value                       -3243.495
+          H0 Scaling Correction Factor      1.1736
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                    6544.989
+          Bayesian (BIC)                  6717.492
+          Sample-Size Adjusted BIC        6625.349
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit for the Binary and Ordered Categorical
+(Ordinal) Outcomes
+
+          Pearson Chi-Square
+
+          Value                              4.128
+          Degrees of Freedom                     2
+          P-Value                           0.1270
+
+          Likelihood Ratio Chi-Square
+
+          Value                              3.883
+          Degrees of Freedom                     2
+          P-Value                           0.1435
+
+Chi-Square Test for MCAR under the Unrestricted Latent Class Indicator Model
+
+          Pearson Chi-Square
+
+          Value                             91.907
+          Degrees of Freedom                    78
+          P-Value                           0.1343
+
+          Likelihood Ratio Chi-Square
+
+          Value                             24.927
+          Degrees of Freedom                    78
+          P-Value                           1.0000
+
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THE ESTIMATED MODEL
+
+    Latent
+   Classes
+
+       1         32.22130          0.01138
+       2        412.47091          0.14570
+       3         19.17756          0.00677
+       4       2223.06237          0.78526
+       5        144.06785          0.05089
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON ESTIMATED POSTERIOR PROBABILITIES
+
+    Latent
+   Classes
+
+       1         32.22130          0.01138
+       2        412.47091          0.14570
+       3         19.17756          0.00677
+       4       2223.06237          0.78526
+       5        144.06785          0.05089
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THEIR MOST LIKELY LATENT CLASS MEMBERSHIP
+
+Class Counts and Proportions
+
+    Latent
+   Classes
+
+       1               29          0.01024
+       2              152          0.05362
+       3               18          0.00619
+       4             2561          0.90450
+       5               72          0.02544
+
+
+CLASSIFICATION QUALITY
+
+     Entropy                         0.752
+
+
+Average Latent Class Probabilities for Most Likely Latent Class Membership (Row)
+by Latent Class (Column)
+
+           1        2        3        4        5
+
+    1   0.646    0.137    0.113    0.000    0.104
+    2   0.026    0.890    0.004    0.064    0.016
+    3   0.120    0.008    0.873    0.000    0.000
+    4   0.000    0.102    0.000    0.864    0.034
+    5   0.104    0.170    0.001    0.000    0.726
+
+
+Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+           1        2        3        4        5
+
+    1   0.582    0.121    0.065    0.000    0.231
+    2   0.010    0.328    0.000    0.633    0.030
+    3   0.170    0.029    0.798    0.000    0.003
+    4   0.000    0.004    0.000    0.996    0.000
+    5   0.021    0.017    0.000    0.599    0.363
+
+
+Logits for the Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+              1        2        3        4        5
+
+    1      0.922   -0.646   -1.268   -6.442    0.000
+    2     -1.122    2.402   -4.530    3.060    0.000
+    3      4.162    2.402    5.706   -3.656    0.000
+    4      0.000    8.384    0.000   13.811    0.000
+    5     -2.856   -3.060  -12.802    0.502    0.000
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Latent Class 1
+
+ Thresholds
+    ETH1$1             0.086      0.980      0.087      0.930
+    ETH2$1           -15.000      0.000    999.000    999.000
+    ETH3$1            -0.008      0.787     -0.010      0.992
+    ETH4$1            -0.031      1.744     -0.018      0.986
+    ETH5$1            -0.121      1.447     -0.083      0.934
+
+Latent Class 2
+
+ Thresholds
+    ETH1$1             4.808      1.494      3.219      0.001
+    ETH2$1             2.967      0.848      3.500      0.000
+    ETH3$1             0.492      0.488      1.008      0.313
+    ETH4$1            -0.424      0.558     -0.760      0.448
+    ETH5$1             1.441      0.361      3.989      0.000
+
+Latent Class 3
+
+ Thresholds
+    ETH1$1            -2.507      3.975     -0.631      0.528
+    ETH2$1            -2.405      1.793     -1.341      0.180
+    ETH3$1            -3.560     12.998     -0.274      0.784
+    ETH4$1           -15.000      0.000    999.000    999.000
+    ETH5$1            -2.081      1.393     -1.494      0.135
+
+Latent Class 4
+
+ Thresholds
+    ETH1$1            15.000      0.000    999.000    999.000
+    ETH2$1            15.000      0.000    999.000    999.000
+    ETH3$1             3.519      0.548      6.421      0.000
+    ETH4$1             2.186      0.245      8.933      0.000
+    ETH5$1             4.601      0.669      6.875      0.000
+
+Latent Class 5
+
+ Thresholds
+    ETH1$1             1.552      0.939      1.653      0.098
+    ETH2$1             1.080      0.852      1.268      0.205
+    ETH3$1            15.000      0.000    999.000    999.000
+    ETH4$1             0.768      0.623      1.232      0.218
+    ETH5$1             2.351      0.846      2.780      0.005
+
+Categorical Latent Variables
+
+ Means
+    C#1               -1.498      0.938     -1.596      0.110
+    C#2                1.052      1.051      1.001      0.317
+    C#3               -2.017      0.928     -2.173      0.030
+    C#4                2.736      0.657      4.167      0.000
+
+
+RESULTS IN PROBABILITY SCALE
+
+Latent Class 1
+
+ ETH1
+    Category 1         0.521      0.245      2.132      0.033
+    Category 2         0.479      0.245      1.957      0.050
+ ETH2
+    Category 1         0.000      0.000      0.000      1.000
+    Category 2         1.000      0.000      0.000      1.000
+ ETH3
+    Category 1         0.498      0.197      2.530      0.011
+    Category 2         0.502      0.197      2.551      0.011
+ ETH4
+    Category 1         0.492      0.436      1.129      0.259
+    Category 2         0.508      0.436      1.165      0.244
+ ETH5
+    Category 1         0.470      0.360      1.304      0.192
+    Category 2         0.530      0.360      1.471      0.141
+
+Latent Class 2
+
+ ETH1
+    Category 1         0.992      0.012     82.703      0.000
+    Category 2         0.008      0.012      0.675      0.500
+ ETH2
+    Category 1         0.951      0.039     24.108      0.000
+    Category 2         0.049      0.039      1.240      0.215
+ ETH3
+    Category 1         0.621      0.115      5.400      0.000
+    Category 2         0.379      0.115      3.302      0.001
+ ETH4
+    Category 1         0.396      0.133      2.966      0.003
+    Category 2         0.604      0.133      4.531      0.000
+ ETH5
+    Category 1         0.809      0.056     14.464      0.000
+    Category 2         0.191      0.056      3.424      0.001
+
+Latent Class 3
+
+ ETH1
+    Category 1         0.075      0.277      0.272      0.786
+    Category 2         0.925      0.277      3.338      0.001
+ ETH2
+    Category 1         0.083      0.136      0.608      0.543
+    Category 2         0.917      0.136      6.737      0.000
+ ETH3
+    Category 1         0.028      0.349      0.079      0.937
+    Category 2         0.972      0.349      2.783      0.005
+ ETH4
+    Category 1         0.000      0.000      0.000      1.000
+    Category 2         1.000      0.000      0.000      1.000
+ ETH5
+    Category 1         0.111      0.137      0.808      0.419
+    Category 2         0.889      0.137      6.469      0.000
+
+Latent Class 4
+
+ ETH1
+    Category 1         1.000      0.000      0.000      1.000
+    Category 2         0.000      0.000      0.000      1.000
+ ETH2
+    Category 1         1.000      0.000      0.000      1.000
+    Category 2         0.000      0.000      0.000      1.000
+ ETH3
+    Category 1         0.971      0.015     63.400      0.000
+    Category 2         0.029      0.015      1.879      0.060
+ ETH4
+    Category 1         0.899      0.022     40.452      0.000
+    Category 2         0.101      0.022      4.547      0.000
+ ETH5
+    Category 1         0.990      0.007    150.314      0.000
+    Category 2         0.010      0.007      1.509      0.131
+
+Latent Class 5
+
+ ETH1
+    Category 1         0.825      0.135      6.094      0.000
+    Category 2         0.175      0.135      1.291      0.197
+ ETH2
+    Category 1         0.746      0.161      4.632      0.000
+    Category 2         0.254      0.161      1.573      0.116
+ ETH3
+    Category 1         1.000      0.000      0.000      1.000
+    Category 2         0.000      0.000      0.000      1.000
+ ETH4
+    Category 1         0.683      0.135      5.063      0.000
+    Category 2         0.317      0.135      2.349      0.019
+ ETH5
+    Category 1         0.913      0.067     13.589      0.000
+    Category 2         0.087      0.067      1.295      0.195
+
+
+LATENT CLASS ODDS RATIO RESULTS
+
+                                                95% C.I.
+                    Estimate       S.E.  Lower 2.5% Upper 2.5%
+
+Latent Class 1 Compared to Latent Class 2
+
+ ETH1
+    Category > 1     112.488    212.860      2.757   4590.418
+ ETH2
+    Category > 1   *********      0.000  *********  *********
+ ETH3
+    Category > 1       1.649      1.599      0.246     11.037
+ ETH4
+    Category > 1       0.675      1.444      0.010     44.571
+ ETH5
+    Category > 1       4.766      7.702      0.201    113.164
+
+Latent Class 1 Compared to Latent Class 3
+
+ ETH1
+    Category > 1       0.075      0.306      0.000    229.315
+ ETH2
+    Category > 1   *********      0.000  *********  *********
+ ETH3
+    Category > 1       0.029      0.375      0.000  *********
+ ETH4
+    Category > 1       0.000      0.000      0.000      0.000
+ ETH5
+    Category > 1       0.141      0.328      0.001     13.496
+
+Latent Class 1 Compared to Latent Class 4
+
+ ETH1
+    Category > 1   *********      0.000  *********  *********
+ ETH2
+    Category > 1   *********      0.000  *********  *********
+ ETH3
+    Category > 1      34.023     31.968      5.395    214.572
+ ETH4
+    Category > 1       9.179     16.706      0.259    325.121
+ ETH5
+    Category > 1     112.370    207.952      2.988   4225.860
+
+Latent Class 1 Compared to Latent Class 5
+
+ ETH1
+    Category > 1       4.334      5.158      0.421     44.658
+ ETH2
+    Category > 1   *********      0.000  *********  *********
+ ETH3
+    Category > 1   *********      0.000  *********  *********
+ ETH4
+    Category > 1       2.224      4.691      0.036    138.925
+ ETH5
+    Category > 1      11.837     21.473      0.338    414.399
+
+Latent Class 2 Compared to Latent Class 3
+
+ ETH1
+    Category > 1       0.001      0.003      0.000      4.160
+ ETH2
+    Category > 1       0.005      0.009      0.000      0.196
+ ETH3
+    Category > 1       0.017      0.229      0.000  *********
+ ETH4
+    Category > 1       0.000      0.000      0.000      0.000
+ ETH5
+    Category > 1       0.030      0.041      0.002      0.457
+
+Latent Class 2 Compared to Latent Class 4
+
+ ETH1
+    Category > 1   26677.430      0.000  26677.430  26677.430
+ ETH2
+    Category > 1   *********      0.000  *********  *********
+ ETH3
+    Category > 1      20.633      9.938      8.027     53.035
+ ETH4
+    Category > 1      13.591      6.761      5.127     36.033
+ ETH5
+    Category > 1      23.578     13.826      7.471     74.413
+
+Latent Class 2 Compared to Latent Class 5
+
+ ETH1
+    Category > 1       0.039      0.071      0.001      1.444
+ ETH2
+    Category > 1       0.152      0.142      0.024      0.951
+ ETH3
+    Category > 1   *********      0.000  *********  *********
+ ETH4
+    Category > 1       3.292      2.412      0.783     13.839
+ ETH5
+    Category > 1       2.484      2.209      0.435     14.195
+
+Latent Class 3 Compared to Latent Class 4
+
+ ETH1
+    Category > 1   *********      0.000  *********  *********
+ ETH2
+    Category > 1   *********      0.000  *********  *********
+ ETH3
+    Category > 1    1186.720  15774.730      0.000  *********
+ ETH4
+    Category > 1   *********      0.000  *********  *********
+ ETH5
+    Category > 1     797.700   1047.498     60.823  10461.978
+
+Latent Class 3 Compared to Latent Class 5
+
+ ETH1
+    Category > 1      57.936    220.954      0.033  *********
+ ETH2
+    Category > 1      32.634     68.796      0.524   2032.982
+ ETH3
+    Category > 1   *********      0.000  *********  *********
+ ETH4
+    Category > 1   *********      0.000  *********  *********
+ ETH5
+    Category > 1      84.026    132.359      3.833   1841.858
+
+Latent Class 4 Compared to Latent Class 5
+
+ ETH1
+    Category > 1       0.000      0.000      0.000      0.000
+ ETH2
+    Category > 1       0.000      0.000      0.000      0.000
+ ETH3
+    Category > 1   96879.117      0.000  96879.133  96879.133
+ ETH4
+    Category > 1       0.242      0.162      0.065      0.901
+ ETH5
+    Category > 1       0.105      0.116      0.012      0.917
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.352E-04
+       (ratio of smallest to largest eigenvalue)
+
+
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
+
+     %OVERALL%
+
+     [ c#1*-1.49766 ];
+     [ c#2*1.05188 ];
+     [ c#3*-2.01654 ];
+     [ c#4*2.73636 ];
+
+     %C#1%
+
+     [ eth1$1*0.08558 ];
+     [ eth2$1*-15 ];
+     [ eth3$1*-0.00825 ];
+     [ eth4$1*-0.03120 ];
+     [ eth5$1*-0.12057 ];
+
+     %C#2%
+
+     [ eth1$1*4.80843 ];
+     [ eth2$1*2.96711 ];
+     [ eth3$1*0.49188 ];
+     [ eth4$1*-0.42370 ];
+     [ eth5$1*1.44090 ];
+
+     %C#3%
+
+     [ eth1$1*-2.50719 ];
+     [ eth2$1*-2.40535 ];
+     [ eth3$1*-3.56017 ];
+     [ eth4$1*-15 ];
+     [ eth5$1*-2.08051 ];
+
+     %C#4%
+
+     [ eth1$1*15 ];
+     [ eth2$1*15 ];
+     [ eth3$1*3.51878 ];
+     [ eth4$1*2.18573 ];
+     [ eth5$1*4.60123 ];
+
+     %C#5%
+
+     [ eth1$1*1.55215 ];
+     [ eth2$1*1.08000 ];
+     [ eth3$1*15 ];
+     [ eth4$1*0.76792 ];
+     [ eth5$1*2.35062 ];
+
+
+
+TECHNICAL 10 OUTPUT
+
+
+     MODEL FIT INFORMATION FOR THE LATENT CLASS INDICATOR MODEL PART
+
+
+     RESPONSE PATTERNS
+
+     No.  Pattern    No.  Pattern    No.  Pattern    No.  Pattern
+       1  00000        2  00001        3  00010        4  00011
+       5  00100        6  00101        7  00110        8  00111
+       9  01000       10  01001       11  01010       12  01011
+      13  01100       14  01101       15  01110       16  01111
+      17  10000       18  10001       19  10010       20  10110
+      21  10111       22  11000       23  11001       24  11010
+      25  11011       26  11100       27  11101       28  11110
+      29  11111       30  000**       31  001**       32  00*00
+      33  00*10       34  0*010       35  0*011       36  0000*
+      37  000*0       38  001*0       39  100*0       40  00***
+      41  00**0       42  0****
+
+
+     RESPONSE PATTERN FREQUENCIES AND CHI-SQUARE CONTRIBUTIONS
+
+    Response          Frequency     Standardized  Chi-square Contribution
+     Pattern    Observed  Estimated   Residual    Pearson   Loglikelihood  Deleted
+                                     (z-score)
+         1      2042.55    2038.87       0.14       0.00        -0.04
+         2        42.78      42.53       0.04       0.00         0.04
+         3       355.34     356.97      -0.09       0.00         0.12
+         4        30.73      32.31      -0.26       0.03        -0.80
+         5       102.84     103.40      -0.05       0.00        -0.03
+         6        12.01      11.66       0.09       0.01         0.71
+         7        76.99      77.98      -0.11       0.00        -0.26
+         8        17.21      17.12       0.02       0.00         0.19
+         9        24.15      24.52      -0.07       0.00        -1.07
+        10         4.15       4.88      -0.31       0.11        -1.40
+        11        17.81      16.67       0.26       0.08         2.16
+        12         5.29       4.52       0.34       0.12         2.05
+        13         4.95       4.35       0.27       0.08         1.22
+        14         2.65       2.76      -0.06       0.00        -0.24
+        15         4.69       5.82      -0.44       0.22        -2.10
+        16         4.37       4.26       0.05       0.00         0.16
+        17        11.87      12.26      -0.10       0.01        -0.51
+        18         2.04       1.26       0.65       0.49         1.94
+        19         6.42       6.36       0.02       0.00         0.25
+        20         1.54       0.74       0.86       0.86         2.23
+        21         1.26       1.40      -0.11       0.01        -0.28
+        22         6.23       5.75       0.19       0.04         0.91
+        23         2.11       2.37      -0.16       0.03        -0.53
+        24         3.18       3.75      -0.28       0.09        -1.10
+        25         2.90       2.63       0.15       0.03         0.51
+        26         2.18       1.80       0.26       0.08         0.81
+        27         1.99       2.01      -0.01       0.00        -0.07
+        28         3.36       3.61      -0.12       0.02        -0.53
+        29        16.27      16.03       0.06       0.00         0.24
+        30         1.27       2.38      -1.92       0.00         0.00
+        31         1.43       0.20       2.65       0.01         0.00
+        32         1.70       3.43      -1.78       0.00         0.00
+        33         2.80       0.70       2.55       0.00         0.00
+        34         0.51       0.28       0.44       0.00         0.00
+        35         1.58       0.03       8.76       1.32         0.05
+        36         0.93       0.69       0.53       0.00         0.00
+        37         5.81       5.82      -0.01       0.00         0.00
+        38         0.68       0.44       0.35       0.00         0.00
+        39         0.34       0.05       1.28      -0.02         0.00
+        40         1.43       1.37       0.24       0.00         0.00
+        41         1.17       1.08       0.30       0.00         0.00
+        42         1.51       1.48       0.17       0.00         0.00
+
+     THE TOTAL PEARSON CHI-SQUARE CONTRIBUTION FROM EMPTY CELLS IS         1.25
+
+
+     UNIVARIATE MODEL FIT INFORMATION
+
+                               Estimated Probabilities
+                                                  Standardized
+     Variable              H1           H0          Residual
+                                                   (z-score)
+     ETH1
+       Category 1        0.978        0.978           0.000
+       Category 2        0.022        0.022           0.000
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     ETH2
+       Category 1        0.962        0.962          -0.004
+       Category 2        0.038        0.038           0.004
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     ETH3
+       Category 1        0.910        0.910           0.000
+       Category 2        0.090        0.090           0.000
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     ETH4
+       Category 1        0.804        0.804           0.000
+       Category 2        0.196        0.196           0.000
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     ETH5
+       Category 1        0.948        0.948           0.000
+       Category 2        0.052        0.052           0.000
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+
+       Overall Univariate Pearson Chi-Square                         0.000
+       Overall Univariate Log-Likelihood Chi-Square                  0.000
+
+
+     BIVARIATE MODEL FIT INFORMATION
+
+                                              Estimated Probabilities
+                                                                 Standardized
+     Variable       Variable              H1           H0          Residual
+                                                                  (z-score)
+     ETH1           ETH2
+       Category 1     Category 1        0.954        0.954          -0.006
+       Category 1     Category 2        0.024        0.024           0.008
+       Category 2     Category 1        0.008        0.008           0.005
+       Category 2     Category 2        0.013        0.014          -0.004
+       Bivariate Pearson Chi-Square                                  0.000
+       Bivariate Log-Likelihood Chi-Square                           0.000
+     ETH1           ETH3
+       Category 1     Category 1        0.897        0.897           0.020
+       Category 1     Category 2        0.081        0.081          -0.022
+       Category 2     Category 1        0.012        0.013          -0.055
+       Category 2     Category 2        0.009        0.009           0.063
+       Bivariate Pearson Chi-Square                                  0.009
+       Bivariate Log-Likelihood Chi-Square                           0.009
+     ETH1           ETH4
+       Category 1     Category 1        0.795        0.795          -0.023
+       Category 1     Category 2        0.184        0.184           0.023
+       Category 2     Category 1        0.009        0.009           0.095
+       Category 2     Category 2        0.012        0.013          -0.081
+       Bivariate Pearson Chi-Square                                  0.018
+       Bivariate Log-Likelihood Chi-Square                           0.018
+     ETH1           ETH5
+       Category 1     Category 1        0.935        0.935          -0.015
+       Category 1     Category 2        0.043        0.043           0.018
+       Category 2     Category 1        0.012        0.012           0.032
+       Category 2     Category 2        0.009        0.009          -0.037
+       Bivariate Pearson Chi-Square                                  0.003
+       Bivariate Log-Likelihood Chi-Square                           0.003
+     ETH2           ETH3
+       Category 1     Category 1        0.886        0.887          -0.028
+       Category 1     Category 2        0.076        0.076           0.031
+       Category 2     Category 1        0.023        0.023           0.059
+       Category 2     Category 2        0.014        0.014          -0.069
+       Bivariate Pearson Chi-Square                                  0.011
+       Bivariate Log-Likelihood Chi-Square                           0.011
+     ETH2           ETH4
+       Category 1     Category 1        0.787        0.787           0.016
+       Category 1     Category 2        0.176        0.176          -0.019
+       Category 2     Category 1        0.017        0.017          -0.050
+       Category 2     Category 2        0.021        0.020           0.051
+       Bivariate Pearson Chi-Square                                  0.006
+       Bivariate Log-Likelihood Chi-Square                           0.006
+     ETH2           ETH5
+       Category 1     Category 1        0.924        0.924           0.011
+       Category 1     Category 2        0.038        0.038          -0.019
+       Category 2     Category 1        0.024        0.024          -0.019
+       Category 2     Category 2        0.014        0.014           0.031
+       Bivariate Pearson Chi-Square                                  0.002
+       Bivariate Log-Likelihood Chi-Square                           0.002
+     ETH3           ETH4
+       Category 1     Category 1        0.759        0.759          -0.026
+       Category 1     Category 2        0.151        0.151           0.032
+       Category 2     Category 1        0.045        0.045           0.054
+       Category 2     Category 2        0.045        0.045          -0.054
+       Bivariate Pearson Chi-Square                                  0.008
+       Bivariate Log-Likelihood Chi-Square                           0.008
+     ETH3           ETH5
+       Category 1     Category 1        0.877        0.877           0.013
+       Category 1     Category 2        0.032        0.032          -0.024
+       Category 2     Category 1        0.070        0.070          -0.017
+       Category 2     Category 2        0.020        0.020           0.031
+       Bivariate Pearson Chi-Square                                  0.002
+       Bivariate Log-Likelihood Chi-Square                           0.002
+     ETH4           ETH5
+       Category 1     Category 1        0.780        0.780           0.006
+       Category 1     Category 2        0.024        0.024          -0.018
+       Category 2     Category 1        0.168        0.168          -0.007
+       Category 2     Category 2        0.028        0.028           0.017
+       Bivariate Pearson Chi-Square                                  0.001
+       Bivariate Log-Likelihood Chi-Square                           0.001
+
+       Overall Bivariate Pearson Chi-Square                          0.059
+       Overall Bivariate Log-Likelihood Chi-Square                   0.059
+
+
+TECHNICAL 11 OUTPUT
+
+     Random Starts Specifications for the k-1 Class Analysis Model
+        Number of initial stage random starts                1000
+        Number of final stage optimizations                   250
+
+
+
+     VUONG-LO-MENDELL-RUBIN LIKELIHOOD RATIO TEST FOR 4 (H0) VERSUS 5 CLASSES
+
+          H0 Loglikelihood Value                        -3245.391
+          2 Times the Loglikelihood Difference              3.794
+          Difference in the Number of Parameters                6
+          Mean                                            -23.125
+          Standard Deviation                               63.356
+          P-Value                                          0.3441
+
+     LO-MENDELL-RUBIN ADJUSTED LRT TEST
+
+          Value                                             3.716
+          P-Value                                          0.3450
+
+
+SAVEDATA INFORMATION
+
+
+  Save file
+    Prob_EST_ETHlca_C3cl5.dat
+
+  Order and format of variables
+
+    ETH1           F10.3
+    ETH2           F10.3
+    ETH3           F10.3
+    ETH4           F10.3
+    ETH5           F10.3
+    CPROB1         F10.3
+    CPROB2         F10.3
+    CPROB3         F10.3
+    CPROB4         F10.3
+    CPROB5         F10.3
+    C              F10.3
+    WS             F10.3
+    IDSTUD         I9
+    ID_S           I4
+    ID_J           I4
+
+  Save file format
+    12F10.3 I9 2I4
+
+  Save file record length    10000
+
+  Save missing symbol        *
+
+
+     Beginning Time:  22:09:41
+        Ending Time:  22:09:44
+       Elapsed Time:  00:00:03
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2020 Muthen & Muthen

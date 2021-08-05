@@ -1,0 +1,865 @@
+Mplus VERSION 8.5 (Mac)
+MUTHEN & MUTHEN
+04/07/2021  10:10 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: HRVETH LCA - C3 with 1 classes;
+  DATA:
+  FILE = ETHDtaC3.dat;
+
+  VARIABLE:
+  NAMES = id_i
+  id_j
+  id_r
+  id_s
+  id_k
+  wt
+  ws
+  ETH1
+  ETH2
+  ETH3
+  ETH4
+  ETH5
+  IDSTUD;
+  IDVARIABLE = IDSTUD;
+  USEVARIABLES = ETH1
+  ETH2
+  ETH3
+  ETH4
+  ETH5;
+  USEOBSERVATIONS ARE id_k EQ 6;
+  CATEGORICAL = ETH1
+  ETH2
+  ETH3
+  ETH4
+  ETH5;
+  MISSING = .;
+  CLASSES = c(1);
+  WEIGHT = ws;
+  STRATIFICATION = id_s;
+  CLUSTER = id_j;
+
+  ANALYSIS:
+  TYPE = COMPLEX MIXTURE;
+  PROCESSORS = 4;
+  STARTS = 1000 250;
+  STITERATIONS = 20;
+  STSEED = 288;
+
+  MODEL:
+  %OVERALL%
+
+  OUTPUT:
+  TECH10
+  TECH11
+  SVALUES
+  ;
+
+  SAVEDATA:
+  FILE = Prob_HRV_ETHlca_C3cl1.dat;
+  SAVE = CPROBABILITIES;
+
+
+
+*** WARNING in VARIABLE command
+  When a subpopulation is analyzed with TYPE=COMPLEX, standard errors
+  may be incorrect.  Use the SUBPOPULATION option instead of the
+  USEOBSERVATIONS option to obtain correct standard errors.
+*** WARNING in OUTPUT command
+  TECH11 option is not available for TYPE=MIXTURE with only one class.
+  Request for TECH11 is ignored.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  58
+   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+HRVETH LCA - C3 with 1 classes;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        3838
+
+Number of dependent variables                                    5
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+Number of categorical latent variables                           1
+
+Observed dependent variables
+
+  Binary and ordered categorical (ordinal)
+   ETH1        ETH2        ETH3        ETH4        ETH5
+
+Categorical latent variables
+   C
+
+Variables with special functions
+
+  Stratification        ID_S
+  Cluster variable      ID_J
+  Weight variable       WS
+  ID variable           IDSTUD
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                                 100
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-06
+    Relative loglikelihood change                        0.100D-06
+    Derivative                                           0.100D-05
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Random Starts Specifications
+  Number of initial stage random starts                       1000
+  Number of final stage optimizations                          250
+  Number of initial stage iterations                            20
+  Initial stage convergence criterion                    0.100D+01
+  Random starts scale                                    0.500D+01
+  Random seed for generating random starts                     288
+Link                                                         LOGIT
+
+Input data file(s)
+  ETHDtaC3.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            15
+     Number of y missing data patterns           0
+     Number of u missing data patterns          15
+     Number of strata                           75
+     Number of clusters                        815
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR U
+
+
+           Covariance Coverage
+              ETH1          ETH2          ETH3          ETH4          ETH5
+              ________      ________      ________      ________      ________
+ ETH1           0.999
+ ETH2           0.997         0.997
+ ETH3           0.997         0.996         0.998
+ ETH4           0.992         0.991         0.992         0.993
+ ETH5           0.996         0.995         0.996         0.992         0.997
+
+
+UNIVARIATE PROPORTIONS AND COUNTS FOR CATEGORICAL VARIABLES
+
+    ETH1
+      Category 1    0.967         3708.208
+      Category 2    0.033          127.912
+    ETH2
+      Category 1    0.951         3643.340
+      Category 2    0.049          187.875
+    ETH3
+      Category 1    0.944         3616.675
+      Category 2    0.056          213.808
+    ETH4
+      Category 1    0.725         2766.416
+      Category 2    0.275         1049.728
+    ETH5
+      Category 1    0.953         3649.076
+      Category 2    0.047          178.511
+
+
+RANDOM STARTS RESULTS RANKED FROM THE BEST TO THE WORST LOGLIKELIHOOD VALUES
+
+Final stage loglikelihood values at local maxima, seeds, and initial stage start numbers:
+
+           -5101.435  255481           751
+           -5101.435  729705           501
+           -5101.435  158964           251
+           -5101.435  761649           512
+           -5101.435  480214           256
+           -5101.435  16924            513
+           -5101.435  998022           514
+           -5101.435  18598            257
+           -5101.435  564698           515
+           -5101.435  776360           516
+           -5101.435  148293           258
+           -5101.435  440588           517
+           -5101.435  825343           518
+           -5101.435  563703           259
+           -5101.435  139726           519
+           -5101.435  690502           520
+           -5101.435  949814           260
+           -5101.435  642399           521
+           -5101.435  72800            522
+           -5101.435  424344           261
+           -5101.435  212295           523
+           -5101.435  328337           524
+           -5101.435  568707           262
+           -5101.435  21190            525
+           -5101.435  237882           526
+           -5101.435  256261           263
+           -5101.435  298512           527
+           -5101.435  723752           528
+           -5101.435  369771           264
+           -5101.435  41136            529
+           -5101.435  384138           530
+           -5101.435  683344           265
+           -5101.435  26859            531
+           -5101.435  838073           532
+           -5101.435  499903           266
+           -5101.435  289713           533
+           -5101.435  75864            534
+           -5101.435  83824            267
+           -5101.435  712313           535
+           -5101.435  798276           536
+           -5101.435  372786           268
+           -5101.435  449914           537
+           -5101.435  746499           538
+           -5101.435  755225           269
+           -5101.435  442141           539
+           -5101.435  102664           540
+           -5101.435  508005           270
+           -5101.435  850201           541
+           -5101.435  332221           542
+           -5101.435  655232           271
+           -5101.435  124010           543
+           -5101.435  648136           544
+           -5101.435  941180           272
+           -5101.435  985923           545
+           -5101.435  488184           546
+           -5101.435  385729           273
+           -5101.435  637758           547
+           -5101.435  986007           548
+           -5101.435  863129           274
+           -5101.435  509856           549
+           -5101.435  702720           550
+           -5101.435  811896           275
+           -5101.435  732345           551
+           -5101.435  214082           552
+           -5101.435  566609           276
+           -5101.435  55657            553
+           -5101.435  141596           554
+           -5101.435  626683           277
+           -5101.435  835969           555
+           -5101.435  699749           556
+           -5101.435  183675           278
+           -5101.435  453466           557
+           -5101.435  18935            558
+           -5101.435  619016           279
+           -5101.435  217522           559
+           -5101.435  912118           560
+           -5101.435  163252           280
+           -5101.435  95624            561
+           -5101.435  607682           562
+           -5101.435  926166           281
+           -5101.435  999536           563
+           -5101.435  438247           564
+           -5101.435  782833           282
+           -5101.435  947186           565
+           -5101.435  756060           566
+           -5101.435  519601           283
+           -5101.435  566415           567
+           -5101.435  812961           568
+           -5101.435  16555            284
+           -5101.435  551927           569
+           -5101.435  379997           570
+           -5101.435  634855           285
+           -5101.435  149951           571
+           -5101.435  499068           572
+           -5101.435  74848            286
+           -5101.435  988355           287
+           -5101.435  73135            288
+           -5101.435  571411           289
+           -5101.435  126060           290
+           -5101.435  741061           291
+           -5101.435  819229           292
+           -5101.435  438785           293
+           -5101.435  819256           294
+           -5101.435  967159           295
+           -5101.435  538895           296
+           -5101.435  691572           297
+           -5101.435  250285           298
+           -5101.435  792123           299
+           -5101.435  125480           300
+           -5101.435  749139           301
+           -5101.435  499805           302
+           -5101.435  624641           303
+           -5101.435  646105           304
+           -5101.435  799031           305
+           -5101.435  315906           306
+           -5101.435  533600           307
+           -5101.435  829106           308
+           -5101.435  730821           309
+           -5101.435  173363           310
+           -5101.435  230316           311
+           -5101.435  800324           312
+           -5101.435  295469           313
+           -5101.435  692037           314
+           -5101.435  270775           315
+           -5101.435  496516           316
+           -5101.435  589343           317
+           -5101.435  918761           752
+           -5101.435  611976           753
+           -5101.435  122886           754
+           -5101.435  881525           755
+           -5101.435  821515           756
+           -5101.435  566431           757
+           -5101.435  674140           758
+           -5101.435  14811            759
+           -5101.435  546573           760
+           -5101.435  823689           761
+           -5101.435  620988           762
+           -5101.435  247529           763
+           -5101.435  681430           764
+           -5101.435  253296           765
+           -5101.435  755901           766
+           -5101.435  981654           767
+           -5101.435  552185           768
+           -5101.435  333225           769
+           -5101.435  562941           770
+           -5101.435  589517           771
+           -5101.435  678354           772
+           -5101.435  695057           773
+           -5101.435  846815           774
+           -5101.435  8288             775
+           -5101.435  441498           776
+           -5101.435  468128           777
+           -5101.435  798349           778
+           -5101.435  550795           779
+           -5101.435  29396            780
+           -5101.435  632977           781
+           -5101.435  601889           782
+           -5101.435  649711           783
+           -5101.435  761359           784
+           -5101.435  227359           785
+           -5101.435  264995           786
+           -5101.435  757210           787
+           -5101.435  866003           788
+           -5101.435  289707           789
+           -5101.435  100746           790
+           -5101.435  125680           791
+           -5101.435  425585           792
+           -5101.435  821522           793
+           -5101.435  547800           794
+           -5101.435  58768            795
+           -5101.435  293837           796
+           -5101.435  282015           797
+           -5101.435  321542           798
+           -5101.435  223897           799
+           -5101.435  95515            800
+           -5101.435  527001           801
+           -5101.435  532887           942
+           -5101.435  520022           950
+           -5101.435  116127           954
+           -5101.435  619259           958
+           -5101.435  155404           966
+           -5101.435  269627           970
+           -5101.435  657384           974
+           -5101.435  807691           982
+           -5101.435  544679           986
+           -5101.435  805589           990
+           -5101.435  395024           998
+           -5101.435  514978           7
+           -5101.435  267441           127
+           -5101.435  829916           15
+           -5101.435  703404           63
+           -5101.435  208289           31
+           -5101.435  unperturbed      0
+           -5101.435  730563           128
+           -5101.435  609201           3
+           -5101.435  719428           129
+           -5101.435  38078            64
+           -5101.435  794864           130
+           -5101.435  555689           32
+           -5101.435  742602           131
+           -5101.435  587107           65
+           -5101.435  943264           132
+           -5101.435  106293           133
+           -5101.435  654184           66
+           -5101.435  536337           134
+           -5101.435  365939           33
+           -5101.435  257000           135
+           -5101.435  15050            67
+           -5101.435  615751           16
+           -5101.435  363526           136
+           -5101.435  319498           137
+           -5101.435  977786           68
+           -5101.435  462004           138
+           -5101.435  901673           34
+           -5101.435  710841           139
+           -5101.435  425103           69
+           -5101.435  965671           140
+           -5101.435  993659           141
+           -5101.435  412035           70
+           -5101.435  667357           142
+           -5101.435  3314             35
+           -5101.435  699343           143
+           -5101.435  775133           71
+           -5101.435  578065           8
+           -5101.435  256224           144
+           -5101.435  867952           17
+           -5101.435  328890           145
+           -5101.435  90128            72
+           -5101.435  701157           146
+           -5101.435  47928            36
+           -5101.435  767001           147
+           -5101.435  241342           73
+           -5101.435  112959           148
+           -5101.435  545226           149
+           -5101.435  960487           74
+           -5101.435  751299           150
+           -5101.435  316890           37
+           -5101.435  739223           151
+           -5101.435  219014           75
+           -5101.435  722666           152
+           -5101.435  339904           18
+           -5101.435  107578           153
+           -5101.435  613990           76
+           -5101.435  353096           154
+           -5101.435  126667           38
+           -5101.435  572149           155
+           -5101.435  341151           77
+           -5101.435  509819           156
+           -5101.435  104144           78
+           -5101.435  704750           1
+
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                        5
+
+Loglikelihood
+
+          H0 Value                       -5101.435
+          H0 Scaling Correction Factor      1.9046
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   10212.871
+          Bayesian (BIC)                 10244.134
+          Sample-Size Adjusted BIC       10228.247
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit for the Binary and Ordered Categorical
+(Ordinal) Outcomes**
+
+          Pearson Chi-Square
+
+          Value                            449.000
+          Degrees of Freedom                    24
+          P-Value                           0.0000
+
+          Likelihood Ratio Chi-Square
+
+          Value                            100.725
+          Degrees of Freedom                    24
+          P-Value                           0.0000
+
+** Of the 148 cells in the latent class indicator table, 2
+   were deleted in the calculation of chi-square due to extreme values.
+
+Chi-Square Test for MCAR under the Unrestricted Latent Class Indicator Model
+
+          Pearson Chi-Square
+
+          Value                             76.917
+          Degrees of Freedom                   102
+          P-Value                           0.9698
+
+          Likelihood Ratio Chi-Square
+
+          Value                             50.192
+          Degrees of Freedom                   102
+          P-Value                           1.0000
+
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THE ESTIMATED MODEL
+
+    Latent
+   Classes
+
+       1       3838.00000          1.00000
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON ESTIMATED POSTERIOR PROBABILITIES
+
+    Latent
+   Classes
+
+       1       3838.00000          1.00000
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THEIR MOST LIKELY LATENT CLASS MEMBERSHIP
+
+Class Counts and Proportions
+
+    Latent
+   Classes
+
+       1             3838          1.00000
+
+
+Average Latent Class Probabilities for Most Likely Latent Class Membership (Row)
+by Latent Class (Column)
+
+           1
+
+    1   1.000
+
+
+Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+           1
+
+    1   1.000
+
+
+Logits for the Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+              1
+
+    1      0.000
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Latent Class 1
+
+ Thresholds
+    ETH1$1             3.367      0.124     27.190      0.000
+    ETH2$1             2.965      0.114     25.900      0.000
+    ETH3$1             2.828      0.100     28.217      0.000
+    ETH4$1             0.969      0.045     21.406      0.000
+    ETH5$1             3.018      0.100     30.208      0.000
+
+
+RESULTS IN PROBABILITY SCALE
+
+Latent Class 1
+
+ ETH1
+    Category 1         0.967      0.004    242.189      0.000
+    Category 2         0.033      0.004      8.354      0.000
+ ETH2
+    Category 1         0.951      0.005    178.140      0.000
+    Category 2         0.049      0.005      9.186      0.000
+ ETH3
+    Category 1         0.944      0.005    178.739      0.000
+    Category 2         0.056      0.005     10.567      0.000
+ ETH4
+    Category 1         0.725      0.009     80.306      0.000
+    Category 2         0.275      0.009     30.472      0.000
+ ETH5
+    Category 1         0.953      0.004    214.643      0.000
+    Category 2         0.047      0.004     10.500      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.162E+00
+       (ratio of smallest to largest eigenvalue)
+
+
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
+
+     %OVERALL%
+
+     %C#1%
+
+     [ eth1$1*3.36696 ];
+     [ eth2$1*2.96488 ];
+     [ eth3$1*2.82823 ];
+     [ eth4$1*0.96902 ];
+     [ eth5$1*3.01758 ];
+
+
+
+TECHNICAL 10 OUTPUT
+
+
+     MODEL FIT INFORMATION FOR THE LATENT CLASS INDICATOR MODEL PART
+
+
+     RESPONSE PATTERNS
+
+     No.  Pattern    No.  Pattern    No.  Pattern    No.  Pattern
+       1  00000        2  00001        3  00010        4  00011
+       5  00100        6  00101        7  00110        8  00111
+       9  01000       10  01001       11  01010       12  01011
+      13  01100       14  01101       15  01110       16  01111
+      17  10000       18  10001       19  10010       20  10011
+      21  10100       22  10101       23  10110       24  10111
+      25  11000       26  11001       27  11010       28  11011
+      29  11100       30  11101       31  11110       32  11111
+      33  0000*       34  0001*       35  *0000       36  0*0*0
+      37  0*0**       38  000*0       39  011*0       40  100*0
+      41  **0*0       42  0*000       43  0*010       44  0*110
+      45  000**       46  001**       47  00*00       48  01*01
+      49  10*10       50  00***       51  *0***       52  ****1
+      53  0****       54  **0**
+
+
+     RESPONSE PATTERN FREQUENCIES AND CHI-SQUARE CONTRIBUTIONS
+
+    Response          Frequency     Standardized  Chi-square Contribution
+     Pattern    Observed  Estimated   Residual    Pearson   Loglikelihood  Deleted
+                                     (z-score)
+         1      2588.29    2282.71       7.81      40.90       195.37
+         2        21.73     111.67      -6.67      72.44       -71.36
+         3       786.13     866.19      -2.39       7.40      -154.88
+         4        25.84      42.37      -1.97       6.45       -25.79
+         5        40.10     134.95      -6.42      66.66       -97.81
+         6        15.76       6.60       2.75      12.69        27.23
+         7        65.53      51.21       1.56       3.99        33.93
+         8        17.71       2.51       7.42      92.25        69.05
+         9        35.46     117.71      -5.95      57.47       -85.58
+        10         5.58       5.76      -0.06      -0.17         1.64
+        11        50.07      44.67       0.63       0.65        10.66
+        12         9.48       2.19       3.81      24.38        27.70
+        13         2.72       6.96      -1.24       2.56        -4.58
+        14         1.68       0.34       1.78       5.25         5.99
+        15         7.33       2.64       2.23       8.22        16.71
+        16         6.67       0.13       7.72     100.00        52.51
+        17        16.99      78.74      -5.43      48.33       -49.72
+        18         6.18       3.85       0.92       1.40         5.74
+        19        12.09      29.88      -2.52      10.51       -19.97
+        20         8.00       1.46       4.18      29.25        27.08
+        21         1.63       4.65      -1.08       1.97        -3.45
+        22         8.19       0.23       7.72     100.00        58.52
+        23         1.72       1.77      -0.03       0.00        -0.10
+        24         4.36       0.09       7.72     100.00        34.12
+        25         6.08       4.06       0.77       1.01         4.81
+        26         5.55       0.20       7.72     100.00        36.88
+        27         9.95       1.54       5.23      45.89        36.95
+        28         6.91       0.08       7.72     100.00        62.30
+        29         0.13       0.24      -0.17       0.05        -0.16
+        30         2.62       0.01       7.72     100.00        28.32
+        31         4.34       0.09       7.72     100.00        33.45
+        32        30.68       0.00       7.72     100.00       199.51      DELETED
+        33         1.85       1.93      -0.08      -0.03         0.31
+        34         1.22       0.73       0.51      -0.17        -0.28
+        35         0.10       0.06       0.19       0.01         0.02
+        36         0.11       0.09       0.10       0.00         0.01
+        37         0.11       0.10       0.08       0.00         0.00
+        38        10.66      11.74      -0.59      -0.19         1.45
+        39         1.14       0.04       4.53       5.36         0.36
+        40         2.38       0.40       2.44     -34.34        -5.93
+        41         0.11       0.10       0.08       0.00         0.00
+        42         2.86       2.82       0.03      -0.01         0.50
+        43         0.20       1.07      -0.74       0.09        -0.04
+        44         1.40       0.06       4.15       8.65         0.92
+        45         2.63       2.38       0.35       0.02         0.18
+        46         0.11       0.14      -0.07       0.01        -0.07
+        47         1.43       1.92      -0.45      -0.08         0.24
+        48         1.48       0.00       7.73       0.00         1.04      DELETED
+        49         0.11       0.03       0.43      -0.56        -0.17
+        50         1.16       1.06       0.25       0.00         0.04
+        51         1.45       1.38       0.21       0.00         0.00
+        52         0.11       0.00       1.14       0.00         0.00
+        53         1.78       1.72       0.19       0.00         0.00
+        54         0.11       0.10       0.06       0.00         0.00
+
+     THE TOTAL PEARSON CHI-SQUARE CONTRIBUTION FROM EMPTY CELLS IS         1.06
+
+
+     UNIVARIATE MODEL FIT INFORMATION
+
+                               Estimated Probabilities
+                                                  Standardized
+     Variable              H1           H0          Residual
+                                                   (z-score)
+     ETH1
+       Category 1        0.967        0.967          -0.001
+       Category 2        0.033        0.033           0.001
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     ETH2
+       Category 1        0.951        0.951           0.001
+       Category 2        0.049        0.049          -0.001
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     ETH3
+       Category 1        0.944        0.944          -0.011
+       Category 2        0.056        0.056           0.011
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     ETH4
+       Category 1        0.725        0.725          -0.008
+       Category 2        0.275        0.275           0.008
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     ETH5
+       Category 1        0.953        0.953           0.014
+       Category 2        0.047        0.047          -0.014
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+
+       Overall Univariate Pearson Chi-Square                         0.001
+       Overall Univariate Log-Likelihood Chi-Square                  0.001
+
+
+     BIVARIATE MODEL FIT INFORMATION
+
+                                              Estimated Probabilities
+                                                                 Standardized
+     Variable       Variable              H1           H0          Residual
+                                                                  (z-score)
+     ETH1           ETH2
+       Category 1     Category 1        0.935        0.919           2.746
+       Category 1     Category 2        0.032        0.047          -3.521
+       Category 2     Category 1        0.016        0.032          -4.268
+       Category 2     Category 2        0.017        0.002          18.514
+       Bivariate Pearson Chi-Square                                624.276
+       Bivariate Log-Likelihood Chi-Square                         252.126
+     ETH1           ETH3
+       Category 1     Category 1        0.925        0.913           2.047
+       Category 1     Category 2        0.042        0.054          -2.558
+       Category 2     Category 1        0.019        0.031          -3.323
+       Category 2     Category 2        0.014        0.002          13.466
+       Bivariate Pearson Chi-Square                                332.476
+       Bivariate Log-Likelihood Chi-Square                         156.264
+     ETH1           ETH4
+       Category 1     Category 1        0.712        0.701           1.189
+       Category 1     Category 2        0.255        0.266          -1.233
+       Category 2     Category 1        0.013        0.024          -3.569
+       Category 2     Category 2        0.021        0.009           5.751
+       Bivariate Pearson Chi-Square                                 78.391
+       Bivariate Log-Likelihood Chi-Square                          68.284
+     ETH1           ETH5
+       Category 1     Category 1        0.939        0.922           3.097
+       Category 1     Category 2        0.028        0.045          -4.014
+       Category 2     Category 1        0.014        0.032          -4.729
+       Category 2     Category 2        0.019        0.002          21.056
+       Bivariate Pearson Chi-Square                                805.714
+       Bivariate Log-Likelihood Chi-Square                         306.042
+     ETH2           ETH3
+       Category 1     Category 1        0.910        0.898           1.941
+       Category 1     Category 2        0.041        0.053          -2.621
+       Category 2     Category 1        0.034        0.046          -2.809
+       Category 2     Category 2        0.015        0.003          11.294
+       Bivariate Pearson Chi-Square                                237.498
+       Bivariate Log-Likelihood Chi-Square                         129.099
+     ETH2           ETH4
+       Category 1     Category 1        0.709        0.689           2.005
+       Category 1     Category 2        0.242        0.262          -2.111
+       Category 2     Category 1        0.016        0.036          -5.031
+       Category 2     Category 2        0.033        0.013           8.075
+       Bivariate Pearson Chi-Square                                156.419
+       Bivariate Log-Likelihood Chi-Square                         135.860
+     ETH2           ETH5
+       Category 1     Category 1        0.923        0.907           2.664
+       Category 1     Category 2        0.028        0.044          -3.764
+       Category 2     Category 1        0.031        0.047          -3.657
+       Category 2     Category 2        0.018        0.002          16.160
+       Bivariate Pearson Chi-Square                                482.130
+       Bivariate Log-Likelihood Chi-Square                         222.791
+     ETH3           ETH4
+       Category 1     Category 1        0.706        0.684           2.182
+       Category 1     Category 2        0.238        0.260          -2.319
+       Category 2     Category 1        0.019        0.040          -5.166
+       Category 2     Category 2        0.037        0.015           8.298
+       Bivariate Pearson Chi-Square                                165.839
+       Bivariate Log-Likelihood Chi-Square                         144.293
+     ETH3           ETH5
+       Category 1     Category 1        0.921        0.900           3.251
+       Category 1     Category 2        0.024        0.044          -4.762
+       Category 2     Category 1        0.033        0.053          -4.328
+       Category 2     Category 2        0.023        0.003          19.114
+       Bivariate Pearson Chi-Square                                678.959
+       Bivariate Log-Likelihood Chi-Square                         307.495
+     ETH4           ETH5
+       Category 1     Category 1        0.707        0.691           1.634
+       Category 1     Category 2        0.018        0.034          -4.197
+       Category 2     Category 1        0.247        0.262          -1.709
+       Category 2     Category 2        0.029        0.013           6.713
+       Bivariate Pearson Chi-Square                                108.147
+       Bivariate Log-Likelihood Chi-Square                          94.615
+
+       Overall Bivariate Pearson Chi-Square                       3669.849
+       Overall Bivariate Log-Likelihood Chi-Square                1816.869
+
+
+SAVEDATA INFORMATION
+
+
+  Save file
+    Prob_HRV_ETHlca_C3cl1.dat
+
+  Order and format of variables
+
+    ETH1           F10.3
+    ETH2           F10.3
+    ETH3           F10.3
+    ETH4           F10.3
+    ETH5           F10.3
+    CPROB1         F10.3
+    C              F10.3
+    WS             F10.3
+    IDSTUD         I9
+    ID_S           I5
+    ID_J           I5
+
+  Save file format
+    8F10.3 I9 2I5
+
+  Save file record length    10000
+
+  Save missing symbol        *
+
+
+     Beginning Time:  22:10:04
+        Ending Time:  22:10:06
+       Elapsed Time:  00:00:02
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2020 Muthen & Muthen

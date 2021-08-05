@@ -1,30 +1,84 @@
-# Methods 
 
+# Methods  
 
-All cycles of ICCS (CIVED) have been validated through variable-centred analysis, this means that latent constructs and the invariance across countries have been consistently validated thoroughly using CFA. On the contrary, not many research has been done using person-centred approaches, as Latent Profile Analysis (LPA) and Latent Class analysis (LCA).  
-\newline 
-The latent class model assumes the existence of a latent categorical variable such that the observed response variables are conditionally independent, given that variable. LCA treat a contingency table as a finite mixture of unobserved tables generated under a conditional independence structure of a latent variable [@agresti_categorical_2013]. In other words, LCA can directly assess the theory that distinctive groups of people share specific attitudes. Depending on the response variable in the model the analysis is called Latent Profile Analysis if is continuous (Normal) and Latent Class Analysis if the response variable is categorical (Multinomial).  
-\newline 
-In LCA, studying measurement invariance is necessary to determine whether the number and nature of the latent profiles are the same across the different observed groups [@olivera-aguilar_assessing_2018]. For this, multiple group LCA models are computed, and the relative fit of the unconstrained and semi-constrained models are compared using the LRT, AIC, BIC, and aBIC measures. Also is needed to review any kind of response bias, the most common refers to “a systematic tendency to respond to a range of questionnaire items on some basis other than the specific item content” for example e.g. extreme or agree/disagree [@kankaras_measurement_2011].  
-\newline 
-In order to assess the cross-national and cross-cohort comparability using CFA, new scales should be created that fit across all countries and cohorts analysed, rather than using the ones already created by the consortium [@barber_profiles_2020].  
-\newline 
-Descriptive and main report was performed in R software using poLCA package (Robertson and Kaptein 2016). Most complex analysis was implemented in MPLUS. All syntax used is available in 
+## Methodological features  
 
-## Sample
- 
-## Variables  
+There are two different approaches to conduct a Latent Class Analysis, an exploratory and confirmatory approach. Both methodologies are valid for this analysis but their main difference resides in the hypothesis that wants to be tested.  
+
+When researchers do not have specific hypotheses but the goal is to identify how many classes are necessary to fit the data, an exploratory latent class analysis can be performed. In this case, several latent class models with an increasing number of classes should be computed. The best-fitting will be selected, this can be identified by which increasing the number of latent classes would not result in a model that fits the data significantly better than the previous model. Information criteria such as AIC, BIC and aBIC can be used to determine the best fit, the best model will have the lowest values of information criteria.  
+
+The confirmatory approach starts with specific hypotheses about the latent structure, the researcher can test if there is a defined number of classes that explained the associations between the observed variables and specific relations in the items for each class or across classes.  Based on the conditional response probabilities and class sizes computed by the software, the expected frequencies can be estimated. These frequencies can be compared with the observed frequencies with a statistical test such as Pearson test or the LRT. If the test statistics show that the observed and expected frequencies do not differ significantly, the model is appropriate to explain the associations of the observed variables.  The expected frequency of each possible response pattern should be at least 1 or even 5 to make sure that both statistics follow a $\chi^2$ distribution and that p-values can be used for a valid decision. In case of sparse tables, bootstrapping goodness of fit is highly recommended [@noauthor_invariance_2019].  
+
+As mentioned before, studying measurement invariance is necessary to determine whether the number and nature of the latent profiles are the same across the different observed groups [@olivera-aguilar_assessing_2018]. For this, multigroup LCA models are computed, and the relative fit of the unconstrained and semi-constrained models are compared using the LRT, AIC, BIC, and aBIC measures, Entropy and LL reduction is evaluated as well. Additionally, is needed to review any kind of response bias, the most common refers to "a systematic tendency to respond to a range of questionnaire items on some basis other than the specific item content" for example, extreme responses for agree/disagree [@kankaras_measurement_2011].  
 
 ## Analytical strategy
 
+In order to perform the analysis for this research the strategy to be used is based on performing firstly independent analysis for each selected country, this way it will be possible to identify the country-specific number of classes as a starting point.  
+
+Based on the optimal number of classes for each country, an independent analysis of the latent class will be performed in order to evaluate class membership, sizes and the interpretation of these classes for each country.  
+
+Once all the classes are identified for each country, all these classes will be compared between countries in order to identify similar and unique classes across countries.  With this, a final number of optimal classes will be chosen for the total sample (including all the countries) in order to absorb all the possible different classes found in all the countries independently. If similar classes were found in more than one country this will count as one in the global model, if unique classes are identified this will count as a country-specific class. This country-specific class could be different across countries for that reason it will count as just one class. If one country or more have two or more country-specific classes, two or more classes will be included in the global model.  
+
+With the number of classes decided for the global model an exploratory latent class analysis is performed where a number of classes will be similar across countries and the remaining classes will differ across countries. The results from this model will be used to evaluate the model fit and the results will be compared between including/excluding one class.  
+
+The model with a good fit and the best interpretability will be chosen to evaluate the levels of invariance. First, the heterogeneous model will be analyzed, where all the parameters are freely estimated across countries. This will be similar to try different models for each country. This model is going to be compared to more restricted models. Next, some parameters will be fixed in order to test if partial invariance can be achieved, with this it will be tested if the classes patterns are comparable across countries. As a third step, the most restricted model is computed, where not only the patterns are assumed to be equal across countries but also the class membership. 
+
+Finally, confirmatory latent class analysis will be evaluated with some fixed conditional probabilities based on hypotheses obtained from the global and most invariant model identified. 
+
+In summary, this strategy will allow to identifying if there are some classes and how many of them can be compared across countries and how we can interpret them.  
+
+1. Independent exploratory LCA to identify the country-specific number of classes.
+2. Independent analysis to identify country-specific latent class membership, sizes and interpretability.
+3. Identify similar classes across countries.
+4. Exploratory LCA with all groups to check if the total number of classes remains.
+5. Evaluate different levels of measurement invariance for the number of comparable classes across countries.
+6. Establish a confirmatory analysis with the conditional probabilities and the total number of classes identified in the general exploratory LCA model.
+
+The analytical strategy will be performed using both software, R and Mplus. Mplus is the specialized software to perform Mixed models, especially with complex samples. This software allows to include weights, clustering and stratification variables. This is the core for modeling large scale assessment data. As Mplus can be used by creating automatized code in R, that allows to extract the output of the complex procedure performed and utilize R features to summarize and report the results. Most of the important code used for the different tasks are summarized in appendix A.3.
+
+To avoid local maxima and obtain trustworthy estimations the number of random sets of starting values for initial stage optimization was set to 100, the number of random sets of starting values for final stage optimization to 25 (a quarter of the number of initial starting values) and the maximum number of iterations in optimization to 5.  
+
+To be completely sure that the model has reached the global maximum value of likelihood, Mplus perform the model by running the analysis multiple times and indicate if the global maxima is reached. When this is not the case is not possible to compare the results, this is clearly stated in the following chapter.
+
+## Study 
+
+In this section, the different scales used in the research are explained. Firstly, an explanation of the variables that conform every scale used in the analysis are described. Secondly, a summary and description of the data selected for the analysis, characteristics and size are given.  
+
+### Variables  
+
+
+
+The first scale is composed of seven items, present also in ICCS 2009, ask about the roles of women and men in society. Students were asked to indicate their level of agreement (four levels ranging from "strongly agree" to "strongly disagree") with each statement. The six first items are used to form the scale *Students' endorsement of gender equality*. The first three items consult about the level of agreement with statements related to governmental, work and every way life  with *"Men and women should have equal opportunities to take part in government"*, *"Men and women should have the same rights in every way"* and *"Men and women should get equal pay when they are doing the same jobs"*. 
+
+The last three items which are negatively worded consult for the level of agreement with the following statements, *"Women should stay out of politics"*, *"When not many jobs available, men should have more right to a job than women"* and *"Men are better qualified to be political leaders than women"*. These last items were inversely coded, this means that when an individual responded "Agree" to any of these items, this response was coded as "Disagree" and then the question should be interpreted inversely. In the analysis chapter, these items will appear with a "(r)" added at the end of the label to easily identify them. Higher values of this scale reflect stronger agreement with the notion of gender equality or stronger disagreement with negative views of gender equality. 
+
+The other set of questions is focused on the rights and responsibilities of all different ethnic/racial groups in society. Same as before students' indicate their level of agreement in the same range. This scale called *Students' endorsement of equal rights for all ethnic/racial groups* indicate with higher scores a greater degree of agreement with the idea that ethnic and racial groups should have the same rights as other citizens in society.  
+
+In this scale, also from ICCS 2009, the first two items are focused on evaluating the attitude towards equality in education and work with *"All ethnic and racial groups should have equal chance to get a good education"* and *"All ethnic and racial groups should have an equal chance to get good jobs"*.  The third item is related to school education with *"Schools should teach students to respect members of all ethnic and racial groups"* and last two items are focused in politic equality and responsibilities with *"Members of all ethnic and racial groups should be encouraged to run in elections for political office"* and *"Members of all ethnic and racial groups should have same rights and responsibilities"*.  
+
+The original response categories for these items are based on four points agree/disagree scale, starting by the lower level of agreement "Strongly disagree" (1), "Disagree" (2), "Agree" (3), and "Strongly disagree" (4). For this analysis and to be able to reduce the complexity in the interpretation, these categories were recoded into two levels, "Disagree" (1) and "Agree" (2).  
+
+
+### Sample
+ 
+Multiple countries participate in the ICCS 2016 study, from different continents Europe, Asia, Latin America and the Caribbean mainly (detailed sample size of the participating countries can be found in Table \@ref(tab:tableA2) in the appendix). 
+
+Only European countries were selected for this research, the decision was mainly based on work with countries with different backgrounds, where no characteristics such as language, geographical location, economic status or others could influence unwanted factors that could impact in the results.  
+Fourteen countries were chosen, from nordic, western, central, eastern and southern Europe. Each country sample size is different, the country with the highest student sample is Norway (6271), followed by Denmark (6254), and the countries with the lowest sample size are Netherlands (2812) and Slovenia (2844). 
+
+This research will be focused only on the 14 European countries that participated in the assessment, these countries can be organized by the following geographical grouping:    
+
+
+a)	Nordic: Denmark, Finland, Norway, Sweden.  
+b)	Western European: Belgium (Flemish), The Netherlands.  
+c)	Central and Eastern European: Bulgaria, Estonia, Latvia, Lithuania, Croatia, Slovenia.  
+d)	Southern European: Italy, Malta.  
+
+The complexity of the sample design of the study itself forces to apply this complexity into the analysis as well. Weights for each student are available in order to estimate correctly all the tests and statistics. Each individual in the sample not only include the sampling weight but also a senate weight associated, that sum up 1000 for each country, this means that each country will have the same participation in the analysis.  
+
+The need of using a complex sample design forces that the analysis to be even more complex as if there were no weights involved in the sample. Luckily, Mplus provides a set of tools that allows performing a latent class analysis and multigroup LCA considering not also the complexity of the sample design but the inclusion of the student senate weights in the estimation as well.  
+
+Regardless the software performs most of the analysis available, some test such as the bootstrap likelihood ratio difference test for comparing models differing in the number of classes is not possible to calculate when using sampling weights. This is a disadvantage when working with samples.
+
 \clearpage
 
-```{r, results="asis", eval=FALSE}
-kable(max_delays,
-  col.names = c("Airline", "Max Arrival Delay"),
-  caption = "Maximum Delays by Airline",
-  caption.short = "Max Delays by Airline",
-  longtable = TRUE,
-  booktabs = TRUE
-)
-```

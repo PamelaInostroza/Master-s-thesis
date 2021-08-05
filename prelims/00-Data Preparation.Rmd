@@ -10,6 +10,11 @@ editor_options:
 #devtools::install_github("dacarras/r4sda")
 
 library(RALSA) 0 #ralsaGUI()
+# lsa.convert.data(inp.folder = "/Volumes/Macintosh HD/Users/pamelainostroza/OneDrive - KU Leuven/Master in Statistics/Master Thesis/Data_analysis/Data/ICCS2016_IDB_SPSS/Data", missing.to.NA = TRUE, out.folder = "/Volumes/Macintosh HD/Users/pamelainostroza/Master-s-thesis/data/RALSA")
+
+# lsa.merge.data(inp.folder = "/Volumes/Macintosh HD/Users/pamelainostroza/Master-s-thesis/data/RALSA",
+# file.types = list(icg = NULL, ise = NULL, isg = NULL), 
+# ISO = c("bfl", "bgr", "dnk", "est", "fin", "ita", "ltu", "lva", "hrv", "mlt", "nld", "nor", "svn", "swe"), out.file = "/Volumes/MacintoshHD/Users/pamelainostroza/Master-s-thesis/data/RALSA/Merged/EuropeanMergeData.RData")
 library(r4sda)
 
 ```
@@ -19,40 +24,52 @@ library(r4sda)
 # -----------------------------------------------
 # selection of variables and countries to use from ICCS 2016
 # -----------------------------------------------
-#lsa.merge.data("data/RALSA", file.types = list(icg = NULL, isg = NULL), 
-#               ISO = c("bfl", "nld", "chl", "col"), 
-#               "data/RALSA/Merged/iccs_merged.RData")
+load("data/RALSA/Merged/EuropeanMergeData.RData")
 
-load("data/RALSA/Merged/iccs_merged.RData")
-
-table(iccs_merged$COUNTRY,iccs_merged$IDCNTRY, useNA = "ifany")
+#table(EuropeanMergeData$COUNTRY,EuropeanMergeData$IDCNTRY, useNA = "ifany")
 Id <- c("COUNTRY",  "IDCNTRY", "IDSCHOOL", "IDCLASS", "IDSTUD", "GROUP", "CYCLE", "YEAR")
 sampleID <- c("TOTWGTS", "WGTFAC1", "WGTADJ1S", "WGTFAC2S", "WGTADJ2S", "WGTADJ3S", "JKREPS", "JKZONES")
 Scores <- c("PV1CIV", "PV2CIV", "PV3CIV", "PV4CIV", "PV5CIV")
-Scales <- c("IS3G24A", "IS3G24B", "IS3G24C", "IS3G24D", "IS3G24E", "IS3G24F", "IS3G24G")
+
+orScalesIMM <- c("ES3G04A", "ES3G04B", "ES3G04C", "ES3G04D", "ES3G04E")
+orScalesGND <- c("IS3G24A", "IS3G24B", "IS3G24E")
+orScalesinvGND <- c("IS3G24C", "IS3G24D", "IS3G24F", "IS3G24G")
+orScalesETH <- c("IS3G25A", "IS3G25B", "IS3G25C", "IS3G25D", "IS3G25E")
+Scales <- c(orScalesIMM, orScalesGND, orScalesinvGND, orScalesETH)
+
 Schl_cate <- c("IC3G20", "IC3G21A", "IC3G21B", "C_COMP", "C_GENROL_CAT", "C_SCSIZE_CAT", "C_URBAN")
 Stud_cate <- c("IS3G03","IS3G03BA", "IS3G03BC", "IS3G10A", "IS3G10B", "IS3G10C", "IS3G11", 
                "IS3G14A","IS3G14B", "IS3G14C", "IS3G14D", "IS3G14E", "IS3G14F", "IS3G14G", "IS3G14H", 
                "IS3G23G", "IS3G33", "IS3G33N", "S_AGE", "S_GENDER", "S_HOMLIT", 
                "S_MINT", "S_FINT", "S_SINT", "S_ISCED", "S_IMMIG", "S_FISCED", "S_MISCED",
-               "S_RELIG","S_GENEQL", "S_NISB")
+               "S_RELIG","S_GENEQL", "S_NISB", "S_ETHRGHT")
 
-iccs <- iccs_merged %>%
+iccs <- EuropeanMergeData %>%
   mutate(COUNTRY = case_when(
     IDCNTRY == "Belgium (Flemish)" ~ "BFL",
+    IDCNTRY == "Bulgaria" ~ "BGR",
+    IDCNTRY == "Denmark" ~ "DNK",
+    IDCNTRY == "Estonia" ~ "EST",
+    IDCNTRY == "Finland" ~ "FIN",
+    IDCNTRY == "Croatia" ~ "HRV",
+    IDCNTRY == "Italy" ~ "ITA",
+    IDCNTRY == "Lithuania" ~ "LTU",
+    IDCNTRY == "Latvia" ~ "LVA",
+    IDCNTRY == "Malta" ~ "MLT",
     IDCNTRY == "Netherlands" ~ "NLD",
-    IDCNTRY == "Chile" ~ "CHL",
-    IDCNTRY == "Colombia" ~ "COL",
+    IDCNTRY == "Norway" ~ "NOR",
+    IDCNTRY == "Slovenia" ~ "SVN",
+    IDCNTRY == "Sweden" ~ "SWE",
     TRUE ~ as.character(COUNTRY)),
-    GROUP = ifelse(COUNTRY %in% c("BFL", "NLD"), "Europe", 
-                   ifelse(COUNTRY %in% c("CHL", "COL"), "South America", NA)),
+    GROUP = ifelse(COUNTRY %in% c("BFL", "BGR", "DNK", "EST", "FIN", "HRV", 
+                                  "ITA", "LTU", "LVA", "MLT", "NLD", "NOR", "SVN", "SWE"), "Europe", NA),
     CYCLE = "C3", YEAR = "2016") %>% 
   dplyr::select(all_of(Id), all_of(sampleID), 
                 all_of(Schl_cate), 
                 all_of(Stud_cate), 
                 all_of(Scores), 
                 all_of(Scales)) 
-#table(iccs$COUNTRY,iccs$IDCNTRY, useNA = "ifany")
+table(iccs$COUNTRY,iccs$IDCNTRY, useNA = "ifany")
 
 ```
 
@@ -117,39 +134,41 @@ r4sda::check_cluster_id(cluster_1 = 'id_r', cluster_2 = 'id_s')
 ```
 
 ```{r}
+orScales <- c(orScalesIMM, orScalesGND, orScalesETH)
+NewScales <- c(paste0("IMM",1:length(orScalesIMM)), c("GND1", "GND2", "GND5"), paste0("ETH",1:length(orScalesETH)))
+NewScalesinv <- c("GND3", "GND4", "GND6", "GND7")
 
 # -----------------------------------------------
 # recode functions
 # -----------------------------------------------
 # Recode into 2 categories
 table(data_model$IS3G24A, useNA = "ifany")
-labels = c(str_remove(attr(data_model$IS3G24A, "variable.label"), 
-           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"),
-           str_remove(attr(data_model$IS3G24B, "variable.label"), 
-           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"),
-           str_remove(attr(data_model$IS3G24E, "variable.label"), 
-           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"))
+labels <- NULL
+for(i in 1:length(orScales)){
+  labels <- c(labels, ifelse(orScales[i] %in% orScalesETH , 
+                             paste0("All ethnic and racial groups ",
+                                    tolower(str_remove(attr(data_model[[orScales[i]]], "variable.label"), 
+           "Rights and Responsibilities/Rights and responsibilities/"))), 
+           gsub("[][<>]", "", str_remove(attr(data_model[[orScales[i]]], "variable.label"), 
+           "Rights and Responsibilities/Roles women and men/|Moving/")))) 
+}
 
 lsa.recode.vars(data.object = data_model, 
-                src.variables = c("IS3G24A", "IS3G24B", "IS3G24E"),
-                new.variables = c("GND1", "GND2", "GND5"),
+                src.variables = orScales,
+                new.variables = NewScales,
                 variable.labels = labels,
                 old.new = "1=1;2=1;3=2;4=2;5=NA;6=NA",
                 new.labels = c("Agree", "Disagree"))
-table(data_model$GND1, useNA = "ifany")
+#table(data_model$IS3G24A, data_model$GND1, useNA = "ifany")
 #Inverse coded variables
-labelsr = c(paste0(str_remove(attr(data_model$IS3G24C, "variable.label"), 
-           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"),"(r)"),
-           paste0(str_remove(attr(data_model$IS3G24D, "variable.label"), 
-           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"),"(r)"),
-           paste0(str_remove(attr(data_model$IS3G24F, "variable.label"), 
-           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"),"(r)"),
-           paste0(str_remove(attr(data_model$IS3G24G, "variable.label"), 
-           "Rights and Responsibilities/Rights and responsibilities/|Rights and Responsibilities/Roles women and men/"),"(r)"))
-
+labelsr <- NULL
+for(i in 1:length(orScalesinvGND)){
+  labelsr <- c(labelsr, paste0(str_remove(attr(data_model[[orScalesinvGND[i]]], "variable.label"), 
+           "Rights and Responsibilities/Roles women and men/"), " (r)")) 
+}
 lsa.recode.vars(data.object = data_model, 
-                src.variables = c("IS3G24C", "IS3G24D", "IS3G24F", "IS3G24G"),
-                new.variables = c("GND3", "GND4", "GND6", "GND7"),
+                src.variables = orScalesinvGND,
+                new.variables = NewScalesinv,
                 variable.labels = labelsr,
                 old.new = "1=2;2=2;3=1;4=1;5=NA;6=NA",
                 new.labels = c("Agree", "Disagree"))

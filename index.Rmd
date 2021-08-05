@@ -1,19 +1,19 @@
 ---
-title: 'Profiles of tolerance and respect for gender equality among youth. Comparisons
-  across countries'
-author: 'Pamela Inostroza Fernández'
+title: 'Profiles of tolerance and respect for the rights of diverse social groups among youth.'
+subtitle: 'Comparison across countries.'
+author: 'Pamela Isabel INOSTROZA FERNANDEZ'
 matriculation_number: 'r0648901'
-date: 'May 2021'
+academicyear: '2020-2021'
+date: 'July 2021'
 university: 'KU Leuven'
 institute: 'Leuven Statistics Research Centre'
 advisoro: 'Femke De Keulenaer'
 advisort: 'Maria Magdalena Isac'
 chair: 'Femke De Keulenaer'
-program: 'Master in Statistics & Data Science'
+program: 'Statistics and Data Science'
 knit: bookdown::render_book
 site: bookdown::bookdown_site
 params:
-  
   'Install needed packages for {thesisdown}': True
 output:
   thesisdown::thesis_pdf:
@@ -21,14 +21,13 @@ output:
 #  thesisdown::thesis_gitbook: default         
 #  thesisdown::thesis_word: default
 #  thesisdown::thesis_epub: default
-abstract: '`r if(knitr:::is_latex_output()) paste(readLines(here::here("prelims", "00-abstract.Rmd")), collapse = "\n  ")`'
+abstract: |
+  Civic education is an important subject for every citizen in our modern society. It is important that every individual acknowledge the importance of the civil rights and obligations of any citizen. One of the most commented topics is how society faces and behaves towards the great diversity of individuals and cultures. Students are a great population to be studied as they are forming their own mindset and attitudes. Using ICCS 2016, an international large-scale assessment, it is possible to identify which are the most common behaviors among students' attitudes considering different aspects of equality towards women and ethnic and racial groups. As expected, the most common pattern is composed of students that share a high chance to accept and promote equality towards women and ethnics groups. Nonetheless, there is a small number of students that tend to disagree with this equality. Another set of students shares a high level of agreement with both minorities' equal rights but do not agree with their political role in society. Student's endorsement towards woman's rights remaining pattern shares a high level of agreement towards equality in basic rights but favor towards men when competing for jobs or political roles. Another pattern identified towards ethnic groups is students that disagree with their equal right to have good jobs. These patterns are similar across the 14 countries studied in Europe but they differ in the number of individuals in each pattern.  
 acknowledgements: |
-  I want to thank a few people.
 dedication: |
-  You can have a dedication here if you wish. 
+listabbrev: '`r if(knitr:::is_latex_output()) paste(readLines(here::here("prelims", "00-listabbrev.Rmd")), collapse = "\n  ")`'
 preface: |
-  This is an example of a thesis setup to use the reed thesis document class 
-  (for LaTeX) and the R bookdown package, in general.
+  This work was very interesting to perform, it grant me the opportunity to study in a deeper sense the subpopulations that are hidden behind large-scale assessments. I learned that not only variable center studies can give important insights about the different profiles that each country is composed by. I had to study many topics regarding civic and citizenship attitudes, I can not express how grateful I am to my promotors, particularly Maria Magdalena Isac who provide me with the idea to research this topic along with many insights that I should focus on. Professor Femke de Keulenaer was a great teacher and mentor regarding the statistical techniques I should apply and analyze to achieve our main objective. Their support and involvement with this project were at the right level with the difficulty.  They gave me the reasoning and interest to complete this research. I want to thank them and state that they will have my respect and gratitude for the work performed.  
 bibliography: bib/thesis.bib
 csl: csl/apa.csl
 lot: true
@@ -43,6 +42,11 @@ library(plyr)
 library(tidyverse) 
 library(knitr)
 library(kableExtra)
+library(MplusAutomation)
+library(gridExtra)
+library(grid)
+library(scales)
+library(RColorBrewer)
 ```
 
 
@@ -50,7 +54,7 @@ library(kableExtra)
 # Set how wide the R output will go
 options(width = 70)
 
-knitr::opts_chunk$set(fig.path='Figs/', fig.width=5, fig.height=4, results='asis',
+knitr::opts_chunk$set(fig.path='Figs/', fig.width=6, fig.height=5, results='asis',
                       echo=FALSE, warning=FALSE, message=FALSE)
 options(scipen=999)
 options(knitr.kable.NA = '')
@@ -70,7 +74,10 @@ load("data/data_model.Rdata")
 Id <- c("COUNTRY",  "IDCNTRY", "IDSCHOOL", "IDCLASS", "IDSTUD", "GROUP", "CYCLE")
 sample <- c("id_i", "id_j", "id_r", "id_s", "id_k", "wt", "ws")
 Scores <- c("PV1CIV", "PV2CIV", "PV3CIV", "PV4CIV", "PV5CIV")
-Scales <- c("GND1", "GND2", "GND3", "GND4", "GND5", "GND6", "GND7")
+ScalesGND <- c("GND1", "GND2", "GND3", "GND4", "GND5", "GND6")#, "GND7")
+ScalesIMM <- c("IMM1", "IMM2", "IMM3", "IMM4", "IMM5")
+ScalesETH <- c("ETH1", "ETH2", "ETH3", "ETH4", "ETH5")
+Scales <- c(ScalesETH, ScalesGND, ScalesIMM)
 Schl_cate <- c("IC3G20", "IC3G21A", "IC3G21B", "C_COMP", "C_GENROL_CAT", "C_SCSIZE_CAT", "C_URBAN")
 Stud_cate <- c("IS3G03","IS3G03BA", "IS3G03BC", "IS3G10A", "IS3G10B", "IS3G10C", "IS3G11", 
                "IS3G14A","IS3G14B", "IS3G14C", "IS3G14D", "IS3G14E", "IS3G14F", "IS3G14G", "IS3G14H", 
@@ -83,9 +90,11 @@ Stud_cate <- c("IS3G03","IS3G03BA", "IS3G03BC", "IS3G10A", "IS3G10B", "IS3G10C",
 
 ```
 
-```{r eval=!knitr::is_latex_output(), child=here::here("prelims", "00-abstract.Rmd")}
 
-```
+<!-- ```{r eval=!knitr::is_latex_output(), child=here::here("prelims", "00-abstract.Rmd")} -->
+
+<!-- ``` -->
+
 
 ```{r eval=!knitr::is_latex_output(), child=here::here("00-introduction.Rmd")}
 
@@ -100,9 +109,8 @@ Stud_cate <- c("IS3G03","IS3G03BA", "IS3G03BC", "IS3G10A", "IS3G10B", "IS3G10C",
 ```
 
 ```{r eval=!knitr::is_latex_output(), child=here::here("02-Methods.Rmd")}
-
+ 
 ```
-
 
 ```{r eval=!knitr::is_latex_output(), child=here::here("03-Results.Rmd")}
 

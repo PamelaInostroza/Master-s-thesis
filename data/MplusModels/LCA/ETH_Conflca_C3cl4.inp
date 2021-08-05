@@ -1,0 +1,75 @@
+TITLE: ConfLCA C3 ETH with 4 classes;
+DATA: 
+FILE = ETH_Dta_C3.dat;
+
+VARIABLE: 
+NAMES = id_i id_j id_r
+id_s id_k wt ws
+ETH1 ETH2 ETH3 ETH4 ETH5
+IDSTUD;
+IDVARIABLE = IDSTUD;
+USEVARIABLES = ETH1
+ETH2 ETH3 ETH4 ETH5;
+CATEGORICAL = ETH1
+ETH2 ETH3 ETH4 ETH5;
+MISSING = .;
+CLASSES = c(4);
+WEIGHT = ws;
+STRATIFICATION = id_s;
+CLUSTER = id_j;
+ 
+ANALYSIS:
+TYPE = COMPLEX MIXTURE;
+PROCESSORS = 4;
+STARTS = 100 50;
+STITERATIONS = 5;
+STSEED = 288;
+
+
+MODEL:
+%OVERALL%
+%C#1%
+[ETH1$1*5.3] (p1);
+[ETH2$1*15] (p2);
+[ETH3$1*5.5] (p3);
+[ETH4$1*1.7] (p4);
+[ETH5$1*6.7] (p5);
+
+%C#2%
+[ETH1$1*4.5] (p1);
+[ETH2$1*3.7] (p2);
+[ETH3$1*0.8] (p8);
+[ETH4$1*-0.3] (p9);
+[ETH5$1*1.4] (p10);
+
+%C#3%
+[ETH1$1*-2.9] (p11);
+[ETH2$1*-15] (p12);
+[ETH3$1*-1.8] (p13);
+[ETH4$1*-15] (p14);
+[ETH5$1*-2] (p15);
+
+%C#4%
+[ETH1$1] (p16);
+[ETH2$1] (p17);
+[ETH3$1] (p18);
+[ETH4$1] (p19);
+[ETH5$1] (p20);
+
+MODEL CONSTRAINT:
+p1=-p11;
+p2=-p12;
+p3=-p13;
+p4=-p14;
+p5=-p15;
+
+OUTPUT: 
+TECH10
+TECH11
+TECH14;
+SVALUES
+;
+
+SAVEDATA:
+FILE = ETH_ConfProb_C3cl4.dat;
+SAVE = CPROBABILITIES;

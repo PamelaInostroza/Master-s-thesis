@@ -1,0 +1,81 @@
+TITLE:C.Hom MG Country LCA ETH C3 with 5 classes;
+DATA: 
+FILE = ETH_DtaC3.dat;
+
+VARIABLE: 
+NAMES = id_i
+id_j
+id_r
+id_s
+id_k
+wt
+ws
+ETH1
+ETH2
+ETH3
+ETH4
+ETH5
+IDSTUD;
+IDVARIABLE = IDSTUD;
+USEVARIABLES = ETH1
+ETH2
+ETH3
+ETH4
+ETH5;
+CATEGORICAL = ETH1
+ETH2
+ETH3
+ETH4
+ETH5;
+MISSING = .;
+CLASSES = g(14) c(5);
+KNOWNCLASS = g(id_k =
+ 1    !    BFL 
+ 2    !    BGR 
+ 3    !    DNK 
+ 4    !    EST 
+ 5    !    FIN 
+ 6    !    HRV 
+ 7    !    ITA 
+ 8    !    LTU 
+ 9    !    LVA 
+ 10   !    MLT 
+ 11   !    NLD 
+ 12   !    NOR 
+ 13   !    SVN 
+ 14   !    SWE 
+);
+WEIGHT = ws;
+STRATIFICATION = id_s;
+CLUSTER = id_j;
+ 
+ANALYSIS:
+TYPE = COMPLEX MIXTURE;
+PROCESSORS = 4;
+STARTS = 1000 250;
+STITERATIONS = 20;
+STSEED = 288;
+
+MODEL:
+%OVERALL%
+Model c:
+ 
+                     %c#1%
+  [ETH1$1-ETH5$1] (91-95);
+                     %c#2%
+          [ETH1$1-ETH5$1];
+                     %c#3%
+          [ETH1$1-ETH5$1];
+                     %c#4%
+          [ETH1$1-ETH5$1];
+                     %c#5%
+         [ETH1$1-ETH5$1];
+ 
+OUTPUT: 
+TECH10
+SVALUES
+;
+
+SAVEDATA:
+FILE = ETH_Prob_MGCntry_C3cl5_3CHom.dat;
+SAVE = CPROBABILITIES;

@@ -1,0 +1,101 @@
+TITLE:C.Hom MG Country LCA GNDETH C3 with 6 classes;
+DATA: 
+FILE = GNDETH_DtaC3.dat;
+
+VARIABLE: 
+NAMES = id_i
+id_j
+id_r
+id_s
+id_k
+wt
+ws
+GND1
+GND2
+GND3
+GND4
+GND5
+GND6
+ETH1
+ETH2
+ETH3
+ETH4
+ETH5
+IDSTUD;
+IDVARIABLE = IDSTUD;
+USEVARIABLES = GND1
+GND2
+GND3
+GND4
+GND5
+GND6
+ETH1
+ETH2
+ETH3
+ETH4
+ETH5;
+CATEGORICAL = GND1
+GND2
+GND3
+GND4
+GND5
+GND6
+ETH1
+ETH2
+ETH3
+ETH4
+ETH5;
+MISSING = .;
+CLASSES = g(14) c(6);
+KNOWNCLASS = g(id_k =
+ 1    !    BFL 
+ 2    !    BGR 
+ 3    !    DNK 
+ 4    !    EST 
+ 5    !    FIN 
+ 6    !    HRV 
+ 7    !    ITA 
+ 8    !    LTU 
+ 9    !    LVA 
+ 10   !    MLT 
+ 11   !    NLD 
+ 12   !    NOR 
+ 13   !    SVN 
+ 14   !    SWE 
+);
+WEIGHT = ws;
+STRATIFICATION = id_s;
+CLUSTER = id_j;
+ 
+ANALYSIS:
+TYPE = COMPLEX MIXTURE;
+PROCESSORS = 4;
+STARTS = 1000 250;
+STITERATIONS = 20;
+STSEED = 288;
+
+MODEL:
+%OVERALL%
+Model c:
+ 
+                      %c#1%
+  [ETH1$1-GND6$1] (91-911);
+                      %c#2%
+           [ETH1$1-GND6$1];
+                      %c#3%
+           [ETH1$1-GND6$1];
+                      %c#4%
+           [ETH1$1-GND6$1];
+                      %c#5%
+0          [ETH1$1-GND6$1];
+1                     %c#6%
+2          [ETH1$1-GND6$1];
+ 
+OUTPUT: 
+TECH10
+SVALUES
+;
+
+SAVEDATA:
+FILE = GNDETH_Prob_MGCntry_C3cl6_3CHom.dat;
+SAVE = CPROBABILITIES;

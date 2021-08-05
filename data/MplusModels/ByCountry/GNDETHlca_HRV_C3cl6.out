@@ -1,0 +1,2314 @@
+Mplus VERSION 8.5 (Mac)
+MUTHEN & MUTHEN
+04/07/2021  10:18 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: HRVGNDETH LCA - C3 with 6 classes;
+  DATA:
+  FILE = GNDETHDtaC3.dat;
+
+  VARIABLE:
+  NAMES = id_i
+  id_j
+  id_r
+  id_s
+  id_k
+  wt
+  ws
+  GND1
+  GND2
+  GND3
+  GND4
+  GND5
+  GND6
+  ETH1
+  ETH2
+  ETH3
+  ETH4
+  ETH5
+  IDSTUD;
+  IDVARIABLE = IDSTUD;
+  USEVARIABLES = GND1
+  GND2
+  GND3
+  GND4
+  GND5
+  GND6
+  ETH1
+  ETH2
+  ETH3
+  ETH4
+  ETH5;
+  USEOBSERVATIONS ARE id_k EQ 6;
+  CATEGORICAL = GND1
+  GND2
+  GND3
+  GND4
+  GND5
+  GND6
+  ETH1
+  ETH2
+  ETH3
+  ETH4
+  ETH5;
+  MISSING = .;
+  CLASSES = c(6);
+  WEIGHT = ws;
+  STRATIFICATION = id_s;
+  CLUSTER = id_j;
+
+  ANALYSIS:
+  TYPE = COMPLEX MIXTURE;
+  PROCESSORS = 4;
+  STARTS = 1000 250;
+  STITERATIONS = 20;
+  STSEED = 288;
+
+  MODEL:
+  %OVERALL%
+
+  OUTPUT:
+  TECH10
+  TECH11
+  SVALUES
+  ;
+
+  SAVEDATA:
+  FILE = Prob_HRV_GNDETHlca_C3cl6.dat;
+  SAVE = CPROBABILITIES;
+
+
+
+*** WARNING in VARIABLE command
+  When a subpopulation is analyzed with TYPE=COMPLEX, standard errors
+  may be incorrect.  Use the SUBPOPULATION option instead of the
+  USEOBSERVATIONS option to obtain correct standard errors.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  22
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+HRVGNDETH LCA - C3 with 6 classes;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        3874
+
+Number of dependent variables                                   11
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+Number of categorical latent variables                           1
+
+Observed dependent variables
+
+  Binary and ordered categorical (ordinal)
+   GND1        GND2        GND3        GND4        GND5        GND6
+   ETH1        ETH2        ETH3        ETH4        ETH5
+
+Categorical latent variables
+   C
+
+Variables with special functions
+
+  Stratification        ID_S
+  Cluster variable      ID_J
+  Weight variable       WS
+  ID variable           IDSTUD
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                                 100
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-06
+    Relative loglikelihood change                        0.100D-06
+    Derivative                                           0.100D-05
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Random Starts Specifications
+  Number of initial stage random starts                       1000
+  Number of final stage optimizations                          250
+  Number of initial stage iterations                            20
+  Initial stage convergence criterion                    0.100D+01
+  Random starts scale                                    0.500D+01
+  Random seed for generating random starts                     288
+Link                                                         LOGIT
+
+Input data file(s)
+  GNDETHDtaC3.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            36
+     Number of y missing data patterns           0
+     Number of u missing data patterns          36
+     Number of strata                           75
+     Number of clusters                        816
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR U
+
+
+           Covariance Coverage
+              GND1          GND2          GND3          GND4          GND5
+              ________      ________      ________      ________      ________
+ GND1           0.999
+ GND2           0.998         0.998
+ GND3           0.994         0.993         0.994
+ GND4           0.993         0.992         0.989         0.993
+ GND5           0.991         0.990         0.986         0.987         0.991
+ GND6           0.994         0.993         0.990         0.989         0.989
+ ETH1           0.989         0.987         0.984         0.983         0.982
+ ETH2           0.987         0.986         0.983         0.982         0.981
+ ETH3           0.988         0.987         0.983         0.982         0.981
+ ETH4           0.983         0.982         0.979         0.978         0.977
+ ETH5           0.987         0.986         0.982         0.981         0.980
+
+
+           Covariance Coverage
+              GND6          ETH1          ETH2          ETH3          ETH4
+              ________      ________      ________      ________      ________
+ GND6           0.995
+ ETH1           0.985         0.989
+ ETH2           0.983         0.987         0.988
+ ETH3           0.984         0.988         0.986         0.989
+ ETH4           0.979         0.983         0.982         0.982         0.983
+ ETH5           0.983         0.987         0.986         0.986         0.983
+
+
+           Covariance Coverage
+              ETH5
+              ________
+ ETH5           0.988
+
+
+UNIVARIATE PROPORTIONS AND COUNTS FOR CATEGORICAL VARIABLES
+
+    GND1
+      Category 1    0.981         3799.186
+      Category 2    0.019           72.506
+    GND2
+      Category 1    0.971         3757.759
+      Category 2    0.029          110.541
+    GND3
+      Category 1    0.891         3434.795
+      Category 2    0.109          419.670
+    GND4
+      Category 1    0.877         3371.211
+      Category 2    0.123          471.892
+    GND5
+      Category 1    0.954         3666.620
+      Category 2    0.046          178.175
+    GND6
+      Category 1    0.808         3115.399
+      Category 2    0.192          739.955
+    ETH1
+      Category 1    0.967         3718.743
+      Category 2    0.033          128.276
+    ETH2
+      Category 1    0.951         3653.690
+      Category 2    0.049          188.409
+    ETH3
+      Category 1    0.944         3626.950
+      Category 2    0.056          214.415
+    ETH4
+      Category 1    0.725         2774.275
+      Category 2    0.275         1052.710
+    ETH5
+      Category 1    0.953         3659.442
+      Category 2    0.047          179.019
+
+
+RANDOM STARTS RESULTS RANKED FROM THE BEST TO THE WORST LOGLIKELIHOOD VALUES
+
+Final stage loglikelihood values at local maxima, seeds, and initial stage start numbers:
+
+           -9695.818  109815           166
+           -9695.818  958376           175
+           -9695.818  906010           487
+           -9695.818  611763           126
+           -9695.818  269849           945
+           -9695.818  255481           751
+           -9695.818  308344           678
+           -9695.818  689282           61
+           -9695.818  902664           49
+           -9695.818  840324           396
+           -9695.818  12928            511
+           -9695.818  980276           455
+           -9695.818  912118           560
+           -9695.818  400925           111
+           -9695.818  829916           15
+           -9696.072  859326           476
+           -9696.072  298512           527
+           -9696.072  552466           865
+           -9696.072  830297           466
+           -9696.072  986285           495
+           -9696.072  289940           934
+           -9696.072  58551            12
+           -9696.817  81666            810
+           -9696.817  117896           87
+           -9696.817  474326           104
+           -9698.111  767312           600
+           -9700.256  175002           169
+           -9701.366  895954           86
+           -9701.369  674652           601
+           -9701.369  547800           794
+           -9704.908  444492           595
+           -9705.354  115024           736
+           -9714.456  282387           944
+
+217 perturbed starting value run(s) did not converge or were rejected in the third stage.
+
+
+
+THE BEST LOGLIKELIHOOD VALUE HAS BEEN REPLICATED.  RERUN WITH AT LEAST TWICE THE
+RANDOM STARTS TO CHECK THAT THE BEST LOGLIKELIHOOD IS STILL OBTAINED AND REPLICATED.
+
+     IN THE OPTIMIZATION, ONE OR MORE LOGIT THRESHOLDS APPROACHED EXTREME VALUES
+     OF -15.000 AND 15.000 AND WERE FIXED TO STABILIZE MODEL ESTIMATION.  THESE
+     VALUES IMPLY PROBABILITIES OF 0 AND 1.  IN THE MODEL RESULTS SECTION, THESE
+     PARAMETERS HAVE 0 STANDARD ERRORS AND 999 IN THE Z-SCORE AND P-VALUE COLUMNS.
+
+
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       71
+
+Loglikelihood
+
+          H0 Value                       -9695.818
+          H0 Scaling Correction Factor      1.5728
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   19533.636
+          Bayesian (BIC)                 19978.241
+          Sample-Size Adjusted BIC       19752.636
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit for the Binary and Ordered Categorical
+(Ordinal) Outcomes**
+
+          Pearson Chi-Square
+
+          Value                           1724.136
+          Degrees of Freedom                  1953
+          P-Value                           0.9999
+
+          Likelihood Ratio Chi-Square
+
+          Value                           1008.390
+          Degrees of Freedom                  1953
+          P-Value                           1.0000
+
+** Of the 18568 cells in the latent class indicator table, 23
+   were deleted in the calculation of chi-square due to extreme values.
+
+Chi-Square Test for MCAR under the Unrestricted Latent Class Indicator Model
+
+          Pearson Chi-Square
+
+          Value                           4474.353
+          Degrees of Freedom                 16485
+          P-Value                           1.0000
+
+          Likelihood Ratio Chi-Square
+
+          Value                           3922.408
+          Degrees of Freedom                 16485
+          P-Value                           1.0000
+
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THE ESTIMATED MODEL
+
+    Latent
+   Classes
+
+       1         35.13784          0.00907
+       2        103.85622          0.02681
+       3        164.70585          0.04252
+       4        795.30021          0.20529
+       5       2390.20207          0.61699
+       6        384.79781          0.09933
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON ESTIMATED POSTERIOR PROBABILITIES
+
+    Latent
+   Classes
+
+       1         35.13784          0.00907
+       2        103.85622          0.02681
+       3        164.70585          0.04252
+       4        795.30021          0.20529
+       5       2390.20207          0.61699
+       6        384.79781          0.09933
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THEIR MOST LIKELY LATENT CLASS MEMBERSHIP
+
+Class Counts and Proportions
+
+    Latent
+   Classes
+
+       1               36          0.00918
+       2               97          0.02493
+       3              147          0.03798
+       4              807          0.20829
+       5             2437          0.62914
+       6              351          0.09048
+
+
+CLASSIFICATION QUALITY
+
+     Entropy                         0.911
+
+
+Average Latent Class Probabilities for Most Likely Latent Class Membership (Row)
+by Latent Class (Column)
+
+           1        2        3        4        5        6
+
+    1   0.861    0.000    0.102    0.000    0.000    0.037
+    2   0.000    0.868    0.099    0.011    0.019    0.003
+    3   0.012    0.052    0.780    0.028    0.003    0.125
+    4   0.000    0.009    0.013    0.959    0.000    0.019
+    5   0.000    0.002    0.002    0.003    0.971    0.022
+    6   0.008    0.001    0.060    0.027    0.061    0.843
+
+
+Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+           1        2        3        4        5        6
+
+    1   0.871    0.000    0.049    0.000    0.001    0.079
+    2   0.000    0.807    0.073    0.071    0.044    0.005
+    3   0.022    0.058    0.697    0.066    0.030    0.127
+    4   0.000    0.001    0.005    0.973    0.009    0.012
+    5   0.000    0.001    0.000    0.000    0.990    0.009
+    6   0.003    0.001    0.048    0.039    0.141    0.768
+
+
+Logits for the Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+              1        2        3        4        5        6
+
+    1      2.403  -11.274   -0.472  -11.274   -4.510    0.000
+    2     -8.475    5.126    2.726    2.700    2.212    0.000
+    3     -1.744   -0.780    1.705   -0.650   -1.439    0.000
+    4     -9.372   -2.154   -0.830    4.415   -0.266    0.000
+    5     -8.302   -2.480   -3.811   -9.101    4.704    0.000
+    6     -5.421   -6.811   -2.774   -2.981   -1.699    0.000
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Latent Class 1
+
+ Thresholds
+    GND1$1           -15.000      0.000    999.000    999.000
+    GND2$1            -1.058      0.943     -1.122      0.262
+    GND3$1            -0.746      0.706     -1.056      0.291
+    GND4$1            -0.772      0.673     -1.148      0.251
+    GND5$1            -0.815      0.713     -1.144      0.253
+    GND6$1            -3.681      1.441     -2.554      0.011
+    ETH1$1             2.215      0.850      2.606      0.009
+    ETH2$1             1.643      1.104      1.488      0.137
+    ETH3$1             1.600      0.917      1.744      0.081
+    ETH4$1             0.931      0.621      1.500      0.134
+    ETH5$1             2.011      1.048      1.919      0.055
+
+Latent Class 2
+
+ Thresholds
+    GND1$1            15.000      0.000    999.000    999.000
+    GND2$1            15.000      0.000    999.000    999.000
+    GND3$1             2.143      0.524      4.091      0.000
+    GND4$1            15.000      0.000    999.000    999.000
+    GND5$1             1.498      0.412      3.637      0.000
+    GND6$1             1.668      0.554      3.011      0.003
+    ETH1$1            -0.702      0.375     -1.874      0.061
+    ETH2$1            -0.176      0.363     -0.484      0.629
+    ETH3$1             0.012      0.342      0.034      0.973
+    ETH4$1            -0.724      0.419     -1.728      0.084
+    ETH5$1            -0.954      0.418     -2.281      0.023
+
+Latent Class 3
+
+ Thresholds
+    GND1$1             2.050      0.482      4.252      0.000
+    GND2$1             0.876      0.337      2.595      0.009
+    GND3$1             0.462      0.289      1.598      0.110
+    GND4$1            -0.014      0.231     -0.061      0.951
+    GND5$1             1.155      0.339      3.409      0.001
+    GND6$1            -0.969      0.379     -2.560      0.010
+    ETH1$1             1.136      0.444      2.562      0.010
+    ETH2$1             0.664      0.385      1.725      0.084
+    ETH3$1            -0.184      0.381     -0.482      0.630
+    ETH4$1            -0.841      0.411     -2.048      0.041
+    ETH5$1             0.217      0.443      0.491      0.623
+
+Latent Class 4
+
+ Thresholds
+    GND1$1            15.000      0.000    999.000    999.000
+    GND2$1             4.590      0.641      7.160      0.000
+    GND3$1             2.889      0.233     12.385      0.000
+    GND4$1             3.457      0.299     11.560      0.000
+    GND5$1             3.837      0.367     10.442      0.000
+    GND6$1             2.148      0.181     11.859      0.000
+    ETH1$1            15.000      0.000    999.000    999.000
+    ETH2$1             3.038      0.248     12.270      0.000
+    ETH3$1             3.098      0.270     11.488      0.000
+    ETH4$1           -15.000      0.000    999.000    999.000
+    ETH5$1             4.629      0.555      8.334      0.000
+
+Latent Class 5
+
+ Thresholds
+    GND1$1             6.636      0.990      6.704      0.000
+    GND2$1             5.510      0.483     11.397      0.000
+    GND3$1             3.296      0.149     22.132      0.000
+    GND4$1             3.276      0.185     17.722      0.000
+    GND5$1             3.936      0.211     18.690      0.000
+    GND6$1             2.661      0.126     21.036      0.000
+    ETH1$1             5.693      0.524     10.858      0.000
+    ETH2$1             4.838      0.323     14.992      0.000
+    ETH3$1             5.254      0.494     10.631      0.000
+    ETH4$1            15.000      0.000    999.000    999.000
+    ETH5$1             5.853      0.536     10.913      0.000
+
+Latent Class 6
+
+ Thresholds
+    GND1$1             3.169      0.523      6.062      0.000
+    GND2$1             2.983      0.401      7.443      0.000
+    GND3$1            -0.080      0.194     -0.412      0.681
+    GND4$1            -0.728      0.227     -3.203      0.001
+    GND5$1             2.308      0.265      8.708      0.000
+    GND6$1            -1.903      0.512     -3.717      0.000
+    ETH1$1             3.784      0.710      5.326      0.000
+    ETH2$1             3.053      0.559      5.461      0.000
+    ETH3$1             2.715      0.496      5.479      0.000
+    ETH4$1             1.393      0.293      4.755      0.000
+    ETH5$1             3.268      0.644      5.073      0.000
+
+Categorical Latent Variables
+
+ Means
+    C#1               -2.393      0.345     -6.934      0.000
+    C#2               -1.310      0.215     -6.101      0.000
+    C#3               -0.849      0.387     -2.195      0.028
+    C#4                0.726      0.177      4.112      0.000
+    C#5                1.826      0.176     10.393      0.000
+
+
+RESULTS IN PROBABILITY SCALE
+
+Latent Class 1
+
+ GND1
+    Category 1         0.000      0.000      0.000      1.000
+    Category 2         1.000      0.000      0.000      1.000
+ GND2
+    Category 1         0.258      0.180      1.429      0.153
+    Category 2         0.742      0.180      4.116      0.000
+ GND3
+    Category 1         0.322      0.154      2.088      0.037
+    Category 2         0.678      0.154      4.402      0.000
+ GND4
+    Category 1         0.316      0.145      2.174      0.030
+    Category 2         0.684      0.145      4.704      0.000
+ GND5
+    Category 1         0.307      0.152      2.024      0.043
+    Category 2         0.693      0.152      4.574      0.000
+ GND6
+    Category 1         0.025      0.035      0.711      0.477
+    Category 2         0.975      0.035     28.229      0.000
+ ETH1
+    Category 1         0.902      0.075     11.957      0.000
+    Category 2         0.098      0.075      1.305      0.192
+ ETH2
+    Category 1         0.838      0.150      5.587      0.000
+    Category 2         0.162      0.150      1.081      0.280
+ ETH3
+    Category 1         0.832      0.128      6.489      0.000
+    Category 2         0.168      0.128      1.310      0.190
+ ETH4
+    Category 1         0.717      0.126      5.699      0.000
+    Category 2         0.283      0.126      2.245      0.025
+ ETH5
+    Category 1         0.882      0.109      8.081      0.000
+    Category 2         0.118      0.109      1.082      0.279
+
+Latent Class 2
+
+ GND1
+    Category 1         1.000      0.000      0.000      1.000
+    Category 2         0.000      0.000      0.000      1.000
+ GND2
+    Category 1         1.000      0.000      0.000      1.000
+    Category 2         0.000      0.000      0.000      1.000
+ GND3
+    Category 1         0.895      0.049     18.180      0.000
+    Category 2         0.105      0.049      2.133      0.033
+ GND4
+    Category 1         1.000      0.000      0.000      1.000
+    Category 2         0.000      0.000      0.000      1.000
+ GND5
+    Category 1         0.817      0.062     13.287      0.000
+    Category 2         0.183      0.062      2.971      0.003
+ GND6
+    Category 1         0.841      0.074     11.375      0.000
+    Category 2         0.159      0.074      2.146      0.032
+ ETH1
+    Category 1         0.331      0.083      3.991      0.000
+    Category 2         0.669      0.083      8.054      0.000
+ ETH2
+    Category 1         0.456      0.090      5.061      0.000
+    Category 2         0.544      0.090      6.034      0.000
+ ETH3
+    Category 1         0.503      0.085      5.885      0.000
+    Category 2         0.497      0.085      5.817      0.000
+ ETH4
+    Category 1         0.327      0.092      3.544      0.000
+    Category 2         0.673      0.092      7.309      0.000
+ ETH5
+    Category 1         0.278      0.084      3.311      0.001
+    Category 2         0.722      0.084      8.596      0.000
+
+Latent Class 3
+
+ GND1
+    Category 1         0.886      0.049     18.183      0.000
+    Category 2         0.114      0.049      2.342      0.019
+ GND2
+    Category 1         0.706      0.070     10.079      0.000
+    Category 2         0.294      0.070      4.199      0.000
+ GND3
+    Category 1         0.613      0.069      8.952      0.000
+    Category 2         0.387      0.069      5.641      0.000
+ GND4
+    Category 1         0.496      0.058      8.587      0.000
+    Category 2         0.504      0.058      8.709      0.000
+ GND5
+    Category 1         0.761      0.062     12.319      0.000
+    Category 2         0.239      0.062      3.879      0.000
+ GND6
+    Category 1         0.275      0.075      3.643      0.000
+    Category 2         0.725      0.075      9.602      0.000
+ ETH1
+    Category 1         0.757      0.082      9.278      0.000
+    Category 2         0.243      0.082      2.978      0.003
+ ETH2
+    Category 1         0.660      0.086      7.645      0.000
+    Category 2         0.340      0.086      3.935      0.000
+ ETH3
+    Category 1         0.454      0.095      4.804      0.000
+    Category 2         0.546      0.095      5.774      0.000
+ ETH4
+    Category 1         0.301      0.086      3.485      0.000
+    Category 2         0.699      0.086      8.082      0.000
+ ETH5
+    Category 1         0.554      0.109      5.066      0.000
+    Category 2         0.446      0.109      4.077      0.000
+
+Latent Class 4
+
+ GND1
+    Category 1         1.000      0.000      0.000      1.000
+    Category 2         0.000      0.000      0.000      1.000
+ GND2
+    Category 1         0.990      0.006    155.249      0.000
+    Category 2         0.010      0.006      1.576      0.115
+ GND3
+    Category 1         0.947      0.012     81.365      0.000
+    Category 2         0.053      0.012      4.525      0.000
+ GND4
+    Category 1         0.969      0.009    109.398      0.000
+    Category 2         0.031      0.009      3.450      0.001
+ GND5
+    Category 1         0.979      0.008    128.955      0.000
+    Category 2         0.021      0.008      2.780      0.005
+ GND6
+    Category 1         0.895      0.017     52.822      0.000
+    Category 2         0.105      0.017      6.165      0.000
+ ETH1
+    Category 1         1.000      0.000      0.000      1.000
+    Category 2         0.000      0.000      0.000      1.000
+ ETH2
+    Category 1         0.954      0.011     88.291      0.000
+    Category 2         0.046      0.011      4.233      0.000
+ ETH3
+    Category 1         0.957      0.011     85.828      0.000
+    Category 2         0.043      0.011      3.876      0.000
+ ETH4
+    Category 1         0.000      0.000      0.000      1.000
+    Category 2         1.000      0.000      0.000      1.000
+ ETH5
+    Category 1         0.990      0.005    186.220      0.000
+    Category 2         0.010      0.005      1.818      0.069
+
+Latent Class 5
+
+ GND1
+    Category 1         0.999      0.001    770.580      0.000
+    Category 2         0.001      0.001      1.012      0.312
+ GND2
+    Category 1         0.996      0.002    513.248      0.000
+    Category 2         0.004      0.002      2.077      0.038
+ GND3
+    Category 1         0.964      0.005    188.014      0.000
+    Category 2         0.036      0.005      6.964      0.000
+ GND4
+    Category 1         0.964      0.006    148.576      0.000
+    Category 2         0.036      0.006      5.615      0.000
+ GND5
+    Category 1         0.981      0.004    247.867      0.000
+    Category 2         0.019      0.004      4.842      0.000
+ GND6
+    Category 1         0.935      0.008    121.040      0.000
+    Category 2         0.065      0.008      8.458      0.000
+ ETH1
+    Category 1         0.997      0.002    568.113      0.000
+    Category 2         0.003      0.002      1.914      0.056
+ ETH2
+    Category 1         0.992      0.003    394.232      0.000
+    Category 2         0.008      0.003      3.123      0.002
+ ETH3
+    Category 1         0.995      0.003    389.109      0.000
+    Category 2         0.005      0.003      2.034      0.042
+ ETH4
+    Category 1         1.000      0.000      0.000      1.000
+    Category 2         0.000      0.000      0.000      1.000
+ ETH5
+    Category 1         0.997      0.002    651.452      0.000
+    Category 2         0.003      0.002      1.870      0.062
+
+Latent Class 6
+
+ GND1
+    Category 1         0.960      0.020     47.398      0.000
+    Category 2         0.040      0.020      1.993      0.046
+ GND2
+    Category 1         0.952      0.018     51.766      0.000
+    Category 2         0.048      0.018      2.622      0.009
+ GND3
+    Category 1         0.480      0.048      9.937      0.000
+    Category 2         0.520      0.048     10.761      0.000
+ GND4
+    Category 1         0.326      0.050      6.521      0.000
+    Category 2         0.674      0.050     13.510      0.000
+ GND5
+    Category 1         0.910      0.022     41.707      0.000
+    Category 2         0.090      0.022      4.148      0.000
+ GND6
+    Category 1         0.130      0.058      2.244      0.025
+    Category 2         0.870      0.058     15.052      0.000
+ ETH1
+    Category 1         0.978      0.015     63.305      0.000
+    Category 2         0.022      0.015      1.440      0.150
+ ETH2
+    Category 1         0.955      0.024     39.669      0.000
+    Category 2         0.045      0.024      1.873      0.061
+ ETH3
+    Category 1         0.938      0.029     32.501      0.000
+    Category 2         0.062      0.029      2.151      0.031
+ ETH4
+    Category 1         0.801      0.047     17.160      0.000
+    Category 2         0.199      0.047      4.259      0.000
+ ETH5
+    Category 1         0.963      0.023     42.301      0.000
+    Category 2         0.037      0.023      1.612      0.107
+
+
+LATENT CLASS ODDS RATIO RESULTS
+
+                                                95% C.I.
+                    Estimate       S.E.  Lower 2.5% Upper 2.5%
+
+Latent Class 1 Compared to Latent Class 2
+
+ GND1
+    Category > 1   *********      0.000  *********  *********
+ GND2
+    Category > 1   *********      0.000  *********  *********
+ GND3
+    Category > 1      17.966     15.097      3.461     93.268
+ GND4
+    Category > 1   *********      0.000  *********  *********
+ GND5
+    Category > 1      10.107      8.016      2.135     47.835
+ GND6
+    Category > 1     210.305    315.990     11.063   3997.912
+ ETH1
+    Category > 1       0.054      0.049      0.009      0.315
+ ETH2
+    Category > 1       0.162      0.175      0.020      1.349
+ ETH3
+    Category > 1       0.204      0.200      0.030      1.388
+ ETH4
+    Category > 1       0.191      0.133      0.049      0.751
+ ETH5
+    Category > 1       0.052      0.056      0.006      0.434
+
+Latent Class 1 Compared to Latent Class 3
+
+ GND1
+    Category > 1   *********      0.000  *********  *********
+ GND2
+    Category > 1       6.915      7.086      0.928     51.523
+ GND3
+    Category > 1       3.345      2.934      0.599     18.668
+ GND4
+    Category > 1       2.134      1.573      0.503      9.053
+ GND5
+    Category > 1       7.177      6.005      1.392     36.998
+ GND6
+    Category > 1      15.055     24.039      0.658    344.227
+ ETH1
+    Category > 1       0.340      0.357      0.043      2.665
+ ETH2
+    Category > 1       0.376      0.494      0.029      4.953
+ ETH3
+    Category > 1       0.168      0.175      0.022      1.287
+ ETH4
+    Category > 1       0.170      0.143      0.033      0.883
+ ETH5
+    Category > 1       0.166      0.211      0.014      1.994
+
+Latent Class 1 Compared to Latent Class 4
+
+ GND1
+    Category > 1   *********      0.000  *********  *********
+ GND2
+    Category > 1     283.863    322.606     30.599   2633.330
+ GND3
+    Category > 1      37.908     28.143      8.846    162.438
+ GND4
+    Category > 1      68.626     51.292     15.859    296.962
+ GND5
+    Category > 1     104.834     86.116     20.954    524.486
+ GND6
+    Category > 1     339.990    486.053     20.633   5602.414
+ ETH1
+    Category > 1   *********      0.000  *********  *********
+ ETH2
+    Category > 1       4.035      4.394      0.477     34.104
+ ETH3
+    Category > 1       4.472      4.340      0.667     29.967
+ ETH4
+    Category > 1       0.000      0.000      0.000      0.000
+ ETH5
+    Category > 1      13.716     16.605      1.279    147.145
+
+Latent Class 1 Compared to Latent Class 5
+
+ GND1
+    Category > 1   *********      0.000  *********  *********
+ GND2
+    Category > 1     712.026    744.442     91.733   5526.709
+ GND3
+    Category > 1      56.911     40.534     14.090    229.860
+ GND4
+    Category > 1      57.265     38.336     15.419    212.680
+ GND5
+    Category > 1     115.703     84.752     27.531    486.248
+ GND6
+    Category > 1     567.892    823.340     33.125   9735.894
+ ETH1
+    Category > 1      32.401     31.074      4.945    212.282
+ ETH2
+    Category > 1      24.418     27.781      2.626    227.079
+ ETH3
+    Category > 1      38.633     40.752      4.887    305.397
+ ETH4
+    Category > 1   *********      0.000  *********  *********
+ ETH5
+    Category > 1      46.654     54.994      4.629    470.186
+
+Latent Class 1 Compared to Latent Class 6
+
+ GND1
+    Category > 1   *********      0.000  *********  *********
+ GND2
+    Category > 1      56.888     58.136      7.676    421.612
+ GND3
+    Category > 1       1.947      1.371      0.490      7.740
+ GND4
+    Category > 1       1.045      0.787      0.239      4.574
+ GND5
+    Category > 1      22.726     17.551      5.002    103.251
+ GND6
+    Category > 1       5.915      8.621      0.340    102.949
+ ETH1
+    Category > 1       4.799      5.550      0.497     46.305
+ ETH2
+    Category > 1       4.096      5.243      0.333     50.330
+ ETH3
+    Category > 1       3.051      3.072      0.424     21.959
+ ETH4
+    Category > 1       1.587      1.090      0.413      6.101
+ ETH5
+    Category > 1       3.515      4.505      0.285     43.346
+
+Latent Class 2 Compared to Latent Class 3
+
+ GND1
+    Category > 1       0.000      0.000      0.000      0.000
+ GND2
+    Category > 1       0.000      0.000      0.000      0.000
+ GND3
+    Category > 1       0.186      0.115      0.055      0.625
+ GND4
+    Category > 1       0.000      0.000      0.000      0.000
+ GND5
+    Category > 1       0.710      0.417      0.225      2.245
+ GND6
+    Category > 1       0.072      0.052      0.017      0.299
+ ETH1
+    Category > 1       6.286      3.994      1.810     21.838
+ ETH2
+    Category > 1       2.316      1.451      0.678      7.910
+ ETH3
+    Category > 1       0.822      0.488      0.257      2.634
+ ETH4
+    Category > 1       0.889      0.569      0.254      3.118
+ ETH5
+    Category > 1       3.226      2.282      0.807     12.906
+
+Latent Class 2 Compared to Latent Class 4
+
+ GND1
+    Category > 1       1.000      0.000      1.000      1.000
+ GND2
+    Category > 1       0.000      0.000      0.000      0.000
+ GND3
+    Category > 1       2.110      1.211      0.685      6.496
+ GND4
+    Category > 1       0.000      0.000      0.000      0.000
+ GND5
+    Category > 1      10.373      5.878      3.416     31.497
+ GND6
+    Category > 1       1.617      0.981      0.492      5.311
+ ETH1
+    Category > 1   *********      0.000  *********  *********
+ ETH2
+    Category > 1      24.866     10.289     11.051     55.955
+ ETH3
+    Category > 1      21.884      8.822      9.931     48.226
+ ETH4
+    Category > 1       0.000      0.000      0.000      0.000
+ ETH5
+    Category > 1     265.923    182.862     69.090   1023.520
+
+Latent Class 2 Compared to Latent Class 5
+
+ GND1
+    Category > 1       0.000      0.000      0.000      0.000
+ GND2
+    Category > 1       0.000      0.000      0.000      0.000
+ GND3
+    Category > 1       3.168      1.642      1.147      8.750
+ GND4
+    Category > 1       0.000      0.000      0.000      0.000
+ GND5
+    Category > 1      11.448      5.556      4.422     29.640
+ GND6
+    Category > 1       2.700      1.545      0.880      8.285
+ ETH1
+    Category > 1     599.078    409.909    156.694   2290.419
+ ETH2
+    Category > 1     150.475     65.846     63.824    354.770
+ ETH3
+    Category > 1     189.065    118.026     55.620    642.676
+ ETH4
+    Category > 1   *********      0.000  *********  *********
+ ETH5
+    Category > 1     904.518    614.470    238.867   3425.137
+
+Latent Class 2 Compared to Latent Class 6
+
+ GND1
+    Category > 1       0.000      0.000      0.000      0.000
+ GND2
+    Category > 1       0.000      0.000      0.000      0.000
+ GND3
+    Category > 1       0.108      0.060      0.037      0.319
+ GND4
+    Category > 1       0.000      0.000      0.000      0.000
+ GND5
+    Category > 1       2.249      1.039      0.909      5.562
+ GND6
+    Category > 1       0.028      0.019      0.007      0.107
+ ETH1
+    Category > 1      88.733     70.815     18.567    424.050
+ ETH2
+    Category > 1      25.243     18.603      5.955    107.014
+ ETH3
+    Category > 1      14.930      8.970      4.599     48.471
+ ETH4
+    Category > 1       8.310      4.283      3.026     22.823
+ ETH5
+    Category > 1      68.143     52.909     14.876    312.137
+
+Latent Class 3 Compared to Latent Class 4
+
+ GND1
+    Category > 1   *********      0.000  *********  *********
+ GND2
+    Category > 1      41.049     30.469      9.583    175.840
+ GND3
+    Category > 1      11.332      4.275      5.410     23.739
+ GND4
+    Category > 1      32.164     11.608     15.855     65.250
+ GND5
+    Category > 1      14.607      7.705      5.195     41.077
+ GND6
+    Category > 1      22.583      9.625      9.795     52.067
+ ETH1
+    Category > 1   *********      0.000  *********  *********
+ ETH2
+    Category > 1      10.736      5.082      4.246     27.151
+ ETH3
+    Category > 1      26.612     12.598     10.523     67.304
+ ETH4
+    Category > 1       0.000      0.000      0.000      0.000
+ ETH5
+    Category > 1      82.421     55.475     22.035    308.297
+
+Latent Class 3 Compared to Latent Class 5
+
+ GND1
+    Category > 1      98.097    109.862     10.923    880.963
+ GND2
+    Category > 1     102.966     57.707     34.327    308.856
+ GND3
+    Category > 1      17.013      5.692      8.830     32.779
+ GND4
+    Category > 1      26.839      7.472     15.552     46.319
+ GND5
+    Category > 1      16.122      6.082      7.697     33.769
+ GND6
+    Category > 1      37.721     14.863     17.426     81.654
+ ETH1
+    Category > 1      95.299     67.677     23.692    383.337
+ ETH2
+    Category > 1      64.970     35.586     22.206    190.084
+ ETH3
+    Category > 1     229.914    138.502     70.597    748.762
+ ETH4
+    Category > 1   *********      0.000  *********  *********
+ ETH5
+    Category > 1     280.350    203.738     67.468   1164.943
+
+Latent Class 3 Compared to Latent Class 6
+
+ GND1
+    Category > 1       3.062      2.265      0.718     13.053
+ GND2
+    Category > 1       8.227      4.381      2.897     23.360
+ GND3
+    Category > 1       0.582      0.227      0.271      1.248
+ GND4
+    Category > 1       0.490      0.161      0.257      0.932
+ GND5
+    Category > 1       3.167      1.551      1.212      8.272
+ GND6
+    Category > 1       0.393      0.299      0.088      1.745
+ ETH1
+    Category > 1      14.115     11.818      2.735     72.841
+ ETH2
+    Category > 1      10.899      6.575      3.341     35.557
+ ETH3
+    Category > 1      18.155      9.970      6.188     53.268
+ ETH4
+    Category > 1       9.344      3.898      4.125     21.166
+ ETH5
+    Category > 1      21.121     16.073      4.752     93.865
+
+Latent Class 4 Compared to Latent Class 5
+
+ GND1
+    Category > 1       0.000      0.000      0.000      0.000
+ GND2
+    Category > 1       2.508      2.074      0.496     12.686
+ GND3
+    Category > 1       1.501      0.395      0.896      2.515
+ GND4
+    Category > 1       0.834      0.266      0.447      1.558
+ GND5
+    Category > 1       1.104      0.464      0.484      2.516
+ GND6
+    Category > 1       1.670      0.350      1.108      2.519
+ ETH1
+    Category > 1       0.000      0.000      0.000      0.000
+ ETH2
+    Category > 1       6.051      2.280      2.891     12.664
+ ETH3
+    Category > 1       8.639      5.045      2.750     27.137
+ ETH4
+    Category > 1   *********      0.000  *********  *********
+ ETH5
+    Category > 1       3.401      2.691      0.722     16.035
+
+Latent Class 4 Compared to Latent Class 6
+
+ GND1
+    Category > 1       0.000      0.000      0.000      0.000
+ GND2
+    Category > 1       0.200      0.132      0.055      0.726
+ GND3
+    Category > 1       0.051      0.015      0.029      0.092
+ GND4
+    Category > 1       0.015      0.006      0.007      0.031
+ GND5
+    Category > 1       0.217      0.090      0.096      0.491
+ GND6
+    Category > 1       0.017      0.009      0.006      0.047
+ ETH1
+    Category > 1       0.000      0.000      0.000      0.000
+ ETH2
+    Category > 1       1.015      0.631      0.300      3.435
+ ETH3
+    Category > 1       0.682      0.363      0.240      1.938
+ ETH4
+    Category > 1   *********      0.000  *********  *********
+ ETH5
+    Category > 1       0.256      0.220      0.047      1.384
+
+Latent Class 5 Compared to Latent Class 6
+
+ GND1
+    Category > 1       0.031      0.036      0.003      0.306
+ GND2
+    Category > 1       0.080      0.053      0.022      0.293
+ GND3
+    Category > 1       0.034      0.008      0.021      0.055
+ GND4
+    Category > 1       0.018      0.005      0.010      0.032
+ GND5
+    Category > 1       0.196      0.070      0.098      0.394
+ GND6
+    Category > 1       0.010      0.005      0.004      0.029
+ ETH1
+    Category > 1       0.148      0.142      0.023      0.967
+ ETH2
+    Category > 1       0.168      0.117      0.043      0.660
+ ETH3
+    Category > 1       0.079      0.059      0.018      0.344
+ ETH4
+    Category > 1       0.000      0.000      0.000      0.000
+ ETH5
+    Category > 1       0.075      0.066      0.014      0.416
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.280E-03
+       (ratio of smallest to largest eigenvalue)
+
+
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
+
+     %OVERALL%
+
+     [ c#1*-2.39344 ];
+     [ c#2*-1.30971 ];
+     [ c#3*-0.84856 ];
+     [ c#4*0.72600 ];
+     [ c#5*1.82642 ];
+
+     %C#1%
+
+     [ gnd1$1*-15 ];
+     [ gnd2$1*-1.05816 ];
+     [ gnd3$1*-0.74575 ];
+     [ gnd4$1*-0.77199 ];
+     [ gnd5$1*-0.81542 ];
+     [ gnd6$1*-3.68089 ];
+     [ eth1$1*2.21514 ];
+     [ eth2$1*1.64273 ];
+     [ eth3$1*1.59972 ];
+     [ eth4$1*0.93144 ];
+     [ eth5$1*2.01065 ];
+
+     %C#2%
+
+     [ gnd1$1*15 ];
+     [ gnd2$1*15 ];
+     [ gnd3$1*2.14272 ];
+     [ gnd4$1*15 ];
+     [ gnd5$1*1.49777 ];
+     [ gnd6$1*1.66767 ];
+     [ eth1$1*-0.70206 ];
+     [ eth2$1*-0.17574 ];
+     [ eth3$1*0.01174 ];
+     [ eth4$1*-0.72394 ];
+     [ eth5$1*-0.95400 ];
+
+     %C#3%
+
+     [ gnd1$1*2.04958 ];
+     [ gnd2$1*0.87556 ];
+     [ gnd3$1*0.46175 ];
+     [ gnd4$1*-0.01416 ];
+     [ gnd5$1*1.15543 ];
+     [ gnd6$1*-0.96918 ];
+     [ eth1$1*1.13631 ];
+     [ eth2$1*0.66413 ];
+     [ eth3$1*-0.18387 ];
+     [ eth4$1*-0.84124 ];
+     [ eth5$1*0.21736 ];
+
+     %C#4%
+
+     [ gnd1$1*15 ];
+     [ gnd2$1*4.59033 ];
+     [ gnd3$1*2.88941 ];
+     [ gnd4$1*3.45668 ];
+     [ gnd5$1*3.83696 ];
+     [ gnd6$1*2.14803 ];
+     [ eth1$1*15 ];
+     [ eth2$1*3.03778 ];
+     [ eth3$1*3.09750 ];
+     [ eth4$1*-15 ];
+     [ eth5$1*4.62920 ];
+
+     %C#5%
+
+     [ gnd1$1*6.63554 ];
+     [ gnd2$1*5.50995 ];
+     [ gnd3$1*3.29573 ];
+     [ gnd4$1*3.27570 ];
+     [ gnd5$1*3.93560 ];
+     [ gnd6$1*2.66105 ];
+     [ eth1$1*5.69334 ];
+     [ eth2$1*4.83806 ];
+     [ eth3$1*5.25384 ];
+     [ eth4$1*15 ];
+     [ eth5$1*5.85340 ];
+
+     %C#6%
+
+     [ gnd1$1*3.16872 ];
+     [ gnd2$1*2.98293 ];
+     [ gnd3$1*-0.07967 ];
+     [ gnd4$1*-0.72831 ];
+     [ gnd5$1*2.30810 ];
+     [ gnd6$1*-1.90342 ];
+     [ eth1$1*3.78357 ];
+     [ eth2$1*3.05282 ];
+     [ eth3$1*2.71510 ];
+     [ eth4$1*1.39350 ];
+     [ eth5$1*3.26761 ];
+
+
+
+TECHNICAL 10 OUTPUT
+
+
+     MODEL FIT INFORMATION FOR THE LATENT CLASS INDICATOR MODEL PART
+
+
+     RESPONSE PATTERNS
+
+     No.  Pattern        No.  Pattern        No.  Pattern
+       1  00000000000      2  00000000001      3  00000000010
+       4  00000000011      5  00000000100      6  00000000101
+       7  00000000110      8  00000000111      9  00000001000
+      10  00000001001     11  00000001010     12  00000001011
+      13  00000001100     14  00000001110     15  00000001111
+      16  00000010000     17  00000010001     18  00000010010
+      19  00000010011     20  00000010100     21  00000010101
+      22  00000010110     23  00000010111     24  00000011000
+      25  00000011001     26  00000011010     27  00000011011
+      28  00000011101     29  00000011110     30  00000011111
+      31  00000100000     32  00000100010     33  00000100011
+      34  00000100100     35  00000100110     36  00000100111
+      37  00000101000     38  00000101010     39  00000101011
+      40  00000101110     41  00000101111     42  00000110000
+      43  00000110010     44  00000110011     45  00000110100
+      46  00000110110     47  00000110111     48  00000111010
+      49  00000111011     50  00000111111     51  00001000000
+      52  00001000010     53  00001000011     54  00001000100
+      55  00001000110     56  00001001000     57  00001001011
+      58  00001010000     59  00001010010     60  00001010111
+      61  00001011000     62  00001011010     63  00001011011
+      64  00001011110     65  00001011111     66  00001100000
+      67  00001100001     68  00001100010     69  00001100110
+      70  00001100111     71  00001101010     72  00001110000
+      73  00001110010     74  00001111000     75  00001111010
+      76  00001111100     77  00001111111     78  00010000000
+      79  00010000001     80  00010000010     81  00010000011
+      82  00010000100     83  00010001000     84  00010001010
+      85  00010001100     86  00010010000     87  00010010010
+      88  00010100000     89  00010100001     90  00010100010
+      91  00010100011     92  00010100100     93  00010100101
+      94  00010100110     95  00010101010     96  00010101011
+      97  00010110000     98  00010110010     99  00010110110
+     100  00010111000    101  00010111010    102  00010111101
+     103  00010111111    104  00011000000    105  00011000101
+     106  00011010010    107  00011100000    108  00011100011
+     109  00011100100    110  00011101000    111  00100000000
+     112  00100000001    113  00100000010    114  00100000011
+     115  00100000100    116  00100000111    117  00100001000
+     118  00100001001    119  00100001011    120  00100001101
+     121  00100010000    122  00100010011    123  00100010101
+     124  00100011011    125  00100011111    126  00100100000
+     127  00100100010    128  00100100100    129  00100100101
+     130  00100100110    131  00100101000    132  00100101111
+     133  00100110000    134  00100110001    135  00100110010
+     136  00100111111    137  00101000000    138  00101000010
+     139  00101000110    140  00101100000    141  00101100010
+     142  00101100110    143  00101101010    144  00101111000
+     145  00110000000    146  00110000001    147  00110000010
+     148  00110000100    149  00110000101    150  00110000110
+     151  00110001000    152  00110001011    153  00110100000
+     154  00110100001    155  00110100010    156  00110100100
+     157  00110100101    158  00110100110    159  00110100111
+     160  00110101000    161  00110101010    162  00110101011
+     163  00110101100    164  00110101110    165  00110110001
+     166  00110110100    167  00110111011    168  00110111110
+     169  00110111111    170  00111000000    171  00111000011
+     172  00111000110    173  00111001001    174  00111100000
+     175  00111100001    176  00111100010    177  00111111001
+     178  00111111010    179  01000000000    180  01000000010
+     181  01000000110    182  01000001010    183  01000011110
+     184  01000100000    185  01000100010    186  01000100111
+     187  01000101001    188  01000101011    189  01000101110
+     190  01000111011    191  01001000000    192  01001000110
+     193  01001100100    194  01001101101    195  01010000000
+     196  01010100000    197  01010100010    198  01010100011
+     199  01010101110    200  01011000010    201  01011001010
+     202  01011100000    203  01011100110    204  01011100111
+     205  01100000000    206  01100000101    207  01100010010
+     208  01100100000    209  01100100010    210  01100100011
+     211  01100100110    212  01100110010    213  01100110111
+     214  01100111111    215  01101001010    216  01110000000
+     217  01110000010    218  01110000101    219  01110100000
+     220  01110100011    221  01110100110    222  01111000010
+     223  01111100100    224  01111100101    225  01111101101
+     226  10000000000    227  10000001000    228  10000100010
+     229  10000101111    230  10001000000    231  10001000111
+     232  10010000110    233  10010100000    234  10010100010
+     235  10010100111    236  10010110010    237  10011100000
+     238  10011100100    239  10100000000    240  10100001111
+     241  10100100000    242  10100100010    243  10101100100
+     244  10101100110    245  10110000000    246  10110100000
+     247  10110100001    248  10110100010    249  10110100011
+     250  10111110000    251  10111111111    252  11000000000
+     253  11000010111    254  11000100000    255  11000100100
+     256  11000111001    257  11000111010    258  11001000000
+     259  11001011111    260  11001100000    261  11010000000
+     262  11010111011    263  11010111101    264  11011100010
+     265  11011101000    266  11011101011    267  11011111111
+     268  11100111111    269  11101100000    270  11110010101
+     271  11110100000    272  11110101010    273  11111100000
+     274  11111100001    275  11111100010    276  11111110010
+     277  11111111001    278  11111111111    279  0000*000000
+     280  0000*000010    281  0000*100000    282  0000*100010
+     283  0001*000000    284  0001*000010    285  0010*101001
+     286  0010*110001    287  0011*000000    288  00*********
+     289  000*0000000    290  000*0000010    291  000*0000011
+     292  000*0100010    293  000*0100100    294  000*0100101
+     295  001*0000000    296  001*0000101    297  001*0100100
+     298  0010000000*    299  0010010001*    300  000**000000
+     301  000**000010    302  000**100011    303  110**011111
+     304  000000*****    305  000001*****    306  000100*****
+     307  000101*****    308  000111*****    309  001010*****
+     310  001101*****    311  001111*****    312  010000*****
+     313  010101*****    314  101001*****    315  0000*0*****
+     316  000101*0000    317  00*00000000    318  00*00000010
+     319  00*01101000    320  00*10000000    321  00*10100000
+     322  00*10100110    323  00*10100111    324  00*10110000
+     325  01*01011111    326  01*10110001    327  10*00100000
+     328  11*10100011    329  0*****0*0*0    330  0000000*0**
+     331  000000000*0    332  000000011*0    333  000001000*0
+     334  000010000*0    335  000010100*0    336  000101000*0
+     337  001101000*0    338  000100**0*0    339  0010*10*010
+     340  0000**00000    341  0000**00010    342  0010**00010
+     343  0010**00110    344  0011**00110    345  0100**00010
+     346  00*01*00101    347  0000000*000    348  0000000*010
+     349  0000100*000    350  ******00000    351  000000000**
+     352  001101000**    353  00000000*00    354  00000010*10
+     355  00000101*01    356  10111100*00    357  011***00101
+     358  001**1*****    359  00000000***    360  0*01*1001**
+     361  **110100000    362  0*000000000    363  0*001000010
+     364  00000*00000    365  00000*00010    366  00000*10000
+     367  0**00000000    368  0001*0*0***    369  010011****1
+     370  00**0100000    371  00000******    372  0*****0****
+     373  000000**0**    374  11*0110*110
+
+
+     RESPONSE PATTERN FREQUENCIES AND CHI-SQUARE CONTRIBUTIONS
+
+    Response          Frequency     Standardized  Chi-square Contribution
+     Pattern    Observed  Estimated   Residual    Pearson   Loglikelihood  Deleted
+                                     (z-score)
+         1      1957.33    1931.51       0.78       0.09         7.42
+         2         7.34       7.00       0.12       0.01         0.34
+         3       565.26     558.31       0.30       0.02         1.98
+         4         7.41       8.21      -0.26      -0.08         0.64
+         5        10.48      11.07      -0.16       0.02        -1.68
+         6         4.09       1.37       2.16       5.38         8.72
+         7        30.71      26.72       0.72       0.58         6.97
+         8         4.84       3.05       0.95       1.04         4.20
+         9        13.88      16.10      -0.52       0.30        -4.83
+        10         3.36       1.48       1.45       2.42         5.37
+        11        27.80      28.04      -0.04      -0.02        -1.92
+        12         0.11       3.22      -1.61       3.00        -0.77
+        13         1.27       0.75       0.57       0.26         2.12
+        14         1.71       2.59      -0.51       0.15        -0.40
+        15         2.56       2.99      -0.23       0.06        -0.93
+        16         6.26       7.53      -0.43       0.21        -2.39
+        17         1.78       2.33      -0.33       0.13        -1.05
+        18         0.10       1.98      -1.24       1.78        -0.55
+        19         5.24       4.77       0.20       0.04         0.71
+        20         1.42       0.99       0.41       0.19         0.97
+        21         6.51       2.29       2.60       7.78        13.26
+        22         0.21       1.98      -1.17       1.57        -0.81
+        23         0.13       4.74      -1.97       4.48        -0.97
+        24         2.68       1.13       1.36       2.15         4.51
+        25         2.37       2.70      -0.19       0.04        -0.75
+        26         2.54       2.22       0.20       0.04         0.55
+        27         2.81       5.59      -1.09       1.37        -4.01
+        28         1.26       2.68      -0.81       0.75        -1.97
+        29         1.44       2.21      -0.48       0.27        -1.31
+        30        12.98       5.54       2.95      10.00        21.42
+        31       166.16     163.84       0.17       0.03         3.03
+        32        69.47      73.59      -0.45       0.23        -6.83
+        33         1.39       2.52      -0.66       0.49        -1.34
+        34         2.90       3.43      -0.27       0.04        -0.24
+        35         1.89       5.33      -1.39       2.23        -4.01
+        36         2.69       1.90       0.54       0.33         1.75
+        37         3.43       2.84       0.33       0.12         1.14
+        38         5.40       4.40       0.44       0.22         1.94
+        39         1.72       1.17       0.48       0.26         1.25
+        40         1.48       1.27       0.17       0.03         0.38
+        41         1.62       1.25       0.31       0.11         0.77
+        42         1.29       1.47      -0.14       0.02        -0.35
+        43         0.26       0.97      -0.67       0.52        -0.70
+        44         1.48       1.26       0.18       0.04         0.41
+        45         0.11       0.45      -0.47       0.26        -0.32
+        46         0.10       0.91      -0.79       0.72        -0.45
+        47         1.27       1.32      -0.04       0.00        -0.17
+        48         1.48       0.65       0.95       1.05         2.35
+        49         1.20       1.24      -0.03       0.00        -0.13
+        50         3.46       1.26       1.82       3.81         6.79
+        51        34.90      38.23      -0.50       0.27        -4.84
+        52        13.27      12.46       0.21       0.05         1.39
+        53         1.26       0.77       0.52       0.31         1.16
+        54         0.10       0.41      -0.45       0.23        -0.29
+        55         0.13       0.95      -0.79       0.72        -0.52
+        56         1.23       0.47       1.03       1.22         2.40
+        57         1.74       0.69       1.18       1.60         3.12
+        58         2.37       0.35       3.16      11.27        10.60
+        59         3.17       0.46       3.73      15.72        14.35
+        60         1.73       1.08       0.59       0.40         1.54
+        61         0.10       0.24      -0.27       0.08        -0.18
+        62         2.46       0.50       2.56       7.57         7.64
+        63         1.37       1.26       0.10       0.01         0.16
+        64         1.21       0.50       0.92       0.97         2.03
+        65         0.11       1.25      -0.95       1.04        -0.53
+        66         6.94       5.68       0.49       0.28         2.50
+        67         1.23       0.32       1.48       2.54         3.21
+        68         2.96       2.60       0.21       0.05         0.67
+        69         1.33       0.70       0.69       0.55         1.61
+        70         2.57       0.55       2.54       7.46         7.79
+        71         2.37       0.38       2.99      10.32         8.51
+        72         0.11       0.17      -0.15       0.03        -0.11
+        73         0.11       0.24      -0.24       0.07        -0.18
+        74         0.15       0.08       0.23       0.06         0.18
+        75         0.10       0.17      -0.15       0.02        -0.11
+        76         0.13       0.08       0.17       0.03         0.12
+        77         2.13       0.30       3.08      10.95         8.16
+        78        80.02      81.85      -0.19       0.02        -1.23
+        79         1.18       0.74       0.47       0.25         1.07
+        80        19.46      20.28      -0.17      -0.08         1.31
+        81         0.10       0.71      -0.67       0.52        -0.36
+        82         3.69       1.26       2.02       4.71         7.90
+        83         2.68       1.12       1.37       2.18         4.59
+        84         2.74       1.24       1.26       1.84         4.28
+        85         1.30       0.18       2.45       6.93         5.09
+        86         1.16       0.52       0.82       0.78         1.84
+        87         1.24       0.23       1.96       4.42         4.17
+        88        56.30      64.78      -0.99       1.00       -10.85
+        89         4.32       2.78       0.86       0.85         3.87
+        90        20.71      18.20       0.55       0.31         7.03
+        91         4.30       1.78       1.76       3.47         8.87
+        92         4.32       4.71      -0.17      -0.09         0.72
+        93         0.11       0.77      -0.70      -0.47         0.10
+        94         4.37       2.86       0.83       0.79         3.93
+        95         5.57       1.56       2.99      10.32        14.26
+        96         1.29       0.65       0.74       0.63         1.79
+        97         1.51       1.57      -0.04      -0.57         1.72
+        98         1.12       0.81       0.32       0.12         0.74
+        99         1.41       0.60       0.98       1.11         2.44
+       100         1.32       0.17       2.60       7.78         5.43
+       101         2.02       0.26       3.19      11.77         8.27
+       102         0.10       0.10       0.00       0.00         0.00
+       103         2.37       0.24       4.06      19.07        10.93
+       104         1.16       2.37      -0.73       0.62        -1.70
+       105         0.12       0.08       0.13       0.02         0.09
+       106         1.48       0.06       5.28      32.23         9.32
+       107         8.93       6.17       1.03       1.22         6.19
+       108         1.67       0.43       1.75       3.51         4.90
+       109         1.28       0.63       0.75       0.65         1.75
+       110         1.98       0.38       2.41       6.70         6.44
+       111        77.18      76.17       0.11      -0.01         4.79
+       112         1.21       0.63       0.67       0.52         1.54
+       113        33.52      32.51       0.17       0.03         1.52
+       114         1.51       0.90       0.60       0.42         1.49
+       115         1.33       0.91       0.41       0.19         0.93
+       116         1.39       0.62       0.90       0.94         2.14
+       117         1.48       0.92       0.54       0.34         1.32
+       118         1.00       0.23       1.51       2.64         2.92
+       119         1.50       0.48       1.36       2.12         3.29
+       120         0.11       0.23      -0.24       0.06        -0.17
+       121         0.12       0.50      -0.50       0.29        -0.34
+       122         1.30       0.63       0.78       0.70         1.79
+       123         1.59       0.31       2.16       5.39         5.15
+       124         1.21       0.69       0.58       0.39         1.29
+       125         1.46       0.70       0.86       0.84         2.08
+       126        30.75      36.26      -0.86       0.83       -11.15
+       127        20.54      12.22       2.22       5.60        23.82
+       128         1.99       2.56      -0.33       0.13        -0.98
+       129         1.18       0.49       0.92       0.98         2.03
+       130         3.05       1.81       0.87       0.86         3.19
+       131         1.17       1.71      -0.39       0.17        -0.95
+       132         1.18       0.52       0.85       0.83         1.87
+       133         1.48       0.87       0.61       0.43         1.51
+       134         1.46       0.18       2.80       8.26         8.18
+       135         1.61       0.51       1.43       2.37         3.63
+       136         1.75       0.27       2.66       8.20         6.49
+       137         1.25       1.91      -0.45       0.23        -1.04
+       138         1.42       0.91       0.49       0.28         1.33
+       139         0.12       0.19      -0.16       0.03        -0.11
+       140         4.18       3.30       0.46       0.24         1.80
+       141         0.10       1.14      -0.90       0.94        -0.49
+       142         1.99       0.41       2.29       6.08         6.26
+       143         0.11       0.20      -0.18       0.04        -0.13
+       144         1.85       0.03       9.30     100.00        15.22
+       145         6.85      12.38      -1.46       2.47        -7.82
+       146         0.10       0.49      -0.52       0.31        -0.33
+       147         1.32       3.70      -1.15       1.53        -2.80
+       148         1.92       0.83       1.11       1.43         3.11
+       149         1.76       0.17       3.55      14.56         8.27
+       150         1.14       0.63       0.59       0.38         1.66
+       151         3.20       0.55       3.32      12.75        11.08
+       152         0.11       0.15      -0.10       0.01        -0.08
+       153        75.18      64.54       1.24       1.71        26.53
+       154         2.91       2.76       0.08       0.01         0.25
+       155         9.29      16.93      -1.73       3.44       -11.29
+       156         2.45       4.72      -0.97       1.09        -3.12
+       157         1.55       0.55       1.24       1.78         3.15
+       158         2.79       2.19       0.38       0.08         2.37
+       159         0.15       0.95      -0.76      -0.26         0.08
+       160         2.37       3.23      -0.44       0.23        -1.51
+       161         1.87       1.24       0.52       0.32         1.49
+       162         0.13       0.42      -0.41       0.19        -0.31
+       163         0.15       0.45      -0.42       0.20        -0.33
+       164         1.33       0.63       0.82       0.77         1.95
+       165         1.21       0.16       2.43       6.81         4.84
+       166         0.10       0.25      -0.28       0.09        -0.19
+       167         0.10       0.13      -0.06       0.00        -0.04
+       168         1.60       0.19       3.03      10.57         6.81
+       169         3.50       0.15       8.03      74.44        21.94
+       170         1.14       1.05       0.08       0.01         0.14
+       171         1.22       0.10       3.31      12.68         6.07
+       172         3.01       0.15       6.82      53.61        18.81
+       173         1.00       0.02       6.19      44.29         7.64
+       174         7.83       6.49       0.49       0.27         2.88
+       175         0.11       0.35      -0.38       0.16        -0.25
+       176         1.00       1.88      -0.60       0.41        -1.27
+       177         1.46       0.02       9.30     100.00        12.92
+       178         0.11       0.05       0.25       0.08         0.18
+       179         4.81       8.11      -1.08       1.31        -4.28
+       180         1.39       5.93      -1.73       3.29        -3.05
+       181         3.19       0.54       3.37      13.09        11.86
+       182         2.62       0.39       3.30      12.60        10.33
+       183         0.11       0.05       0.26       0.08         0.20
+       184         1.68       2.25      -0.36       0.15        -1.09
+       185         3.58       1.63       1.42       2.17         7.18
+       186         1.27       0.60       0.82       0.77         1.86
+       187         0.11       0.11      -0.01       0.00        -0.01
+       188         1.62       0.26       2.51       7.27         5.88
+       189         1.54       0.38       1.75       3.52         4.21
+       190         0.12       0.08       0.14       0.02         0.09
+       191         2.88       0.21       5.50      34.96        15.07
+       192         1.60       0.09       4.57      24.08         8.96
+       193         1.29       0.11       3.31      12.64         6.26
+       194         1.48       0.04       6.56      49.76        10.69
+       195         3.65       0.84       2.85       9.38        10.51
+       196         2.98       3.28      -0.15      -0.02         0.18
+       197         1.15       1.39      -0.19       0.02        -0.15
+       198         1.52       0.53       1.27       1.84         3.60
+       199         1.28       0.39       1.34       2.04         3.39
+       200         1.12       0.09       3.21      11.88         5.59
+       201         0.11       0.04       0.32       0.12         0.21
+       202         0.13       0.38      -0.37       0.16        -0.29
+       203         1.55       0.24       2.49       7.16         5.72
+       204         1.99       0.19       3.84      17.03         9.25
+       205         0.12       0.59      -0.56       0.36        -0.39
+       206         1.73       0.06       6.25      44.95        12.36
+       207         0.10       0.05       0.23       0.06         0.15
+       208         1.26       1.75      -0.35       0.14        -0.91
+       209         0.11       0.81      -0.72       0.60        -0.45
+       210         0.25       0.33      -0.12       0.02        -0.14
+       211         3.21       0.49       3.60      14.99        11.84
+       212         1.40       0.13       3.24      12.09         6.51
+       213         0.10       0.12      -0.05       0.00        -0.04
+       214         1.60       0.06       5.74      38.10        10.29
+       215         0.11       0.02       0.50       0.29         0.32
+       216         0.11       0.56      -0.56       0.36        -0.37
+       217         1.14       0.28       1.51       2.64         3.12
+       218         2.37       0.06       8.54      84.15        18.34
+       219         6.42       3.41       1.52       2.67         7.93
+       220         0.13       0.35      -0.33       0.13        -0.26
+       221         1.42       0.53       1.15       1.53         2.74
+       222         0.11       0.06       0.18       0.04         0.12
+       223         1.39       0.09       4.17      20.06         7.70
+       224         0.11       0.05       0.23       0.05         0.21
+       225         0.10       0.03       0.43       0.22         0.27
+       226         2.06       2.74      -0.38       0.17        -1.30
+       227         1.28       0.04       5.43      34.03         8.51
+       228         0.10       0.53      -0.55       0.34        -0.34
+       229         1.22       0.09       3.41      13.42         6.18
+       230         0.10       0.08       0.06       0.00         0.04
+       231         0.10       0.02       0.51       0.30         0.31
+       232         1.48       0.09       4.19      20.32         8.05
+       233         1.18       2.80      -0.90       0.94        -2.11
+       234         1.46       0.90       0.55       0.35         1.32
+       235         1.51       0.19       2.81       9.13         6.15
+       236         0.10       0.09       0.05       0.00         0.03
+       237         0.11       0.79      -0.71       0.58        -0.45
+       238         2.68       0.15       6.02      41.91        15.21
+       239         0.10       0.31      -0.35       0.14        -0.23
+       240         0.10       0.02       0.50       0.28         0.30
+       241         4.26       1.58       1.98       3.24        13.11
+       242         1.85       0.53       1.69       3.24         5.21
+       243         1.62       0.13       3.84      17.03         8.07
+       244         1.21       0.09       3.54      14.48         6.31
+       245         1.50       0.44       1.50       2.59         3.62
+       246         0.10       3.23      -1.62       3.02        -0.71
+       247         2.18       0.21       4.00      18.50        10.07
+       248         1.78       0.98       0.75       0.65         2.01
+       249         1.41       0.15       3.04      10.68         6.25
+       250         1.35       0.13       3.14      11.37         6.22
+       251         0.10       0.01       1.12       1.46         0.56
+       252         1.60       0.04       7.29      61.33        11.76
+       253         1.14       0.01       9.30     100.00        10.84      DELETED
+       254         0.10       0.40      -0.44       0.22        -0.29
+       255         1.42       0.11       3.75      16.22         7.28
+       256         1.46       0.01       9.30     100.00        16.28      DELETED
+       257         1.27       0.02       9.30     100.00        11.07
+       258         0.57       0.02       3.36      13.05         3.61
+       259         0.53       0.00       9.30      99.99         6.43      DELETED
+       260         1.51       0.71       0.89       0.91         2.20
+       261         0.10       0.05       0.23       0.06         0.15
+       262         0.10       0.01       0.79       0.73         0.44
+       263         1.27       0.01       9.30     100.00        13.54      DELETED
+       264         1.39       0.62       0.91       0.96         2.16
+       265         2.74       0.30       4.19      20.23        12.05
+       266         1.29       0.03       7.32      61.85        10.00
+       267         0.13       0.00       1.81       3.77         0.90
+       268         0.10       0.01       0.98       1.10         0.51
+       269         3.29       1.47       1.40       2.25         5.11
+       270         0.10       0.00       1.80       3.74         0.74
+       271         4.63       1.55       2.29       6.07         9.93
+       272         1.52       0.13       3.51      14.24         7.26
+       273         2.84       3.18      -0.17       0.03        -0.80
+       274         1.21       0.43       1.12       1.44         2.46
+       275         1.69       1.26       0.35       0.14         0.88
+       276         1.42       0.14       3.16      11.55         6.45
+       277         0.27       0.01       2.48       7.08         1.80
+       278         0.11       0.00       1.73       3.44         0.76
+       279         1.52       4.52      -1.91       0.00         0.00
+       280         1.16       1.31      -0.14       0.00         0.01
+       281         1.54       0.39       1.76       0.09         0.05
+       282         0.98       0.17       1.81      -0.23        -0.08
+       283         0.11       0.19      -0.18       0.00         0.00
+       284         1.50       0.05       6.14      -0.18        -0.01
+       285         0.11       0.00       3.94     -33.00        -0.24      DELETED
+       286         1.60       0.00       9.30       0.00         8.27      DELETED
+       287         0.11       0.03       0.41      -0.23        -0.11
+       288         1.85       1.77       0.25       0.00         0.00
+       289         8.65       9.38      -0.33       0.00         0.03
+       290         1.24       2.70      -0.89      -0.01         0.01
+       291         1.39       0.04       6.18      -1.22        -0.07
+       292         1.52       0.43       1.57      -0.01        -0.01
+       293         1.20       0.04       5.57       1.23         0.08
+       294         1.27       0.01       9.31       0.00        -0.47      DELETED
+       295         1.99       0.41       2.31      -0.32        -0.14
+       296         0.11       0.00       2.13       4.04         0.30
+       297         0.13       0.03       0.51      -0.32        -0.13
+       298         1.85       0.06       6.70       2.02         0.14
+       299         1.22       0.01       9.32      18.46         1.20
+       300         0.11       1.99      -1.84       0.00         0.00
+       301         2.31       0.57       2.32       0.02         0.01
+       302         1.12       0.01       9.31       0.00         1.07      DELETED
+       303         0.10       0.00       9.30      82.62         0.80      DELETED
+       304         6.44      13.83      -3.41      -0.01         0.01
+       305         1.35       1.46      -0.08       0.01        -0.09
+       306         1.27       0.59       0.84       0.06         0.07
+       307         4.31       0.58       4.62       1.85         0.52
+       308         0.10       0.07       0.10       0.00        -0.01
+       309         0.11       0.03       0.43      -0.38        -0.15
+       310         1.51       0.55       1.22       0.14         0.12
+       311         0.21       0.07       0.52      -0.14        -0.09
+       312         1.41       0.09       4.10      -5.82        -0.66
+       313         1.18       0.06       4.26     -10.26        -0.87
+       314         1.69       0.02       9.31      45.95         3.06
+       315         1.29       0.94       0.65       0.00         0.00
+       316         0.10       0.00       2.22      -0.45        -0.02
+       317         1.43       5.66      -2.43      -0.02         0.01
+       318         0.11       1.67      -1.22       0.00         0.00
+       319         0.11       0.00       2.66     -30.93        -0.33
+       320         1.21       0.27       1.73      -0.36        -0.16
+       321         1.46       0.36       1.71       0.26         0.14
+       322         0.10       0.01       0.69       0.26         0.09
+       323         1.25       0.01       9.31       0.00        -1.40      DELETED
+       324         1.24       0.01       9.31       0.00        -0.32      DELETED
+       325         0.32       0.00       9.30       0.00         1.78      DELETED
+       326         0.15       0.00       7.58      19.10         0.10      DELETED
+       327         2.02       0.01       9.31       0.00         3.44      DELETED
+       328         1.20       0.00       9.30       0.00         4.04      DELETED
+       329         0.11       0.10       0.10       0.00         0.00
+       330         0.11       0.07       0.21       0.00         0.00
+       331         9.02       9.43      -0.21       0.00         0.03
+       332         1.15       0.01       9.31      16.03         0.43
+       333         0.12       0.90      -0.79       0.01         0.00
+       334         0.12       0.19      -0.16       0.00        -0.01
+       335         2.39       0.00       9.31       0.00        10.76      DELETED
+       336         1.33       0.31       1.71      -0.17        -0.08
+       337         0.10       0.31      -0.35      -0.02         0.01
+       338         0.11       0.00       1.81       0.16         0.01
+       339         0.10       0.00       4.78       8.93         0.08
+       340         1.17       3.77      -1.90      -0.01         0.00
+       341         1.36       1.14       0.21       0.00        -0.01
+       342         1.23       0.08       3.74       3.18         0.47
+       343         0.10       0.01       1.00       0.19         0.03
+       344         1.32       0.01       9.31       0.00         2.27      DELETED
+       345         1.44       0.01       9.31       0.00        -0.63
+       346         0.11       0.00       9.31       0.00        -0.43      DELETED
+       347         1.14       1.54      -0.44       0.00         0.00
+       348         0.10       0.46      -0.54       0.00         0.00
+       349         1.73       0.03       9.09      -4.73        -0.16
+       350         1.16       0.79       0.69       0.00         0.00
+       351         2.53       1.76       0.94       0.00         0.01
+       352         0.11       0.06       0.19       0.01         0.01
+       353         0.13       1.57      -1.53       0.00         0.00
+       354         0.11       0.00       1.81     -34.58        -0.51
+       355         1.48       0.00       9.31       0.00         0.72      DELETED
+       356         1.30       0.00       9.31       0.00        -0.67      DELETED
+       357         1.30       0.00       9.31       0.00         5.69      DELETED
+       358         1.16       0.06       4.30       0.39         0.04
+       359         1.16       0.79       0.69       0.00         0.01
+       360         0.11       0.00       4.90       1.99         0.02
+       361         1.15       0.02       7.09      10.24         0.44
+       362         1.15       0.65       0.82       0.00         0.00
+       363         0.12       0.00       1.60       0.11         0.01
+       364         4.14       2.52       1.43       0.01         0.02
+       365         0.22       0.76      -0.63       0.00         0.00
+       366         0.16       0.01       1.31      -0.45        -0.06
+       367         0.13       0.07       0.32       0.00         0.00
+       368         1.46       0.04       6.37      -0.43        -0.03
+       369         0.11       0.00       9.31       0.00         0.09      DELETED
+       370         2.39       0.21       4.64       0.16         0.03
+       371         1.21       0.94       0.54       0.00        -0.01
+       372         1.78       1.69       0.28       0.00         0.00
+       373         0.11       0.07       0.21       0.00         0.00
+       374         1.41       0.00       9.30       0.00         4.48      DELETED
+
+     THE TOTAL PEARSON CHI-SQUARE CONTRIBUTION FROM EMPTY CELLS IS       162.71
+
+
+     UNIVARIATE MODEL FIT INFORMATION
+
+                               Estimated Probabilities
+                                                  Standardized
+     Variable              H1           H0          Residual
+                                                   (z-score)
+     GND1
+       Category 1        0.981        0.981           0.002
+       Category 2        0.019        0.019          -0.002
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     GND2
+       Category 1        0.971        0.971          -0.006
+       Category 2        0.029        0.029           0.006
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     GND3
+       Category 1        0.890        0.890          -0.043
+       Category 2        0.110        0.110           0.043
+       Univariate Pearson Chi-Square                  0.002
+       Univariate Log-Likelihood Chi-Square           0.002
+     GND4
+       Category 1        0.876        0.877          -0.046
+       Category 2        0.124        0.123           0.046
+       Univariate Pearson Chi-Square                  0.002
+       Univariate Log-Likelihood Chi-Square           0.002
+     GND5
+       Category 1        0.954        0.953           0.018
+       Category 2        0.046        0.047          -0.018
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     GND6
+       Category 1        0.808        0.808           0.022
+       Category 2        0.192        0.192          -0.022
+       Univariate Pearson Chi-Square                  0.001
+       Univariate Log-Likelihood Chi-Square           0.001
+     ETH1
+       Category 1        0.967        0.967           0.017
+       Category 2        0.033        0.033          -0.017
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     ETH2
+       Category 1        0.951        0.951          -0.035
+       Category 2        0.049        0.049           0.035
+       Univariate Pearson Chi-Square                  0.001
+       Univariate Log-Likelihood Chi-Square           0.001
+     ETH3
+       Category 1        0.944        0.944          -0.001
+       Category 2        0.056        0.056           0.001
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     ETH4
+       Category 1        0.725        0.725           0.001
+       Category 2        0.275        0.275          -0.001
+       Univariate Pearson Chi-Square                  0.000
+       Univariate Log-Likelihood Chi-Square           0.000
+     ETH5
+       Category 1        0.953        0.953           0.039
+       Category 2        0.047        0.047          -0.039
+       Univariate Pearson Chi-Square                  0.002
+       Univariate Log-Likelihood Chi-Square           0.002
+
+       Overall Univariate Pearson Chi-Square                         0.009
+       Overall Univariate Log-Likelihood Chi-Square                  0.009
+
+
+     BIVARIATE MODEL FIT INFORMATION
+
+                                              Estimated Probabilities
+                                                                 Standardized
+     Variable       Variable              H1           H0          Residual
+                                                                  (z-score)
+     GND1           GND2
+       Category 1     Category 1        0.962        0.961           0.322
+       Category 1     Category 2        0.019        0.020          -0.441
+       Category 2     Category 1        0.009        0.010          -0.625
+       Category 2     Category 2        0.009        0.008           0.693
+       Bivariate Pearson Chi-Square                                  1.221
+       Bivariate Log-Likelihood Chi-Square                           1.219
+     GND1           GND3
+       Category 1     Category 1        0.882        0.882           0.045
+       Category 1     Category 2        0.100        0.100          -0.048
+       Category 2     Category 1        0.008        0.009          -0.304
+       Category 2     Category 2        0.011        0.010           0.278
+       Bivariate Pearson Chi-Square                                  0.197
+       Bivariate Log-Likelihood Chi-Square                           0.198
+     GND1           GND4
+       Category 1     Category 1        0.868        0.869          -0.211
+       Category 1     Category 2        0.113        0.112           0.226
+       Category 2     Category 1        0.008        0.007           0.655
+       Category 2     Category 2        0.010        0.011          -0.530
+       Bivariate Pearson Chi-Square                                  0.872
+       Bivariate Log-Likelihood Chi-Square                           0.861
+     GND1           GND5
+       Category 1     Category 1        0.942        0.943          -0.061
+       Category 1     Category 2        0.039        0.039           0.074
+       Category 2     Category 1        0.011        0.011           0.173
+       Category 2     Category 2        0.008        0.008          -0.206
+       Bivariate Pearson Chi-Square                                  0.089
+       Bivariate Log-Likelihood Chi-Square                           0.089
+     GND1           GND6
+       Category 1     Category 1        0.805        0.805           0.025
+       Category 1     Category 2        0.176        0.176          -0.025
+       Category 2     Category 1        0.003        0.003          -0.027
+       Category 2     Category 2        0.016        0.016           0.010
+       Bivariate Pearson Chi-Square                                  0.002
+       Bivariate Log-Likelihood Chi-Square                           0.002
+     GND1           ETH1
+       Category 1     Category 1        0.950        0.950           0.097
+       Category 1     Category 2        0.031        0.031          -0.120
+       Category 2     Category 1        0.016        0.017          -0.141
+       Category 2     Category 2        0.002        0.002           0.382
+       Bivariate Pearson Chi-Square                                  0.207
+       Bivariate Log-Likelihood Chi-Square                           0.200
+     GND1           ETH2
+       Category 1     Category 1        0.936        0.935           0.062
+       Category 1     Category 2        0.046        0.046          -0.072
+       Category 2     Category 1        0.015        0.015          -0.185
+       Category 2     Category 2        0.004        0.003           0.393
+       Bivariate Pearson Chi-Square                                  0.223
+       Bivariate Log-Likelihood Chi-Square                           0.216
+     GND1           ETH3
+       Category 1     Category 1        0.929        0.929          -0.008
+       Category 1     Category 2        0.052        0.052           0.010
+       Category 2     Category 1        0.014        0.014           0.015
+       Category 2     Category 2        0.004        0.004          -0.031
+       Bivariate Pearson Chi-Square                                  0.001
+       Bivariate Log-Likelihood Chi-Square                           0.002
+     GND1           ETH4
+       Category 1     Category 1        0.713        0.713           0.004
+       Category 1     Category 2        0.269        0.269          -0.003
+       Category 2     Category 1        0.012        0.012          -0.010
+       Category 2     Category 2        0.007        0.007           0.011
+       Bivariate Pearson Chi-Square                                  0.000
+       Bivariate Log-Likelihood Chi-Square                           0.000
+     GND1           ETH5
+       Category 1     Category 1        0.939        0.938           0.193
+       Category 1     Category 2        0.043        0.043          -0.227
+       Category 2     Category 1        0.015        0.015          -0.311
+       Category 2     Category 2        0.004        0.003           0.655
+       Bivariate Pearson Chi-Square                                  0.664
+       Bivariate Log-Likelihood Chi-Square                           0.637
+     GND2           GND3
+       Category 1     Category 1        0.872        0.874          -0.196
+       Category 1     Category 2        0.099        0.098           0.216
+       Category 2     Category 1        0.017        0.016           0.405
+       Category 2     Category 2        0.011        0.012          -0.463
+       Bivariate Pearson Chi-Square                                  0.485
+       Bivariate Log-Likelihood Chi-Square                           0.488
+     GND2           GND4
+       Category 1     Category 1        0.862        0.862          -0.144
+       Category 1     Category 2        0.110        0.109           0.156
+       Category 2     Category 1        0.015        0.014           0.289
+       Category 2     Category 2        0.014        0.014          -0.281
+       Bivariate Pearson Chi-Square                                  0.214
+       Bivariate Log-Likelihood Chi-Square                           0.214
+     GND2           GND5
+       Category 1     Category 1        0.934        0.933           0.207
+       Category 1     Category 2        0.037        0.038          -0.274
+       Category 2     Category 1        0.020        0.020          -0.338
+       Category 2     Category 2        0.009        0.008           0.542
+       Bivariate Pearson Chi-Square                                  0.553
+       Bivariate Log-Likelihood Chi-Square                           0.544
+     GND2           GND6
+       Category 1     Category 1        0.799        0.799          -0.067
+       Category 1     Category 2        0.172        0.172           0.069
+       Category 2     Category 1        0.009        0.008           0.388
+       Category 2     Category 2        0.020        0.020          -0.245
+       Bivariate Pearson Chi-Square                                  0.246
+       Bivariate Log-Likelihood Chi-Square                           0.243
+     GND2           ETH1
+       Category 1     Category 1        0.941        0.942          -0.172
+       Category 1     Category 2        0.030        0.030           0.232
+       Category 2     Category 1        0.026        0.025           0.279
+       Category 2     Category 2        0.003        0.004          -0.687
+       Bivariate Pearson Chi-Square                                  0.694
+       Bivariate Log-Likelihood Chi-Square                           0.731
+     GND2           ETH2
+       Category 1     Category 1        0.928        0.928           0.047
+       Category 1     Category 2        0.043        0.044          -0.065
+       Category 2     Category 1        0.023        0.023          -0.132
+       Category 2     Category 2        0.006        0.006           0.276
+       Bivariate Pearson Chi-Square                                  0.112
+       Bivariate Log-Likelihood Chi-Square                           0.110
+     GND2           ETH3
+       Category 1     Category 1        0.924        0.923           0.201
+       Category 1     Category 2        0.047        0.048          -0.254
+       Category 2     Category 1        0.019        0.020          -0.380
+       Category 2     Category 2        0.009        0.008           0.599
+       Bivariate Pearson Chi-Square                                  0.649
+       Bivariate Log-Likelihood Chi-Square                           0.637
+     GND2           ETH4
+       Category 1     Category 1        0.710        0.710          -0.024
+       Category 1     Category 2        0.262        0.262           0.023
+       Category 2     Category 1        0.015        0.015           0.096
+       Category 2     Category 2        0.013        0.014          -0.092
+       Bivariate Pearson Chi-Square                                  0.021
+       Bivariate Log-Likelihood Chi-Square                           0.021
+     GND2           ETH5
+       Category 1     Category 1        0.931        0.931           0.044
+       Category 1     Category 2        0.040        0.040          -0.062
+       Category 2     Category 1        0.022        0.022          -0.019
+       Category 2     Category 2        0.007        0.007           0.048
+       Bivariate Pearson Chi-Square                                  0.007
+       Bivariate Log-Likelihood Chi-Square                           0.007
+     GND3           GND4
+       Category 1     Category 1        0.814        0.815          -0.118
+       Category 1     Category 2        0.075        0.075           0.122
+       Category 2     Category 1        0.062        0.061           0.127
+       Category 2     Category 2        0.048        0.048          -0.079
+       Bivariate Pearson Chi-Square                                  0.043
+       Bivariate Log-Likelihood Chi-Square                           0.043
+     GND3           GND5
+       Category 1     Category 1        0.856        0.858          -0.287
+       Category 1     Category 2        0.034        0.032           0.489
+       Category 2     Category 1        0.098        0.096           0.353
+       Category 2     Category 2        0.012        0.014          -0.769
+       Bivariate Pearson Chi-Square                                  1.084
+       Bivariate Log-Likelihood Chi-Square                           1.105
+     GND3           GND6
+       Category 1     Category 1        0.765        0.764           0.159
+       Category 1     Category 2        0.125        0.126          -0.244
+       Category 2     Category 1        0.043        0.044          -0.287
+       Category 2     Category 2        0.067        0.066           0.292
+       Bivariate Pearson Chi-Square                                  0.250
+       Bivariate Log-Likelihood Chi-Square                           0.251
+     GND3           ETH1
+       Category 1     Category 1        0.864        0.864           0.002
+       Category 1     Category 2        0.025        0.026          -0.090
+       Category 2     Category 1        0.102        0.102           0.008
+       Category 2     Category 2        0.008        0.008           0.128
+       Bivariate Pearson Chi-Square                                  0.028
+       Bivariate Log-Likelihood Chi-Square                           0.028
+     GND3           ETH2
+       Category 1     Category 1        0.850        0.852          -0.407
+       Category 1     Category 2        0.040        0.038           0.684
+       Category 2     Category 1        0.101        0.099           0.459
+       Category 2     Category 2        0.009        0.011          -1.178
+       Bivariate Pearson Chi-Square                                  2.352
+       Bivariate Log-Likelihood Chi-Square                           2.453
+     GND3           ETH3
+       Category 1     Category 1        0.849        0.849           0.012
+       Category 1     Category 2        0.041        0.041          -0.091
+       Category 2     Category 1        0.095        0.095          -0.016
+       Category 2     Category 2        0.016        0.015           0.149
+       Bivariate Pearson Chi-Square                                  0.035
+       Bivariate Log-Likelihood Chi-Square                           0.034
+     GND3           ETH4
+       Category 1     Category 1        0.648        0.651          -0.311
+       Category 1     Category 2        0.241        0.239           0.315
+       Category 2     Category 1        0.076        0.074           0.569
+       Category 2     Category 2        0.034        0.036          -0.723
+       Bivariate Pearson Chi-Square                                  1.054
+       Bivariate Log-Likelihood Chi-Square                           1.063
+     GND3           ETH5
+       Category 1     Category 1        0.856        0.855           0.134
+       Category 1     Category 2        0.034        0.035          -0.332
+       Category 2     Category 1        0.097        0.098          -0.131
+       Category 2     Category 2        0.013        0.012           0.479
+       Bivariate Pearson Chi-Square                                  0.405
+       Bivariate Log-Likelihood Chi-Square                           0.400
+     GND4           GND5
+       Category 1     Category 1        0.845        0.846          -0.117
+       Category 1     Category 2        0.031        0.030           0.158
+       Category 2     Category 1        0.108        0.107           0.149
+       Category 2     Category 2        0.016        0.016          -0.246
+       Bivariate Pearson Chi-Square                                  0.122
+       Bivariate Log-Likelihood Chi-Square                           0.123
+     GND4           GND6
+       Category 1     Category 1        0.767        0.767           0.057
+       Category 1     Category 2        0.109        0.110          -0.126
+       Category 2     Category 1        0.041        0.041          -0.079
+       Category 2     Category 2        0.083        0.082           0.112
+       Bivariate Pearson Chi-Square                                  0.037
+       Bivariate Log-Likelihood Chi-Square                           0.037
+     GND4           ETH1
+       Category 1     Category 1        0.850        0.851          -0.022
+       Category 1     Category 2        0.026        0.026          -0.047
+       Category 2     Category 1        0.116        0.116           0.034
+       Category 2     Category 2        0.007        0.007           0.051
+       Bivariate Pearson Chi-Square                                  0.007
+       Bivariate Log-Likelihood Chi-Square                           0.007
+     GND4           ETH2
+       Category 1     Category 1        0.840        0.839           0.054
+       Category 1     Category 2        0.037        0.037          -0.183
+       Category 2     Category 1        0.111        0.112          -0.086
+       Category 2     Category 2        0.012        0.012           0.393
+       Bivariate Pearson Chi-Square                                  0.222
+       Bivariate Log-Likelihood Chi-Square                           0.218
+     GND4           ETH3
+       Category 1     Category 1        0.837        0.838          -0.096
+       Category 1     Category 2        0.039        0.039           0.105
+       Category 2     Category 1        0.107        0.106           0.115
+       Category 2     Category 2        0.017        0.017          -0.155
+       Bivariate Pearson Chi-Square                                  0.055
+       Bivariate Log-Likelihood Chi-Square                           0.055
+     GND4           ETH4
+       Category 1     Category 1        0.636        0.638          -0.167
+       Category 1     Category 2        0.240        0.239           0.153
+       Category 2     Category 1        0.088        0.087           0.288
+       Category 2     Category 2        0.035        0.036          -0.352
+       Bivariate Pearson Chi-Square                                  0.258
+       Bivariate Log-Likelihood Chi-Square                           0.259
+     GND4           ETH5
+       Category 1     Category 1        0.844        0.843           0.132
+       Category 1     Category 2        0.033        0.034          -0.349
+       Category 2     Category 1        0.110        0.110          -0.127
+       Category 2     Category 2        0.014        0.013           0.487
+       Bivariate Pearson Chi-Square                                  0.425
+       Bivariate Log-Likelihood Chi-Square                           0.420
+     GND5           GND6
+       Category 1     Category 1        0.785        0.785           0.006
+       Category 1     Category 2        0.169        0.169           0.003
+       Category 2     Category 1        0.023        0.023           0.039
+       Category 2     Category 2        0.023        0.023          -0.064
+       Bivariate Pearson Chi-Square                                  0.006
+       Bivariate Log-Likelihood Chi-Square                           0.006
+     GND5           ETH1
+       Category 1     Category 1        0.927        0.927           0.105
+       Category 1     Category 2        0.026        0.027          -0.146
+       Category 2     Category 1        0.039        0.040          -0.124
+       Category 2     Category 2        0.007        0.007           0.252
+       Bivariate Pearson Chi-Square                                  0.115
+       Bivariate Log-Likelihood Chi-Square                           0.114
+     GND5           ETH2
+       Category 1     Category 1        0.911        0.912          -0.131
+       Category 1     Category 2        0.042        0.041           0.205
+       Category 2     Category 1        0.039        0.039           0.153
+       Category 2     Category 2        0.007        0.008          -0.378
+       Bivariate Pearson Chi-Square                                  0.238
+       Bivariate Log-Likelihood Chi-Square                           0.242
+     GND5           ETH3
+       Category 1     Category 1        0.906        0.907          -0.133
+       Category 1     Category 2        0.047        0.046           0.201
+       Category 2     Category 1        0.037        0.037           0.204
+       Category 2     Category 2        0.009        0.010          -0.427
+       Bivariate Pearson Chi-Square                                  0.301
+       Bivariate Log-Likelihood Chi-Square                           0.306
+     GND5           ETH4
+       Category 1     Category 1        0.696        0.696          -0.040
+       Category 1     Category 2        0.257        0.257           0.051
+       Category 2     Category 1        0.029        0.028           0.115
+       Category 2     Category 2        0.018        0.018          -0.171
+       Bivariate Pearson Chi-Square                                  0.051
+       Bivariate Log-Likelihood Chi-Square                           0.051
+     GND5           ETH5
+       Category 1     Category 1        0.914        0.916          -0.469
+       Category 1     Category 2        0.040        0.038           0.704
+       Category 2     Category 1        0.040        0.037           0.730
+       Category 2     Category 2        0.007        0.009          -1.487
+       Bivariate Pearson Chi-Square                                  3.697
+       Bivariate Log-Likelihood Chi-Square                           3.934
+     GND6           ETH1
+       Category 1     Category 1        0.789        0.788           0.129
+       Category 1     Category 2        0.019        0.020          -0.315
+       Category 2     Category 1        0.178        0.179          -0.130
+       Category 2     Category 2        0.014        0.013           0.361
+       Bivariate Pearson Chi-Square                                  0.281
+       Bivariate Log-Likelihood Chi-Square                           0.280
+     GND6           ETH2
+       Category 1     Category 1        0.780        0.778           0.215
+       Category 1     Category 2        0.028        0.030          -0.475
+       Category 2     Category 1        0.171        0.173          -0.256
+       Category 2     Category 2        0.021        0.019           0.640
+       Bivariate Pearson Chi-Square                                  0.791
+       Bivariate Log-Likelihood Chi-Square                           0.783
+     GND6           ETH3
+       Category 1     Category 1        0.777        0.779          -0.167
+       Category 1     Category 2        0.031        0.029           0.461
+       Category 2     Category 1        0.166        0.165           0.186
+       Category 2     Category 2        0.026        0.027          -0.480
+       Bivariate Pearson Chi-Square                                  0.537
+       Bivariate Log-Likelihood Chi-Square                           0.538
+     GND6           ETH4
+       Category 1     Category 1        0.601        0.598           0.293
+       Category 1     Category 2        0.207        0.210          -0.331
+       Category 2     Category 1        0.124        0.127          -0.430
+       Category 2     Category 2        0.068        0.066           0.543
+       Bivariate Pearson Chi-Square                                  0.645
+       Bivariate Log-Likelihood Chi-Square                           0.642
+     GND6           ETH5
+       Category 1     Category 1        0.783        0.782           0.089
+       Category 1     Category 2        0.025        0.025          -0.178
+       Category 2     Category 1        0.170        0.171          -0.075
+       Category 2     Category 2        0.022        0.021           0.137
+       Bivariate Pearson Chi-Square                                  0.065
+       Bivariate Log-Likelihood Chi-Square                           0.065
+     ETH1           ETH2
+       Category 1     Category 1        0.935        0.931           0.843
+       Category 1     Category 2        0.032        0.036          -1.137
+       Category 2     Category 1        0.016        0.020          -1.585
+       Category 2     Category 2        0.017        0.014           1.891
+       Bivariate Pearson Chi-Square                                  8.415
+       Bivariate Log-Likelihood Chi-Square                           8.335
+     ETH1           ETH3
+       Category 1     Category 1        0.924        0.925          -0.173
+       Category 1     Category 2        0.042        0.041           0.244
+       Category 2     Category 1        0.019        0.019           0.335
+       Category 2     Category 2        0.014        0.015          -0.400
+       Bivariate Pearson Chi-Square                                  0.378
+       Bivariate Log-Likelihood Chi-Square                           0.379
+     ETH1           ETH4
+       Category 1     Category 1        0.712        0.711           0.105
+       Category 1     Category 2        0.255        0.255          -0.102
+       Category 2     Category 1        0.013        0.013          -0.408
+       Category 2     Category 2        0.021        0.020           0.314
+       Bivariate Pearson Chi-Square                                  0.314
+       Bivariate Log-Likelihood Chi-Square                           0.317
+     ETH1           ETH5
+       Category 1     Category 1        0.939        0.938           0.319
+       Category 1     Category 2        0.028        0.029          -0.442
+       Category 2     Category 1        0.014        0.016          -0.555
+       Category 2     Category 2        0.019        0.018           0.500
+       Bivariate Pearson Chi-Square                                  0.861
+       Bivariate Log-Likelihood Chi-Square                           0.867
+     ETH2           ETH3
+       Category 1     Category 1        0.910        0.911          -0.167
+       Category 1     Category 2        0.041        0.040           0.205
+       Category 2     Category 1        0.034        0.033           0.266
+       Category 2     Category 2        0.015        0.016          -0.318
+       Bivariate Pearson Chi-Square                                  0.244
+       Bivariate Log-Likelihood Chi-Square                           0.244
+     ETH2           ETH4
+       Category 1     Category 1        0.709        0.706           0.315
+       Category 1     Category 2        0.242        0.245          -0.351
+       Category 2     Category 1        0.016        0.019          -1.057
+       Category 2     Category 2        0.033        0.031           0.873
+       Bivariate Pearson Chi-Square                                  2.259
+       Bivariate Log-Likelihood Chi-Square                           2.296
+     ETH2           ETH5
+       Category 1     Category 1        0.922        0.921           0.222
+       Category 1     Category 2        0.028        0.029          -0.399
+       Category 2     Category 1        0.031        0.032          -0.294
+       Category 2     Category 2        0.018        0.017           0.452
+       Bivariate Pearson Chi-Square                                  0.512
+       Bivariate Log-Likelihood Chi-Square                           0.511
+     ETH3           ETH4
+       Category 1     Category 1        0.705        0.704           0.134
+       Category 1     Category 2        0.239        0.240          -0.143
+       Category 2     Category 1        0.020        0.021          -0.426
+       Category 2     Category 2        0.037        0.036           0.327
+       Bivariate Pearson Chi-Square                                  0.349
+       Bivariate Log-Likelihood Chi-Square                           0.351
+     ETH3           ETH5
+       Category 1     Category 1        0.920        0.917           0.572
+       Category 1     Category 2        0.024        0.026          -0.985
+       Category 2     Category 1        0.033        0.036          -0.802
+       Category 2     Category 2        0.023        0.020           1.055
+       Bivariate Pearson Chi-Square                                  3.097
+       Bivariate Log-Likelihood Chi-Square                           3.105
+     ETH4           ETH5
+       Category 1     Category 1        0.707        0.707          -0.063
+       Category 1     Category 2        0.018        0.017           0.223
+       Category 2     Category 1        0.247        0.246           0.086
+       Category 2     Category 2        0.029        0.029          -0.223
+       Bivariate Pearson Chi-Square                                  0.120
+       Bivariate Log-Likelihood Chi-Square                           0.120
+
+       Overall Bivariate Pearson Chi-Square                         36.109
+       Overall Bivariate Log-Likelihood Chi-Square                  36.403
+
+
+TECHNICAL 11 OUTPUT
+
+     Random Starts Specifications for the k-1 Class Analysis Model
+        Number of initial stage random starts                1000
+        Number of final stage optimizations                   250
+
+
+
+     VUONG-LO-MENDELL-RUBIN LIKELIHOOD RATIO TEST FOR 5 (H0) VERSUS 6 CLASSES
+
+          H0 Loglikelihood Value                        -9728.210
+          2 Times the Loglikelihood Difference             64.784
+          Difference in the Number of Parameters               12
+          Mean                                            -80.685
+          Standard Deviation                              172.968
+          P-Value                                          0.2002
+
+     LO-MENDELL-RUBIN ADJUSTED LRT TEST
+
+          Value                                            64.137
+          P-Value                                          0.2012
+
+
+SAVEDATA INFORMATION
+
+
+  Save file
+    Prob_HRV_GNDETHlca_C3cl6.dat
+
+  Order and format of variables
+
+    GND1           F10.3
+    GND2           F10.3
+    GND3           F10.3
+    GND4           F10.3
+    GND5           F10.3
+    GND6           F10.3
+    ETH1           F10.3
+    ETH2           F10.3
+    ETH3           F10.3
+    ETH4           F10.3
+    ETH5           F10.3
+    CPROB1         F10.3
+    CPROB2         F10.3
+    CPROB3         F10.3
+    CPROB4         F10.3
+    CPROB5         F10.3
+    CPROB6         F10.3
+    C              F10.3
+    WS             F10.3
+    IDSTUD         I9
+    ID_S           I5
+    ID_J           I5
+
+  Save file format
+    19F10.3 I9 2I5
+
+  Save file record length    10000
+
+  Save missing symbol        *
+
+
+     Beginning Time:  22:18:42
+        Ending Time:  22:19:00
+       Elapsed Time:  00:00:18
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2020 Muthen & Muthen
