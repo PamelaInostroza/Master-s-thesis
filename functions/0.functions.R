@@ -226,7 +226,7 @@ ClassGraph <- function(lc5f, siz5, title = NULL,
     theme(legend.position = "top", 
           legend.direction = "vertical",
           strip.text.y = element_text(size = 8),
-          legend.spacing.x = unit(0.2, 'cm'),
+          legend.spacing.x = unit(0.1, 'cm'),
           legend.spacing.y = unit(-0.2, 'cm'),
           legend.margin=margin(t = 0, unit='cm'),
           title = element_text(size = 9), 
@@ -236,7 +236,7 @@ ClassGraph <- function(lc5f, siz5, title = NULL,
           axis.title.x = element_blank(),
           axis.title.y = element_blank(), 
           legend.title = element_blank(),
-          legend.text = element_text(size = 7),
+          legend.text = element_text(size = 6),
           axis.text.x = element_text(angle = 90, size = 8, 
                                      vjust = 0.5, hjust = 0)) +
     guides(linetype = guide_legend(nrow = 2)) +
@@ -426,7 +426,7 @@ ModelfitConf <- function(Modellist, title =""){
     kable_classic_2(full_width = F) %>% 
     kable_styling(latex_options = c("repeat_header", "HOLD_position"), 
                   font_size = 9) %>% 
-    column_spec(c(1), width = "8em") %>% 
+    column_spec(c(1), width = "9em") %>% 
     column_spec(c(2:3), width = "3em") %>% 
     column_spec(c(4:9), width = "4em") 
   
